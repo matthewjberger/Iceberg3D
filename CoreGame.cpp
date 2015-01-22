@@ -172,37 +172,40 @@ void Game::UnloadContent()
 }
 void Game::ChangeState(GameState *state)
 {
-	if (!GameStates.empty()) // if there is a state, clean it up and pop it off
+    // If there is a state, clean it up and pop it off
+	if (!GameStates.empty()) 
 	{
 		GameStates.back()->Finalize();
 		GameStates.pop_back();
 	}
 
-	GameStates.push_back(state); // push on the new one and initialize it
+    // Push on the new one and initialize it
+	GameStates.push_back(state); 
 	GameStates.back()->Init(this);
 }
 
 void Game::PushState(GameState *state)
 {
-	if (!GameStates.empty())  // pause state if there is one already on stack
+    // Pause state if there is one already on stack
+	if (!GameStates.empty())  
 	{
 		GameStates.back()->Pause();
 	}
 
-	GameStates.push_back(state); // push state onto stack and initialize it
+    // Push state onto stack and initialize it
+	GameStates.push_back(state); 
 	GameStates.back()->Init(this);
 }
 
 void Game::PopState()
 {
-	if (!GameStates.empty())//if somethings on the stack and finish up state then pop it off
+	if (!GameStates.empty())
 	{
+	    // If somethings on the stack and finish up state then pop it off
 		GameStates.back()->Finalize();
 		GameStates.pop_back();
-	}
 
-	if (!GameStates.empty()) // if there's a state left, it is paused, so resume it
-	{
+		// If there's a state left, it is paused, so resume it
 		GameStates.back()->Resume();
 	}
 }
