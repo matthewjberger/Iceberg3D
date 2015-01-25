@@ -5,39 +5,39 @@
 // Vertex Buffer Object class
 class VBO
 {
-public:
-	
-	// Constructor
-	VBO();
-	~VBO();
+    public:
 
-	// Creates buffer objects
-	void Create(GLint size = 0);
+        // Constructor
+        VBO();
+        ~VBO();
 
-	// Destroys buffer object
-	void Free();
+        // Creates buffer objects
+        void Create(GLint size = 0);
 
-	// Binds as current buffer
-	void Bind(GLuint bufferType = GL_ARRAY_BUFFER);
+        // Destroys buffer object
+        void Free();
 
-	// Unbinds as current buffer
-	void Unbind();
+        // Binds as current buffer
+        void Bind(GLuint bufferType = GL_ARRAY_BUFFER);
 
-	// Adds data 
-	void AddData( void* data, GLuint dataSize);
+        // Unbinds as current buffer
+        void Unbind();
 
-	// Uploads data
-	void UploadData(GLenum drawingHint);
+        // Adds data 
+        void AddData( void* data, GLuint dataSize);
+
+        // Uploads data
+        void UploadData(GLenum drawingHint);
 
 
-private:
+    private:
 
-	// The buffer
-	GLuint mBuffer;
+        // The buffer
+        GLuint mBuffer;
 
-	// Buffer type
-	GLuint mType;
+        // Buffer type
+        GLuint mType;
 
-	// Expandable data vector
-	vector<GLbyte> mData;
+        // Expandable data vector
+        vector<GLbyte> mData;
 };

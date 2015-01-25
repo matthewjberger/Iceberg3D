@@ -5,31 +5,31 @@
 
 class ShaderProgram
 {
-public:
-	ShaderProgram();
-	~ShaderProgram();
+    public:
+        ShaderProgram();
+        ~ShaderProgram();
 
-	void CreateProgram();
-	void DeleteProgram();
+        void CreateProgram();
+        void DeleteProgram();
 
-	bool AddShader(Shader* shader);
-	bool LinkProgram();
+        bool AddShader(Shader* shader);
+        bool LinkProgram();
 
-	void PrintLog();
+        void PrintLog();
 
-	void UseProgram();
-	void DisUseProgram();
+        void UseProgram();
+        void DisUseProgram();
 
-	GLuint GetID()
-	{
-		return programID;
-	}
+        GLuint GetID()
+        {
+            return programID;
+        }
 
-private:
+    private:
 
-	GLuint programID;
+        GLuint programID;
 
-	bool linked;
+        bool linked;
 };
 
 #endif

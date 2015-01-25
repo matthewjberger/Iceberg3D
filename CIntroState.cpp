@@ -5,512 +5,512 @@ IntroState *IntroState::inst = 0;
 
 void IntroState::Init(Game *game)
 {
-	printf("Intro Init\n");
+    printf("Intro Init\n");
 
-	// Initialize variables
-	angle = 0.0f;
+    // Initialize variables
+    angle = 0.0f;
 
-	vec3 pyramidPositions[] =
-	{
-		// Front face
-		glm::vec3(0.0f, 0.5f, 0.0f),
-		glm::vec3(-0.5f, -0.5f, 0.5f),
-		glm::vec3(0.5f, -0.5f, 0.5f),
+    vec3 pyramidPositions[] =
+    {
+        // Front face
+        glm::vec3(0.0f, 0.5f, 0.0f),
+        glm::vec3(-0.5f, -0.5f, 0.5f),
+        glm::vec3(0.5f, -0.5f, 0.5f),
 
-		// Back face
-		glm::vec3(0.0f, 0.5f, 0.0f),
-		glm::vec3(0.5f, -0.5f, -0.5f),
-		glm::vec3(-0.5f, -0.5f, -0.5f),
+        // Back face
+        glm::vec3(0.0f, 0.5f, 0.0f),
+        glm::vec3(0.5f, -0.5f, -0.5f),
+        glm::vec3(-0.5f, -0.5f, -0.5f),
 
-		// Left face
-		glm::vec3(0.0f, 0.5f, 0.0f), 
-		glm::vec3(-0.5f, -0.5f, -0.5f),
-		glm::vec3(-0.5f, -0.5f, 0.5f),
+        // Left face
+        glm::vec3(0.0f, 0.5f, 0.0f), 
+        glm::vec3(-0.5f, -0.5f, -0.5f),
+        glm::vec3(-0.5f, -0.5f, 0.5f),
 
-		// Right face
-		glm::vec3(0.0f, 0.5f, 0.0f),
-		glm::vec3(0.5f, -0.5f, 0.5f), 
-		glm::vec3(0.5f, -0.5f, -0.5f)
-	};
+        // Right face
+        glm::vec3(0.0f, 0.5f, 0.0f),
+        glm::vec3(0.5f, -0.5f, 0.5f), 
+        glm::vec3(0.5f, -0.5f, -0.5f)
+    };
 
-	vec2 texCoordsPyramid[] =
-	{
-		glm::vec2(0.5f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 0.0f)
-	};
+    vec2 texCoordsPyramid[] =
+    {
+        glm::vec2(0.5f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 0.0f)
+    };
 
-	vec3 vertexPositions[] =
-	{
-		// Front face
-		glm::vec3(-0.5f, 0.5f, 0.5f),
-		glm::vec3(0.5f, 0.5f, 0.5f), 
-		glm::vec3(0.5f, -0.5f, 0.5f),
-		glm::vec3(0.5f, -0.5f, 0.5f),
-		glm::vec3(-0.5f, -0.5f, 0.5f), 
-		glm::vec3(-0.5f, 0.5f, 0.5f),
-		// Back face
-		glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.5f, 0.5f, -0.5f),
-		// Left face
-		glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(-0.5f, 0.5f, -0.5f),
-		// Right face
-		glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f),
-		// Top face
-		glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(-0.5f, 0.5f, -0.5f),
-		// Bottom face
-		glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(-0.5f, -0.5f, 0.5f),
+    vec3 vertexPositions[] =
+    {
+        // Front face
+        glm::vec3(-0.5f, 0.5f, 0.5f),
+        glm::vec3(0.5f, 0.5f, 0.5f), 
+        glm::vec3(0.5f, -0.5f, 0.5f),
+        glm::vec3(0.5f, -0.5f, 0.5f),
+        glm::vec3(-0.5f, -0.5f, 0.5f), 
+        glm::vec3(-0.5f, 0.5f, 0.5f),
+        // Back face
+        glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.5f, 0.5f, -0.5f),
+        // Left face
+        glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(-0.5f, 0.5f, -0.5f),
+        // Right face
+        glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f),
+        // Top face
+        glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(-0.5f, 0.5f, -0.5f),
+        // Bottom face
+        glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(-0.5f, -0.5f, 0.5f),
 
-		// Floor
-		vec3(-100.0f, -3.0f, -100.0f), // top left  
-		vec3( 100.0f, -3.0f, -100.0f), // top right
-		vec3(100.0f, -3.0f, 100.0f), // bottom right
+        // Floor
+        vec3(-100.0f, -3.0f, -100.0f), // top left  
+        vec3( 100.0f, -3.0f, -100.0f), // top right
+        vec3(100.0f, -3.0f, 100.0f), // bottom right
 
-		vec3(100.0f, -3.0f, 100.0f), // bottom right
-		vec3(-100.0f, -3.0f,  100.0f), // bottom left
-		vec3(-100.0f, -3.0f, -100.0f), // top left  
-		   
-	};
+        vec3(100.0f, -3.0f, 100.0f), // bottom right
+        vec3(-100.0f, -3.0f,  100.0f), // bottom left
+        vec3(-100.0f, -3.0f, -100.0f), // top left  
 
-	vec2 textureCoords[] = 
-	{
-		glm::vec2(0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec2(0.0f, 1.0f)
-	};
+    };
 
-	// Create VAO
-	glGenVertexArrays(1, &VAO);
+    vec2 textureCoords[] = 
+    {
+        glm::vec2(0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec2(0.0f, 1.0f)
+    };
 
-	// Bind VAO for use
-	glBindVertexArray(VAO);
+    // Create VAO
+    glGenVertexArrays(1, &VAO);
 
-		// Create the buffer
-		triVBO.Create();
+    // Bind VAO for use
+    glBindVertexArray(VAO);
 
-		// Bind VBO for use
-		triVBO.Bind();
-		
-			// Add vertex data
-			for (int i = 0; i < (sizeof(vertexPositions)/sizeof(*vertexPositions)); i++)
-			{
-				triVBO.AddData(&vertexPositions[i], sizeof(vec3));
-				triVBO.AddData(&textureCoords[i%6], sizeof(vec2));
-			}
+    // Create the buffer
+    triVBO.Create();
 
-			// Add vertex data
-			for (int i = 0; i < (sizeof(pyramidPositions)/sizeof(*pyramidPositions)); i++)
-			{
-				triVBO.AddData(&pyramidPositions[i], sizeof(vec3));
-				triVBO.AddData(&texCoordsPyramid[i % 3], sizeof(vec2));
-			}
+    // Bind VBO for use
+    triVBO.Bind();
 
-			// Upload data
-			triVBO.UploadData(GL_STATIC_DRAW);
+    // Add vertex data
+    for (int i = 0; i < (sizeof(vertexPositions)/sizeof(*vertexPositions)); i++)
+    {
+        triVBO.AddData(&vertexPositions[i], sizeof(vec3));
+        triVBO.AddData(&textureCoords[i%6], sizeof(vec2));
+    }
 
-			// Enable vertex attributes
-			glEnableVertexAttribArray(0); // position
+    // Add vertex data
+    for (int i = 0; i < (sizeof(pyramidPositions)/sizeof(*pyramidPositions)); i++)
+    {
+        triVBO.AddData(&pyramidPositions[i], sizeof(vec3));
+        triVBO.AddData(&texCoordsPyramid[i % 3], sizeof(vec2));
+    }
 
-			// Describe how to load data from currently bound VBO
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)+sizeof(vec2), 0); // position
+    // Upload data
+    triVBO.UploadData(GL_STATIC_DRAW);
 
-			// Enable texture coords
-			glEnableVertexAttribArray(1); // texture
+    // Enable vertex attributes
+    glEnableVertexAttribArray(0); // position
 
-			// Describe how to load data
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vec3) + sizeof(vec2), (void *)sizeof(vec3)); // color
+    // Describe how to load data from currently bound VBO
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)+sizeof(vec2), 0); // position
+
+    // Enable texture coords
+    glEnableVertexAttribArray(1); // texture
+
+    // Describe how to load data
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vec3) + sizeof(vec2), (void *)sizeof(vec3)); // color
 
 
-	// Unbind VAO
-	glBindVertexArray(NULL);
+    // Unbind VAO
+    glBindVertexArray(NULL);
 
-	// Create VAO
-	glGenVertexArrays(1, &colorVAO);
+    // Create VAO
+    glGenVertexArrays(1, &colorVAO);
 
-	// Bind VAO for use
-	glBindVertexArray(colorVAO);
+    // Bind VAO for use
+    glBindVertexArray(colorVAO);
 
-		// Enable vertex attributes
-			glEnableVertexAttribArray(0); // position
+    // Enable vertex attributes
+    glEnableVertexAttribArray(0); // position
 
-			// Describe how to load data from currently bound VBO
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)+sizeof(vec2), 0); // position
+    // Describe how to load data from currently bound VBO
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)+sizeof(vec2), 0); // position
 
-	// Unbind VAO
-	glBindVertexArray(NULL);
+    // Unbind VAO
+    glBindVertexArray(NULL);
 
-	// Make shaders
-	vShader.Load("Shaders/VertexShader.glvs", GL_VERTEX_SHADER);
-	fShader.Load("Shaders/FragmentShader.glfs", GL_FRAGMENT_SHADER);
+    // Make shaders
+    vShader.Load("Shaders/VertexShader.glvs", GL_VERTEX_SHADER);
+    fShader.Load("Shaders/FragmentShader.glfs", GL_FRAGMENT_SHADER);
 
-	vColorShader.Load("Shaders/ColorVertex.glvs", GL_VERTEX_SHADER);
-	fColorShader.Load("Shaders/ColorFrag.glfs", GL_FRAGMENT_SHADER);
+    vColorShader.Load("Shaders/ColorVertex.glvs", GL_VERTEX_SHADER);
+    fColorShader.Load("Shaders/ColorFrag.glfs", GL_FRAGMENT_SHADER);
 
-	// Create the program
-	mainProg.CreateProgram();
+    // Create the program
+    mainProg.CreateProgram();
 
-	// Attach shaders
-	mainProg.AddShader(&vShader);
-	mainProg.AddShader(&fShader);
+    // Attach shaders
+    mainProg.AddShader(&vShader);
+    mainProg.AddShader(&fShader);
 
-	// Delete shaders
-	vShader.DeleteShader();
-	fShader.DeleteShader();
+    // Delete shaders
+    vShader.DeleteShader();
+    fShader.DeleteShader();
 
-	// Link Program
-	mainProg.LinkProgram();
+    // Link Program
+    mainProg.LinkProgram();
 
-	// Create the program
-	colorProg.CreateProgram();
+    // Create the program
+    colorProg.CreateProgram();
 
-	// Attach shaders
-	colorProg.AddShader(&vColorShader);
-	colorProg.AddShader(&fColorShader);
+    // Attach shaders
+    colorProg.AddShader(&vColorShader);
+    colorProg.AddShader(&fColorShader);
 
-	// Link Program
-	colorProg.LinkProgram();
+    // Link Program
+    colorProg.LinkProgram();
 
-	// Delete shaders
-	vShader.DeleteShader();
-	fShader.DeleteShader();
+    // Delete shaders
+    vShader.DeleteShader();
+    fShader.DeleteShader();
 
-	vColorShader.DeleteShader();
-	fColorShader.DeleteShader();
-	
-	// Use the program
-	mainProg.UseProgram();
+    vColorShader.DeleteShader();
+    fColorShader.DeleteShader();
 
-	// Load textures
-	quadTexture.Load("Textures/blue.jpg", true);
+    // Use the program
+    mainProg.UseProgram();
 
-	otherTexture.Load("Textures/companion.jpg", true);
+    // Load textures
+    quadTexture.Load("Textures/blue.jpg", true);
 
-	floorTexture.Load("Textures/floor.jpg", true);
+    otherTexture.Load("Textures/companion.jpg", true);
 
-	// Load Camera
-	myCamera = new Camera(vec3(0, 4, 40));
+    floorTexture.Load("Textures/floor.jpg", true);
+
+    // Load Camera
+    myCamera = new Camera(vec3(0, 4, 40));
 
 }
 
 void IntroState::Finalize()
 {
-	// Delete the program
-	mainProg.DeleteProgram();
-	colorProg.DeleteProgram();
+    // Delete the program
+    mainProg.DeleteProgram();
+    colorProg.DeleteProgram();
 
-	// Delete VAO
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteVertexArrays(1, &colorVAO);
+    // Delete VAO
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteVertexArrays(1, &colorVAO);
 
-	// Delete VBO
-	triVBO.Free();
+    // Delete VBO
+    triVBO.Free();
 
-	// Delete texture
-	quadTexture.Free();
-	floorTexture.Free();
-	otherTexture.Free();
+    // Delete texture
+    quadTexture.Free();
+    floorTexture.Free();
+    otherTexture.Free();
 
-	// Delete camera
-	delete myCamera;
+    // Delete camera
+    delete myCamera;
 
-	printf("Intro Finalize");
+    printf("Intro Finalize");
 }
 
 void IntroState::Draw(Game *game)
 {
-	// Set clear color
-	glClearColor(0.3f, 0.5f, 1.0f, 0.0f);
+    // Set clear color
+    glClearColor(0.3f, 0.5f, 1.0f, 0.0f);
 
-	// Clear the screen
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // Clear the screen
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Enable textures
-	glEnable(GL_TEXTURE_2D);
+    // Enable textures
+    glEnable(GL_TEXTURE_2D);
 
-		// Use proper shader program
-		mainProg.UseProgram();
+    // Use proper shader program
+    mainProg.UseProgram();
 
-			// Bind VAO for use
-			glBindVertexArray(VAO);
+    // Bind VAO for use
+    glBindVertexArray(VAO);
 
-				// Find shader variable locations
-				ProjectionMatrixLoc = glGetUniformLocation(mainProg.GetID(), "projectionMatrix");
-				ModelViewMatrixLoc = glGetUniformLocation(mainProg.GetID(), "modelViewMatrix");
-				samplerLoc = glGetUniformLocation(mainProg.GetID(), "texture");
+    // Find shader variable locations
+    ProjectionMatrixLoc = glGetUniformLocation(mainProg.GetID(), "projectionMatrix");
+    ModelViewMatrixLoc = glGetUniformLocation(mainProg.GetID(), "modelViewMatrix");
+    samplerLoc = glGetUniformLocation(mainProg.GetID(), "texture");
 
-				// Send Projection Matrix data to shader
-				glUniformMatrix4fv(ProjectionMatrixLoc, 1, GL_FALSE, value_ptr(ProjectionMatrix));
+    // Send Projection Matrix data to shader
+    glUniformMatrix4fv(ProjectionMatrixLoc, 1, GL_FALSE, value_ptr(ProjectionMatrix));
 
-				// Send ModelView Matrix data to shader
-				glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(ModelViewMatrix));
+    // Send ModelView Matrix data to shader
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(ModelViewMatrix));
 
-				// Set sampler location
-				glUniform1i(samplerLoc, 0);
+    // Set sampler location
+    glUniform1i(samplerLoc, 0);
 
-			// Bind active texture
-			floorTexture.Bind(0);
-			
-				// Draw here
-			
-					// Floor
+    // Bind active texture
+    floorTexture.Bind(0);
 
-						// Set floor to render at starting modelViewMat
-						glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(ModelViewMatrix));
+    // Draw here
 
-						// Draw floor
-						glDrawArrays(GL_TRIANGLES, 36, 6);
+    // Floor
 
-			// Bind active texture
-			otherTexture.Bind(0);
+    // Set floor to render at starting modelViewMat
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(ModelViewMatrix));
 
-					// Cube
+    // Draw floor
+    glDrawArrays(GL_TRIANGLES, 36, 6);
 
-						// Translate copy of modelView
-						mat4 mCurrent = translate(ModelViewMatrix, vec3(-70.0f, 4.0f, -40.0f));
+    // Bind active texture
+    otherTexture.Bind(0);
 
-						// Translate copy of modelView
-						mCurrent = translate(mCurrent, vec3(0.0f, -3*sin(angle), 0.0f));
+    // Cube
 
-						// Rotate copy of modelview
-						mCurrent = rotate(mCurrent, angle, vec3(1.0f, 1.0f, 1.0f));
+    // Translate copy of modelView
+    mat4 mCurrent = translate(ModelViewMatrix, vec3(-70.0f, 4.0f, -40.0f));
 
-						// Rotate copy of modelview
-						mCurrent = scale(mCurrent, vec3((abs(sin(angle)) + 1)*2.0f, (abs(sin(angle)) + 1)*2.0f, (abs(sin(angle)) + 1)*2.0f));
+    // Translate copy of modelView
+    mCurrent = translate(mCurrent, vec3(0.0f, -3*sin(angle), 0.0f));
 
-						// Update model view matrix with current matrix
-						glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
-	
-						// Draw
-						glDrawArrays(GL_TRIANGLES, 0, 36);
+    // Rotate copy of modelview
+    mCurrent = rotate(mCurrent, angle, vec3(1.0f, 1.0f, 1.0f));
 
-					// Cube
+    // Rotate copy of modelview
+    mCurrent = scale(mCurrent, vec3((abs(sin(angle)) + 1)*2.0f, (abs(sin(angle)) + 1)*2.0f, (abs(sin(angle)) + 1)*2.0f));
 
-						// Translate copy of modelView
-						mCurrent = translate(ModelViewMatrix, vec3(0.0f, 10.0f, -30.0f));
+    // Update model view matrix with current matrix
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
 
-						// Translate copy of modelView
-						mCurrent = translate(mCurrent, vec3(0.0f, 6 * sin(angle), 0.0f));
+    // Draw
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
-						// Rotate copy of modelview
-						mCurrent = rotate(mCurrent, float(PI), vec3(0.0f, 0.0f, 1.0f));
+    // Cube
 
-						// Rotate copy of modelview
-						mCurrent = rotate(mCurrent, angle, vec3(0.0f, 1.0f, 0.0f));
+    // Translate copy of modelView
+    mCurrent = translate(ModelViewMatrix, vec3(0.0f, 10.0f, -30.0f));
 
-						// Rotate copy of modelview
-						mCurrent = scale(mCurrent, vec3(8.0f, 8.0f, 8.0f));
+    // Translate copy of modelView
+    mCurrent = translate(mCurrent, vec3(0.0f, 6 * sin(angle), 0.0f));
 
-						// Update model view matrix with current matrix
-						glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
+    // Rotate copy of modelview
+    mCurrent = rotate(mCurrent, float(PI), vec3(0.0f, 0.0f, 1.0f));
 
-						// Draw
-						glDrawArrays(GL_TRIANGLES, 0, 36);
+    // Rotate copy of modelview
+    mCurrent = rotate(mCurrent, angle, vec3(0.0f, 1.0f, 0.0f));
 
-			// Bind active texture
-			quadTexture.Bind(0);
+    // Rotate copy of modelview
+    mCurrent = scale(mCurrent, vec3(8.0f, 8.0f, 8.0f));
 
-				// Pyramid
+    // Update model view matrix with current matrix
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
 
-						// Translate copy of modelView
-						mCurrent = translate(ModelViewMatrix, vec3(0.0f, 8.0f, -70.0f));
+    // Draw
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
-						// Translate copy of modelView
-						mCurrent = translate(mCurrent, vec3(0.0f, 3*sin(angle), 0.0f));
+    // Bind active texture
+    quadTexture.Bind(0);
 
-						// Rotate copy of modelview
-						mCurrent = rotate(mCurrent, angle, vec3(0.0f, 1.0f, 0.0f));
+    // Pyramid
 
-						// Rotate copy of modelview
-						mCurrent = scale(mCurrent, vec3(10.0f, 10.0f, 10.0f));
+    // Translate copy of modelView
+    mCurrent = translate(ModelViewMatrix, vec3(0.0f, 8.0f, -70.0f));
 
-						// Update model view matrix with current matrix
-						glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
+    // Translate copy of modelView
+    mCurrent = translate(mCurrent, vec3(0.0f, 3*sin(angle), 0.0f));
 
-						// Draw
-						glDrawArrays(GL_TRIANGLES, 42, 54);
+    // Rotate copy of modelview
+    mCurrent = rotate(mCurrent, angle, vec3(0.0f, 1.0f, 0.0f));
 
-				// Cube
+    // Rotate copy of modelview
+    mCurrent = scale(mCurrent, vec3(10.0f, 10.0f, 10.0f));
 
-						// Translate copy of modelView
-						mCurrent = translate(ModelViewMatrix, vec3(-70.0f, 10.0f, -60.0f));
+    // Update model view matrix with current matrix
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
 
-						// Translate copy of modelView
-						mCurrent = translate(mCurrent, vec3(0.0f, 6 * sin(angle), 0.0f));
+    // Draw
+    glDrawArrays(GL_TRIANGLES, 42, 54);
 
-						// Rotate copy of modelview
-						mCurrent = rotate(mCurrent, angle, vec3(1.0f, 1.0f, 1.0f));
+    // Cube
 
-						// Rotate copy of modelview
-						mCurrent = scale(mCurrent, vec3(8.0f, 8.0f, 8.0f));
+    // Translate copy of modelView
+    mCurrent = translate(ModelViewMatrix, vec3(-70.0f, 10.0f, -60.0f));
 
-						// Update model view matrix with current matrix
-						glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
+    // Translate copy of modelView
+    mCurrent = translate(mCurrent, vec3(0.0f, 6 * sin(angle), 0.0f));
 
-						// Draw
-						glDrawArrays(GL_TRIANGLES, 0, 36);
+    // Rotate copy of modelview
+    mCurrent = rotate(mCurrent, angle, vec3(1.0f, 1.0f, 1.0f));
 
-					// Pyramid
+    // Rotate copy of modelview
+    mCurrent = scale(mCurrent, vec3(8.0f, 8.0f, 8.0f));
 
-						// Translate copy of modelView
-						mCurrent = translate(ModelViewMatrix, vec3(30.0f, 10.0f, 26.0f));
+    // Update model view matrix with current matrix
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
 
-						// Translate copy of modelView
-						mCurrent = translate(mCurrent, vec3(0.0f, -6*sin(angle), 0.0f));
+    // Draw
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
-						// Rotate copy of modelview
-						mCurrent = rotate(mCurrent, angle, vec3(0.0f, 1.0f, 0.0f));
+    // Pyramid
 
-						// Rotate copy of modelview
-						mCurrent = scale(mCurrent, vec3(6.0f, 6.0f, 6.0f));
+    // Translate copy of modelView
+    mCurrent = translate(ModelViewMatrix, vec3(30.0f, 10.0f, 26.0f));
 
-						// Update model view matrix with current matrix
-						glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
+    // Translate copy of modelView
+    mCurrent = translate(mCurrent, vec3(0.0f, -6*sin(angle), 0.0f));
 
-						// Draw
-						glDrawArrays(GL_TRIANGLES, 42, 54);
+    // Rotate copy of modelview
+    mCurrent = rotate(mCurrent, angle, vec3(0.0f, 1.0f, 0.0f));
 
-			// Unbind VAO
-			glBindVertexArray(NULL);
+    // Rotate copy of modelview
+    mCurrent = scale(mCurrent, vec3(6.0f, 6.0f, 6.0f));
 
-		// Disuse shader program
-		mainProg.DisUseProgram();
+    // Update model view matrix with current matrix
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
 
-	// Disable textures
-	glDisable(GL_TEXTURE_2D);
+    // Draw
+    glDrawArrays(GL_TRIANGLES, 42, 54);
 
-	// Use color program
-	colorProg.UseProgram();
+    // Unbind VAO
+    glBindVertexArray(NULL);
 
-		// Bind color vao
-		glBindVertexArray(colorVAO);
+    // Disuse shader program
+    mainProg.DisUseProgram();
 
-			// Find shader variable locations
-			ProjectionMatrixLoc = glGetUniformLocation(colorProg.GetID(), "projectionMatrix");
-			ModelViewMatrixLoc = glGetUniformLocation(colorProg.GetID(), "modelViewMatrix");
-			colorLoc = glGetUniformLocation(colorProg.GetID(), "color");
+    // Disable textures
+    glDisable(GL_TEXTURE_2D);
 
-			// Send Projection Matrix data to shader
-			glUniformMatrix4fv(ProjectionMatrixLoc, 1, GL_FALSE, value_ptr(ProjectionMatrix));
+    // Use color program
+    colorProg.UseProgram();
 
-			// Enable blending
-			glEnable(GL_BLEND);
+    // Bind color vao
+    glBindVertexArray(colorVAO);
 
-			// Set blend mode
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // Find shader variable locations
+    ProjectionMatrixLoc = glGetUniformLocation(colorProg.GetID(), "projectionMatrix");
+    ModelViewMatrixLoc = glGetUniformLocation(colorProg.GetID(), "modelViewMatrix");
+    colorLoc = glGetUniformLocation(colorProg.GetID(), "color");
 
-			// Disable writing to depth buffer
-			glDepthMask(0);
+    // Send Projection Matrix data to shader
+    glUniformMatrix4fv(ProjectionMatrixLoc, 1, GL_FALSE, value_ptr(ProjectionMatrix));
 
-				// Cube 1
-					// Translate copy of modelView
-					mCurrent = translate(ModelViewMatrix, vec3(20.0f, 5.0f, 50.0f));
-		
-					// Rotate copy of modelview
-					mCurrent = rotate(mCurrent, angle, vec3(0.0f, 0.0f, 1.0f));
+    // Enable blending
+    glEnable(GL_BLEND);
 
-					// Rotate copy of modelview
-					mCurrent = scale(mCurrent, vec3(7.0f, 7.0f, 7.0f));
+    // Set blend mode
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-					// Update shader variables
-					glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
-					glUniform4fv(colorLoc, 1, glm::value_ptr(vec4(1.0f, 0.5f, 0.0f, 0.3f)));
+    // Disable writing to depth buffer
+    glDepthMask(0);
 
-					// Draw
-					glDrawArrays(GL_TRIANGLES, 0, 36);
-				
-				// Cube 2
+    // Cube 1
+    // Translate copy of modelView
+    mCurrent = translate(ModelViewMatrix, vec3(20.0f, 5.0f, 50.0f));
 
-					// Translate copy of modelView
-					mCurrent = translate(ModelViewMatrix, vec3(40.0f, 15.0f, -30.0f));
+    // Rotate copy of modelview
+    mCurrent = rotate(mCurrent, angle, vec3(0.0f, 0.0f, 1.0f));
 
-					// Rotate copy of modelview
-					mCurrent = rotate(mCurrent, angle, vec3(0.0f, 1.0f, 1.0f));
+    // Rotate copy of modelview
+    mCurrent = scale(mCurrent, vec3(7.0f, 7.0f, 7.0f));
 
-					// Rotate copy of modelview
-					mCurrent = scale(mCurrent, vec3(18.0f, 18.0f, 18.0f));
+    // Update shader variables
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
+    glUniform4fv(colorLoc, 1, glm::value_ptr(vec4(1.0f, 0.5f, 0.0f, 0.3f)));
 
-					// Update shader variables
-					glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
-					glUniform4fv(colorLoc, 1, glm::value_ptr(vec4(1.0f, 0.5f, 1.0f, 0.6f)));
+    // Draw
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
-					// Draw
-					glDrawArrays(GL_TRIANGLES, 0, 36);
+    // Cube 2
 
+    // Translate copy of modelView
+    mCurrent = translate(ModelViewMatrix, vec3(40.0f, 15.0f, -30.0f));
 
-				// Cube 3
+    // Rotate copy of modelview
+    mCurrent = rotate(mCurrent, angle, vec3(0.0f, 1.0f, 1.0f));
 
-					// Translate copy of modelView
-					mCurrent = translate(ModelViewMatrix, vec3(-10.0f, 7.0f, -10.0f));
+    // Rotate copy of modelview
+    mCurrent = scale(mCurrent, vec3(18.0f, 18.0f, 18.0f));
 
-					// Rotate copy of modelview
-					mCurrent = rotate(mCurrent, angle, vec3(1.0f, 0.0f, 0.0f));
+    // Update shader variables
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
+    glUniform4fv(colorLoc, 1, glm::value_ptr(vec4(1.0f, 0.5f, 1.0f, 0.6f)));
 
-					// Rotate copy of modelview
-					mCurrent = scale(mCurrent, vec3(4.0f, 4.0f, 4.0f));
+    // Draw
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
-					// Update shader variables
-					glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
-					glUniform4fv(colorLoc, 1, glm::value_ptr(vec4(0.0f, 1.0f, 0.5f, 0.2f)));
 
-					// Draw
-					glDrawArrays(GL_TRIANGLES, 0, 36);
+    // Cube 3
 
-			    // Cube 4
+    // Translate copy of modelView
+    mCurrent = translate(ModelViewMatrix, vec3(-10.0f, 7.0f, -10.0f));
 
-					// Translate copy of modelView
-					mCurrent = translate(ModelViewMatrix, vec3(60.0f, 8.0f, 0.0f));
+    // Rotate copy of modelview
+    mCurrent = rotate(mCurrent, angle, vec3(1.0f, 0.0f, 0.0f));
 
-					// Rotate copy of modelview
-					mCurrent = rotate(mCurrent, angle, vec3(1.0f, 1.0f, 1.0f));
+    // Rotate copy of modelview
+    mCurrent = scale(mCurrent, vec3(4.0f, 4.0f, 4.0f));
 
-					// Rotate copy of modelview
-					mCurrent = scale(mCurrent, vec3(10.0f, 10.0f, 10.0f));
+    // Update shader variables
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
+    glUniform4fv(colorLoc, 1, glm::value_ptr(vec4(0.0f, 1.0f, 0.5f, 0.2f)));
 
-					// Update shader variables
-					glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
-					glUniform4fv(colorLoc, 1, glm::value_ptr(vec4(0.40f, 0.8f, 0.2f, 0.3f)));
+    // Draw
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 
-					// Draw
-					glDrawArrays(GL_TRIANGLES, 0, 36);
+    // Cube 4
 
-			// Disable blending
-			glDisable(GL_BLEND);
+    // Translate copy of modelView
+    mCurrent = translate(ModelViewMatrix, vec3(60.0f, 8.0f, 0.0f));
 
-			// Enable writing to depth buffer
-			glDepthMask(1); 
-			
-			// Unbind color VAO
-		glBindVertexArray(NULL);
+    // Rotate copy of modelview
+    mCurrent = rotate(mCurrent, angle, vec3(1.0f, 1.0f, 1.0f));
 
-	// Disuse color program
-	colorProg.DisUseProgram();
+    // Rotate copy of modelview
+    mCurrent = scale(mCurrent, vec3(10.0f, 10.0f, 10.0f));
 
-		
+    // Update shader variables
+    glUniformMatrix4fv(ModelViewMatrixLoc, 1, GL_FALSE, value_ptr(mCurrent));
+    glUniform4fv(colorLoc, 1, glm::value_ptr(vec4(0.40f, 0.8f, 0.2f, 0.3f)));
+
+    // Draw
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    // Disable blending
+    glDisable(GL_BLEND);
+
+    // Enable writing to depth buffer
+    glDepthMask(1); 
+
+    // Unbind color VAO
+    glBindVertexArray(NULL);
+
+    // Disuse color program
+    colorProg.DisUseProgram();
+
+
 
 }
 
 void IntroState::Update(Game *game)
 {
-	angle += DEGREES_TO_RADIANS(3);
+    angle += DEGREES_TO_RADIANS(3);
 
-	if (angle > 2*PI)
-	{
-		angle = 0;
-	}
+    if (angle > 2*PI)
+    {
+        angle = 0;
+    }
 
-	myCamera->Update(ProjectionMatrix, ModelViewMatrix);
-	
-	// Update Matrices
-	glUniform4fv(ProjectionMatrixLoc, 1, value_ptr(ProjectionMatrix));
-	glUniform4fv(ModelViewMatrixLoc, 1, value_ptr(ModelViewMatrix));
+    myCamera->Update(ProjectionMatrix, ModelViewMatrix);
+
+    // Update Matrices
+    glUniform4fv(ProjectionMatrixLoc, 1, value_ptr(ProjectionMatrix));
+    glUniform4fv(ModelViewMatrixLoc, 1, value_ptr(ModelViewMatrix));
 }
 
 void IntroState::HandleEvents(Game *game)
 {
-	SDL_Event event = game->GetEvent();
+    SDL_Event event = game->GetEvent();
 }
 
 void IntroState::Pause()
 {
-	printf("Intro Paused\n");
+    printf("Intro Paused\n");
 }
 void IntroState::Resume()
 {
-	printf("Intro Resumed\n");
+    printf("Intro Resumed\n");
 }
 

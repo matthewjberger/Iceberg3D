@@ -4,52 +4,52 @@
 
 class Camera
 {
-public:
+    public:
 
-	Camera(vec3 pos = vec3(0.0f));
-	~Camera();
+        Camera(vec3 pos = vec3(0.0f));
+        ~Camera();
 
-	void Update(mat4 &Projection, mat4 &ModelView); 
+        void Update(mat4 &Projection, mat4 &ModelView); 
 
-	float GetPitchSensitivity()
-	{
-		return pitchSensitivity;
-	}
+        float GetPitchSensitivity()
+        {
+            return pitchSensitivity;
+        }
 
-	void SetPitchSensitivity(float newSens)
-	{
-		pitchSensitivity = newSens;
-	}
+        void SetPitchSensitivity(float newSens)
+        {
+            pitchSensitivity = newSens;
+        }
 
-	float GetYawSensitivity()
-	{
-		return yawSensitivity;
-	}
+        float GetYawSensitivity()
+        {
+            return yawSensitivity;
+        }
 
-	void SetYawSensitivity(float newSens)
-	{
-		yawSensitivity = newSens;
-	}
+        void SetYawSensitivity(float newSens)
+        {
+            yawSensitivity = newSens;
+        }
 
-private:
+    private:
 
-	vec3 position;
-	vec3 direction;
-	vec3 right;
-	vec3 up;
+        vec3 position;
+        vec3 direction;
+        vec3 right;
+        vec3 up;
 
-	float horizontalAngle;
-	float verticalAngle;
+        float horizontalAngle;
+        float verticalAngle;
 
-	float initialFOV;
-	float curFOV;
+        float initialFOV;
+        float curFOV;
 
-	float speed;
-	float pitchSensitivity;
-	float yawSensitivity;
+        float speed;
+        float pitchSensitivity;
+        float yawSensitivity;
 
-	int mouseX;
-	int mouseY;
+        int mouseX;
+        int mouseY;
 
-	bool forward;
+        bool forward;
 };
