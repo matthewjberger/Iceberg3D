@@ -1,5 +1,5 @@
 # Files to compile
-OBJS = Main.cpp CCamera.cpp CIntroState.cpp CoreGame.cpp CShaderProgram.cpp CShader.cpp CTexture.cpp CVBO.cpp Globals.cpp
+OBJS = *.cpp 
 
 # Executable name
 OBJ_NAME = vimTest
@@ -11,7 +11,7 @@ CC = g++ -std=c++11
 COMPILER_FLAGS = -w 
 
 # Linker flags
-LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lGL -lGLEW -lGLU -lglut
+LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lGL -lGLEW -lGLU
 
 # Target
 all: $(OBJS)

@@ -1,5 +1,6 @@
 #include "CoreGame.h"
 #include "CShaderProgram.h"
+#include "CVAO.h"
 #include "CVBO.h"
 #include "CCamera.h"
 
@@ -45,8 +46,8 @@ class IntroState : public GameState
         Shader vColorShader, fColorShader;
 
         // Vertex Array Object
-        GLuint VAO;
-        GLuint colorVAO;
+        VAO triVAO;
+        VAO colorVAO;
 
         // Vertex Buffer Object
         VBO triVBO;

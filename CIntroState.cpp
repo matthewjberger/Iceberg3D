@@ -74,11 +74,8 @@ void IntroState::Init(Game *game)
         glm::vec2(0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec2(1.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec2(0.0f, 1.0f)
     };
 
-    // Create VAO
-    glGenVertexArrays(1, &VAO);
-
-    // Bind VAO for use
-    glBindVertexArray(VAO);
+    triVAO.Create();
+    triVAO.Bind();
 
     // Create the buffer
     triVBO.Create();
@@ -104,35 +101,33 @@ void IntroState::Init(Game *game)
     triVBO.UploadData(GL_STATIC_DRAW);
 
     // Enable vertex attributes
-    glEnableVertexAttribArray(0); // position
+    triVAO.EnableAttribute(0);
 
     // Describe how to load data from currently bound VBO
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)+sizeof(vec2), 0); // position
+    triVAO.ConfigureAttribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)+sizeof(vec2), 0); // position
 
     // Enable texture coords
-    glEnableVertexAttribArray(1); // texture
+    triVAO.EnableAttribute(1); // texture
 
     // Describe how to load data
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vec3) + sizeof(vec2), (void *)sizeof(vec3)); // color
+    triVAO.ConfigureAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(vec3) + sizeof(vec2), (void *)sizeof(vec3)); // color
 
-
-    // Unbind VAO
-    glBindVertexArray(NULL);
+    triVAO.Unbind();
 
     // Create VAO
-    glGenVertexArrays(1, &colorVAO);
+    colorVAO.Create();
 
     // Bind VAO for use
-    glBindVertexArray(colorVAO);
+    colorVAO.Bind();
 
     // Enable vertex attributes
-    glEnableVertexAttribArray(0); // position
+    colorVAO.EnableAttribute(0); // position
 
     // Describe how to load data from currently bound VBO
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)+sizeof(vec2), 0); // position
+    colorVAO.ConfigureAttribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3)+sizeof(vec2), 0); // position
 
     // Unbind VAO
-    glBindVertexArray(NULL);
+    colorVAO.Unbind();
 
     // Make shaders
     vShader.Load("Shaders/VertexShader.glvs", GL_VERTEX_SHADER);
@@ -194,8 +189,8 @@ void IntroState::Finalize()
     colorProg.DeleteProgram();
 
     // Delete VAO
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteVertexArrays(1, &colorVAO);
+    triVAO.Free();
+    colorVAO.Free();
 
     // Delete VBO
     triVBO.Free();
@@ -226,7 +221,7 @@ void IntroState::Draw(Game *game)
     mainProg.UseProgram();
 
     // Bind VAO for use
-    glBindVertexArray(VAO);
+    triVAO.Bind();
 
     // Find shader variable locations
     ProjectionMatrixLoc = glGetUniformLocation(mainProg.GetID(), "projectionMatrix");
@@ -365,7 +360,7 @@ void IntroState::Draw(Game *game)
     glDrawArrays(GL_TRIANGLES, 42, 54);
 
     // Unbind VAO
-    glBindVertexArray(NULL);
+    triVAO.Unbind();
 
     // Disuse shader program
     mainProg.DisUseProgram();
@@ -377,7 +372,7 @@ void IntroState::Draw(Game *game)
     colorProg.UseProgram();
 
     // Bind color vao
-    glBindVertexArray(colorVAO);
+    colorVAO.Bind();
 
     // Find shader variable locations
     ProjectionMatrixLoc = glGetUniformLocation(colorProg.GetID(), "projectionMatrix");
@@ -475,13 +470,10 @@ void IntroState::Draw(Game *game)
     glDepthMask(1); 
 
     // Unbind color VAO
-    glBindVertexArray(NULL);
+    colorVAO.Unbind();
 
     // Disuse color program
     colorProg.DisUseProgram();
-
-
-
 }
 
 void IntroState::Update(Game *game)
