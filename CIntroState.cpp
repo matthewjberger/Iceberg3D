@@ -282,7 +282,7 @@ void IntroState::Draw(Game *game)
     mCurrent = translate(mCurrent, vec3(0.0f, 6 * sin(angle), 0.0f));
 
     // Rotate copy of modelview
-    mCurrent = rotate(mCurrent, float(PI), vec3(0.0f, 0.0f, 1.0f));
+    mCurrent = rotate(mCurrent, float(pi<float>()), vec3(0.0f, 0.0f, 1.0f));
 
     // Rotate copy of modelview
     mCurrent = rotate(mCurrent, angle, vec3(0.0f, 1.0f, 0.0f));
@@ -478,9 +478,9 @@ void IntroState::Draw(Game *game)
 
 void IntroState::Update(Game *game)
 {
-    angle += DEGREES_TO_RADIANS(3);
+    angle += radians(3.0f);
 
-    if (angle > 2*PI)
+    if (angle > 2*pi<float>())
     {
         angle = 0;
     }

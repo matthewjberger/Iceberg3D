@@ -3,9 +3,10 @@
 
 #define GLM_FORCE_RADIANS
 
-#define PI 3.1415
-#define RADIANS_TO_DEGREES(radians) float( ( (radians) * (180.0 / PI)  ) )
-#define DEGREES_TO_RADIANS(angle) float( ( ( (angle) / 180.0 ) * PI) )
+#define FOR(q,n) for(int q=0;q<n;q++)
+#define SFOR(q,s,e) for(int q=s;q<=e;q++)
+#define RFOR(q,n) for(int q=n;q>=0;q--)
+#define RSFOR(q,s,e) for(int q=s;q>=e;q--)
 
 #include "SDL2/SDL.h"
 #include "GL/glew.h"
@@ -24,10 +25,5 @@
 
 using namespace std;
 using namespace glm;
-
-extern GLuint MakeShader(string path, GLuint shaderType);
-extern GLuint MakeProgram(GLuint vShaderID, GLuint fShaderID);
-
-extern void PrintShaderLog(GLuint shader);
 
 #endif

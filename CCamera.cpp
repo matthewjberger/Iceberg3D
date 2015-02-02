@@ -12,7 +12,7 @@ Camera::Camera(vec3 pos)
     right     = vec3(0, 0, 0);
     up        = vec3(0, 0, 0);
 
-    horizontalAngle = float(PI);
+    horizontalAngle = float(pi<float>());
     verticalAngle = 0.0f;
 
     initialFOV = 45.0f;
@@ -72,9 +72,9 @@ void Camera::Update(mat4 &Projection, mat4 &ModelView)
 
     // Calculate right vector
     right = vec3(
-            sin(horizontalAngle - PI / 2),
+            sin(horizontalAngle - pi<float>() / 2),
             0,
-            cos(horizontalAngle - PI / 2)
+            cos(horizontalAngle - pi<float>() / 2)
             );
 
     // Calculate up vector
