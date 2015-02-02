@@ -84,14 +84,14 @@ void IntroState::Init(Game *game)
     triVBO.Bind();
 
     // Add vertex data
-    for (int i = 0; i < (sizeof(vertexPositions)/sizeof(*vertexPositions)); i++)
+    for (int i = 0; i < SIZE(vertexPositions); i++)
     {
         triVBO.AddData(&vertexPositions[i], sizeof(vec3));
         triVBO.AddData(&textureCoords[i%6], sizeof(vec2));
     }
 
     // Add vertex data
-    for (int i = 0; i < (sizeof(pyramidPositions)/sizeof(*pyramidPositions)); i++)
+    for (int i = 0; i < SIZE(pyramidPositions); i++)
     {
         triVBO.AddData(&pyramidPositions[i], sizeof(vec3));
         triVBO.AddData(&texCoordsPyramid[i % 3], sizeof(vec2));

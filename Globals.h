@@ -3,6 +3,8 @@
 
 #define GLM_FORCE_RADIANS
 
+#define SIZE(x) ((sizeof(x)/sizeof(*x)))
+
 #define FOR(q,n) for(int q=0;q<n;q++)
 #define SFOR(q,s,e) for(int q=s;q<=e;q++)
 #define RFOR(q,n) for(int q=n;q>=0;q--)
