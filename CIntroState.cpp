@@ -180,6 +180,7 @@ void IntroState::Init(Game *game)
     // Load Camera
     myCamera = new Camera(vec3(0, 4, 40));
 
+    colorLoc = glGetUniformLocation(colorProg.GetID(), "color");
 }
 
 void IntroState::Finalize()
@@ -374,12 +375,7 @@ void IntroState::Draw(Game *game)
     // Bind color vao
     colorVAO.Bind();
 
-    // Find shader variable locations
-    ProjectionMatrixLoc = glGetUniformLocation(colorProg.GetID(), "projectionMatrix");
-    ModelViewMatrixLoc = glGetUniformLocation(colorProg.GetID(), "modelViewMatrix");
-    colorLoc = glGetUniformLocation(colorProg.GetID(), "color");
-
-    // Send Projection Matrix data to shader
+   // Send Projection Matrix data to shader
     glUniformMatrix4fv(ProjectionMatrixLoc, 1, GL_FALSE, value_ptr(ProjectionMatrix));
 
     // Enable blending
@@ -486,10 +482,10 @@ void IntroState::Update(Game *game)
     }
 
     myCamera->Update(ProjectionMatrix, ModelViewMatrix);
-
+  
     // Update Matrices
-    glUniform4fv(ProjectionMatrixLoc, 1, value_ptr(ProjectionMatrix));
-    glUniform4fv(ModelViewMatrixLoc, 1, value_ptr(ModelViewMatrix));
+    mainProg.SetUniform("projectionMatrix", ProjectionMatrix);
+    mainProg.SetUniform("modelViewMatrix", ModelViewMatrix);
 }
 
 void IntroState::HandleEvents(Game *game)
