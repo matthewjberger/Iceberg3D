@@ -490,7 +490,6 @@ void IntroState::Update(Game *game)
 
 void IntroState::HandleEvents(Game *game)
 {
-    SDL_Event event = game->GetEvent();
 }
 
 void IntroState::Pause()
