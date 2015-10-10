@@ -1,22 +1,5 @@
-/*
-    *************************
-    Iceberg3D Graphics Engine
-    Created by Matt Berger
-    *************************
-
-    API's used:
-    SDL2/OpenGL
-    
-    Extension Libraries:
-    SDL_image 2.0
-    SDL_ttf 2.0
-    SDL_mixer 2.0
-    GLEW
-    GLM
-    GLU
-*/
-
-#include "CoreGame.h"
+#include "core/Game.h"
+#include "program_states/IntroState.h"
 
 int main(int argc, char *args[])
 {
@@ -31,13 +14,13 @@ int main(int argc, char *args[])
         return 1;
     }
 
-    if (game->LoadContent() == false)
+    if (game->LoadContent(IntroState::GetInstance()) == false)
     {
         printf("Failed to load content");
         return 1;
     }
 
-    while (game->isRunning())
+    while (game->IsRunning())
     {
 
         game->EventHandler();
@@ -55,7 +38,6 @@ int main(int argc, char *args[])
     }
 
     game->UnloadContent();
-
     game->DestroyInstance();
 
     return 0;
