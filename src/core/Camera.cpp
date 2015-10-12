@@ -36,10 +36,10 @@ Camera::~Camera()
 {
 }
 
-void Camera::Update(mat4 &Projection, mat4 &ModelView)
+void Camera::Update()
 {
-    Projection = mat4(1.0f);
-    ModelView  = mat4(1.0f);
+    projectionMatrix = mat4(1.0f);
+    viewMatrix       = mat4(1.0f);
 
     // Grab the game instance
     Game *game = Game::GetInstance();
@@ -101,6 +101,33 @@ void Camera::Update(mat4 &Projection, mat4 &ModelView)
         position -= right*speed;
     }
 
-    Projection = perspective(initialFOV, 4.0f / 3.0f, 0.1f, 1000.0f);
-    ModelView = lookAt(position, position + direction, up);
+    projectionMatrix = perspective(initialFOV, Game::GetInstance()->GetAspectRatio(), 0.1f, 1000.0f);
+    viewMatrix       = lookAt(position, position + direction, up);
 }
+
+float Camera::GetPitchSensitivity()
+{
+    return pitchSensitivity;
+}
+
+float Camera::GetYawSensitivity()
+{
+    return yawSensitivity;
+}
+
+void Camera::SetPitchSensitivity(float newSens)
+{
+    pitchSensitivity = newSens;
+}
+
+void Camera::SetYawSensitivity(float newSens)
+{
+    yawSensitivity = newSens;
+}
+
+glm::mat4 Camera::GetMVP(glm::mat4 &modelMatrix)
+{
+    glm::mat4 mvpMatrix = ProjectionMatrix * viewMatrix * modelMatrix;
+    return mvpMatrix;
+}
+

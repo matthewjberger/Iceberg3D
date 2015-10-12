@@ -10,27 +10,18 @@ class Camera
         Camera(vec3 pos = vec3(0.0f));
         ~Camera();
 
-        void Update(mat4 &Projection, mat4 &ModelView);
+        void Update();
 
-        float GetPitchSensitivity()
-        {
-            return pitchSensitivity;
-        }
+        // Membor Accessors
+        float GetPitchSensitivity();
+        void  SetPitchSensitivity(float newSens);
+        float GetYawSensitivity();
+        void  SetYawSensitivity(float newSens);
 
-        void SetPitchSensitivity(float newSens)
-        {
-            pitchSensitivity = newSens;
-        }
+        glm::mat4 GetMVP(glm::mat4 &modelMatrix);
 
-        float GetYawSensitivity()
-        {
-            return yawSensitivity;
-        }
-
-        void SetYawSensitivity(float newSens)
-        {
-            yawSensitivity = newSens;
-        }
+        glm::mat4 projectionMatrix;
+        glm::mat4 viewMatrix;
 
     private:
 
@@ -53,6 +44,7 @@ class Camera
         int mouseY;
 
         bool forward;
+
 };
 
 #endif
