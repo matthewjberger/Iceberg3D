@@ -60,6 +60,12 @@ void Camera::Update()
     horizontalAngle += yawSensitivity  * float((game->GetScreenWidth() / 2) - mouseX);
     verticalAngle   += pitchSensitivity* float((game->GetScreenHeight() / 2) - mouseY);
 
+    // 1.55f radians is 89 degrees, which is a reasonable vertical constraint
+    if(verticalAngle > 1.55f)
+        verticalAngle = 1.55f;
+    else if(verticalAngle < -1.55f)
+        verticalAngle = -1.55f;
+
     // Set new direction by converting spherical coordinates to cartesian
     direction = vec3(
             cos(verticalAngle) * sin(horizontalAngle),
@@ -127,7 +133,7 @@ void Camera::SetYawSensitivity(float newSens)
 
 glm::mat4 Camera::GetMVP(glm::mat4 &modelMatrix)
 {
-    glm::mat4 mvpMatrix = ProjectionMatrix * viewMatrix * modelMatrix;
+    glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
     return mvpMatrix;
 }
 
