@@ -92,7 +92,7 @@ bool Game::Initialize()
 
                 // Depth testing
                 glEnable(GL_DEPTH_TEST);
-                glClearDepth(1.0);
+                glDepthFunc(GL_LESS);
 
                 // Enable culling
                 //glEnable(GL_CULL_FACE);
