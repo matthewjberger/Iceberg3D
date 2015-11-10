@@ -42,7 +42,7 @@ class Game
         void SetMaxFPS(int newFPS);
         float GetAspectRatio();
 
-        vector<GameState *> GameStates; //GameState stack
+        std::vector<GameState *> GameStates; //GameState stack
 
         std::chrono::time_point<std::chrono::high_resolution_clock> previousTime, currentTime;
         float GetTimeDelta();
@@ -56,7 +56,7 @@ class Game
 
         bool isRunning;
         bool isFullscreen;
-        string caption;
+        std::string caption;
         SDL_Window*  window;
         SDL_Surface* screenSurface;
         SDL_Event event;

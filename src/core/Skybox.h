@@ -9,7 +9,7 @@
 class Skybox
 {
     public:
-        Skybox(string right, string left, string top, string bottom, string back, string front);
+        Skybox(std::string right, std::string left, std::string top, std::string bottom, std::string back, std::string front);
         ~Skybox();
 
         void Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix);

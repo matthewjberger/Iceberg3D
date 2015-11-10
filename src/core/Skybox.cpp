@@ -1,5 +1,8 @@
 #include "Skybox.h"
 
+using namespace std;
+using namespace glm;
+
 Skybox::Skybox(string right, string left, string top, string bottom, string back, string front)
 {
     vector<const GLchar*> faces;

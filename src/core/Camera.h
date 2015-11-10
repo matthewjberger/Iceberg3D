@@ -7,7 +7,7 @@ class Camera
 {
     public:
 
-        Camera(vec3 position = vec3(0.0f), float speed = 0.7);
+        Camera(glm::vec3 position = glm::vec3(0.0f), float speed = 0.7);
         ~Camera();
 
         void Update();
@@ -30,10 +30,10 @@ class Camera
 
         bool inputEnabled;
 
-        vec3 position;
-        vec3 direction;
-        vec3 right;
-        vec3 up;
+        glm::vec3 position;
+        glm::vec3 direction;
+        glm::vec3 right;
+        glm::vec3 up;
 
         float horizontalAngle;
         float verticalAngle;

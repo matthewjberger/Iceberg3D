@@ -17,7 +17,7 @@ SRC= $(shell find $(SRC_DIR) -name *.cpp)
 EXE_NAME = Iceberg3D
 
 # INCLUDE_PATHS specifies the additional include paths we'll need
-INCLUDE_PATHS=$(shell sdl2-config --cflags)
+INCLUDE_PATHS=$(shell sdl2-config --cflags) -I/usr/include/bullet
 
 # LIBRARY_PATHS specifies the additional library paths we'll need
 LIBRARY_PATHS=$(shell sdl2-config --libs)
@@ -26,7 +26,7 @@ LIBRARY_PATHS=$(shell sdl2-config --libs)
 COMPILER_FLAGS = -w -std=c++11
 
 # Linker flags
-LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lGL -lGLEW -lassimp
+LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lGL -lGLEW -lassimp -lBulletDynamics -lBulletSoftBody -lBulletCollision -lLinearMath
 
 # Target
 all: $(EXE_NAME)

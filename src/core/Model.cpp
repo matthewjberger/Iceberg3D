@@ -1,10 +1,20 @@
 #include "Model.h"
 using namespace std;
 
-Model::Model(string path)
+Model::Model(string path, string texturePath, bool genMipMaps)
 {
+    collisionMesh = new btTriangleMesh();
+
     textureLoaded = false;
     LoadModel(path.c_str());
+
+    if(texturePath != "")
+    {
+        LoadTexture(texturePath, genMipMaps);
+    }
+
+    modelMatrix = glm::mat4(1.0f);
+    collisionShape = new btBvhTriangleMeshShape(collisionMesh, true);
 }
 
 void Model::Free()
@@ -13,13 +23,26 @@ void Model::Free()
     {
         meshes[i].Free();
     }
+
+    if(collisionMesh != NULL)
+    {
+        delete collisionMesh;
+        collisionMesh = NULL;
+    }
+
+    if(collisionShape != NULL)
+    {
+        delete collisionShape;
+        collisionShape = NULL;
+    }
 }
 
 void Model::Draw()
 {
     for(GLuint i = 0; i < meshes.size(); i++)
     {
-        texture.Bind(0);
+        if(textureLoaded)
+            texture.Bind(0);
         meshes[i].Draw();
     }
 }
@@ -60,13 +83,18 @@ Mesh Model::ProcessMesh(aiMesh* mesh)
 {
     vector<Vertex> vertices;
     vector<GLuint> indices;
+    btVector3 triArray[3];
 
     for(unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
         const aiFace& face = mesh->mFaces[i];
-        indices.push_back(face.mIndices[0]);
-        indices.push_back(face.mIndices[1]);
-        indices.push_back(face.mIndices[2]);
+        for(int j = 0; j < face.mNumIndices; j++)
+        {
+            aiVector3D position = mesh->mVertices[face.mIndices[j]];
+            triArray[j] = btVector3(position.x, position.y, position.z);
+            indices.push_back(face.mIndices[j]);
+        }
+        collisionMesh->addTriangle(triArray[0], triArray[1], triArray[2]);
     }
 
     for(unsigned int i = 0; i < indices.size(); i++)
@@ -96,5 +124,51 @@ Mesh Model::ProcessMesh(aiMesh* mesh)
 void Model::LoadTexture(string image, bool genMipMaps)
 {
     texture.Load(image, genMipMaps);
+    textureLoaded = true;
+}
+
+void Model::Rotate(float angle_in_degrees, glm::vec3 rotationAxes)
+{
+    modelMatrix = glm::rotate(modelMatrix, angle_in_degrees, rotationAxes);
+}
+
+void Model::Rotate(glm::mat4 base, float angle_in_degrees, glm::vec3 rotationAxes)
+{
+    modelMatrix = glm::rotate(base, angle_in_degrees, rotationAxes);
+}
+
+void Model::Scale(glm::vec3 scale)
+{
+    modelMatrix = glm::scale(modelMatrix, scale);
+}
+
+void Model::Scale(glm::mat4 base, glm::vec3 scale)
+{
+    modelMatrix = glm::scale(base, scale);
+}
+
+void Model::Translate(glm::vec3 position)
+{
+    modelMatrix = glm::translate(modelMatrix, position);
+}
+
+void Model::Translate(glm::mat4 base, glm::vec3 position)
+{
+    modelMatrix = glm::translate(base, position);
+}
+
+glm::mat4 Model::GetModelMatrix()
+{
+    return modelMatrix;
+}
+
+btCollisionShape* Model::GetCollisionShape()
+{
+    return collisionShape; // null
+}
+
+void Model::SetModelMatrix(glm::mat4 matrix)
+{
+    modelMatrix = matrix;
 }
 

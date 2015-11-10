@@ -1,5 +1,8 @@
 #include "Game.h"
 
+using namespace std;
+using namespace glm;
+
 Game *Game::inst = 0;
 
 Game::Game()
