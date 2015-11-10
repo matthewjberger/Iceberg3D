@@ -23,10 +23,10 @@ class Camera
 
         glm::mat4 GetMVP(glm::mat4 &modelMatrix);
 
+    private:
+
         glm::mat4 projectionMatrix;
         glm::mat4 viewMatrix;
-
-    private:
 
         bool inputEnabled;
 
