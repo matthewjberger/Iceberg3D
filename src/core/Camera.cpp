@@ -1,13 +1,16 @@
 #include "Camera.h"
 #include "Game.h"
 
-Camera::Camera(vec3 pos)
+using namespace std;
+using namespace glm;
+
+Camera::Camera(vec3 position)
 {
     // Get game instance
     Game *game = Game::GetInstance();
 
     // Initialize variables
-    position  = pos;
+    this->position  = position;
     direction = vec3(0, 0, 0);
     right     = vec3(0, 0, 0);
     up        = vec3(0, 0, 0);
@@ -23,13 +26,10 @@ Camera::Camera(vec3 pos)
     mouseX = game->GetScreenWidth() / 2;
     mouseY = game->GetScreenHeight() / 2;
 
-    forward = false;
+    inputEnabled = false;
 
-    // Set mouse to center of the screen
-    SDL_WarpMouseInWindow(game->GetWindow(), game->GetScreenWidth() / 2, game->GetScreenHeight() / 2);
+    LookAt(position, glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0,1.0,0.0));
 
-    // Hide the mouse
-    SDL_ShowCursor(SDL_DISABLE);
 }
 
 Camera::~Camera()
@@ -38,6 +38,9 @@ Camera::~Camera()
 
 void Camera::Update()
 {
+    if(!inputEnabled)
+        return;
+
     projectionMatrix = mat4(1.0f);
     viewMatrix       = mat4(1.0f);
 
@@ -135,5 +138,16 @@ glm::mat4 Camera::GetMVP(glm::mat4 &modelMatrix)
 {
     glm::mat4 mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
     return mvpMatrix;
+}
+
+void Camera::EnableInput(bool enabled)
+{
+    inputEnabled = enabled;
+}
+
+void Camera::LookAt(glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up)
+{
+    this->position = position;
+    this->viewMatrix = glm::lookAt(position, focusPoint, up);
 }
 

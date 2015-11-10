@@ -7,7 +7,7 @@ class Camera
 {
     public:
 
-        Camera(vec3 pos = vec3(0.0f));
+        Camera(vec3 position = vec3(0.0f));
         ~Camera();
 
         void Update();
@@ -18,12 +18,17 @@ class Camera
         float GetYawSensitivity();
         void  SetYawSensitivity(float newSens);
 
+        void EnableInput(bool enabled = true);
+        void LookAt(glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up);
+
         glm::mat4 GetMVP(glm::mat4 &modelMatrix);
 
         glm::mat4 projectionMatrix;
         glm::mat4 viewMatrix;
 
     private:
+
+        bool inputEnabled;
 
         vec3 position;
         vec3 direction;
@@ -42,8 +47,6 @@ class Camera
 
         int mouseX;
         int mouseY;
-
-        bool forward;
 
 };
 
