@@ -7,7 +7,7 @@ class Camera
 {
     public:
 
-        Camera(vec3 position = vec3(0.0f));
+        Camera(vec3 position = vec3(0.0f), float speed = 0.7);
         ~Camera();
 
         void Update();

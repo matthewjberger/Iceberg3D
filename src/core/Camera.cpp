@@ -4,7 +4,7 @@
 using namespace std;
 using namespace glm;
 
-Camera::Camera(vec3 position)
+Camera::Camera(vec3 position, float speed)
 {
     // Get game instance
     Game *game = Game::GetInstance();
@@ -19,7 +19,7 @@ Camera::Camera(vec3 position)
     verticalAngle    = 0.0f;
     initialFOV       = 45.0f;
     curFOV           = initialFOV;
-    speed            = 0.70f;
+    this->speed      = speed;
     pitchSensitivity = 0.005f;
     yawSensitivity   = 0.005f;
 
