@@ -2,13 +2,13 @@
 CC = g++
 
 # Output directory
-OUT_DIR= ../bin/
+OUT_DIR= ../Bin/
 
 # Convert all source files to object files
 OBJECTS = $(SRC:%.cpp=%.o)
 
 # Source directory
-SRC_DIR=../src
+SRC_DIR=../Source
 
 # Find all source files
 SRC= $(shell find $(SRC_DIR) -name *.cpp)
