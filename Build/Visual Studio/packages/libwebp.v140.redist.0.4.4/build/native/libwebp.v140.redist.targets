@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="libwebp_v140_redist_init">
+  <PropertyGroup Label="Default initializers for properties">
+    <Linkage-libwebp_v140_redist Condition="'$(Linkage-libwebp_v140_redist)' == ''">dynamic</Linkage-libwebp_v140_redist>
+    <CallingConvention-libwebp_v140_redist Condition="'$(CallingConvention-libwebp_v140_redist)' == ''">cdecl</CallingConvention-libwebp_v140_redist>
+  </PropertyGroup>
+  <Target Name="libwebp_v140_redist_init">
+    <libwebp_v140_redist_Contains Text="Linkage-dynamic" Library="libwebp_v140_redist" Value="dynamic" Condition="'$(Linkage-libwebp_v140_redist)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libwebp_v140_redist" />
+    </libwebp_v140_redist_Contains>
+    <libwebp_v140_redist_Contains Text="Linkage-static" Library="libwebp_v140_redist" Value="static" Condition="'$(Linkage-libwebp_v140_redist)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libwebp_v140_redist" />
+    </libwebp_v140_redist_Contains>
+    <libwebp_v140_redist_Contains Text="Linkage-ltcg" Library="libwebp_v140_redist" Value="ltcg" Condition="'$(Linkage-libwebp_v140_redist)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libwebp_v140_redist" />
+    </libwebp_v140_redist_Contains>
+    <libwebp_v140_redist_Contains Text="Linkage-sxs" Library="libwebp_v140_redist" Value="sxs" Condition="'$(Linkage-libwebp_v140_redist)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libwebp_v140_redist" />
+    </libwebp_v140_redist_Contains>
+    <libwebp_v140_redist_Contains Text="CallingConvention-cdecl" Library="libwebp_v140_redist" Value="cdecl" Condition="'$(CallingConvention-libwebp_v140_redist)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libwebp_v140_redist" />
+    </libwebp_v140_redist_Contains>
+    <libwebp_v140_redist_Contains Text="CallingConvention-stdcall" Library="libwebp_v140_redist" Value="stdcall" Condition="'$(CallingConvention-libwebp_v140_redist)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libwebp_v140_redist" />
+    </libwebp_v140_redist_Contains>
+    <libwebp_v140_redist_Contains Text="CallingConvention-fastcall" Library="libwebp_v140_redist" Value="fastcall" Condition="'$(CallingConvention-libwebp_v140_redist)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libwebp_v140_redist" />
+    </libwebp_v140_redist_Contains>
+    <libwebp_v140_redist_Contains Text="CallingConvention-thiscall" Library="libwebp_v140_redist" Value="thiscall" Condition="'$(CallingConvention-libwebp_v140_redist)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libwebp_v140_redist" />
+    </libwebp_v140_redist_Contains>
+    <libwebp_v140_redist_Contains Text="CallingConvention-clrcall" Library="libwebp_v140_redist" Value="clrcall" Condition="'$(CallingConvention-libwebp_v140_redist)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libwebp_v140_redist" />
+    </libwebp_v140_redist_Contains>
+  </Target>
+  <Target Name="libwebp_v140_redist_init_2">
+    <SetEnv Condition="'$(Platform.ToLower())' == 'win32' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )" Name="PATH" Prefix="true" Value="$(MSBuildThisFileDirectory)../..//build/native/bin/Win32\Release">
+      <Output TaskParameter="OutputEnvironmentVariable" PropertyName="PATH" />
+    </SetEnv>
+    <SetEnv Condition="'$(Platform.ToLower())' == 'win32' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )" Name="PATH" Prefix="true" Value="$(MSBuildThisFileDirectory)../..//build/native/bin/Win32\Debug">
+      <Output TaskParameter="OutputEnvironmentVariable" PropertyName="PATH" />
+    </SetEnv>
+    <SetEnv Condition="'$(Platform.ToLower())' == 'x64' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )" Name="PATH" Prefix="true" Value="$(MSBuildThisFileDirectory)../..//build/native/bin/x64\Release">
+      <Output TaskParameter="OutputEnvironmentVariable" PropertyName="PATH" />
+    </SetEnv>
+    <SetEnv Condition="'$(Platform.ToLower())' == 'x64' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )" Name="PATH" Prefix="true" Value="$(MSBuildThisFileDirectory)../..//build/native/bin/x64\Debug">
+      <Output TaskParameter="OutputEnvironmentVariable" PropertyName="PATH" />
+    </SetEnv>
+  </Target>
+  <ItemGroup Label="Win32 and Release" Condition="'$(Platform.ToLower())' == 'win32' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )">
+    <None Include="$(MSBuildThisFileDirectory)../..//build/native/bin/Win32/Release/libwebp.dll" Condition="(('$(AppContainerApplication.ToLower())' == 'true')) OR (('$(TargetPlatformIdentifier.ToLower())' == 'windows phone' And '$(TargetPlatformVersion)' == '8.0'))">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
+  <ItemGroup Label="Win32 and Debug" Condition="'$(Platform.ToLower())' == 'win32' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )">
+    <None Include="$(MSBuildThisFileDirectory)../..//build/native/bin/Win32/Debug/libwebp_debug.dll" Condition="(('$(AppContainerApplication.ToLower())' == 'true')) OR (('$(TargetPlatformIdentifier.ToLower())' == 'windows phone' And '$(TargetPlatformVersion)' == '8.0'))">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
+  <ItemGroup Label="x64 and Release" Condition="'$(Platform.ToLower())' == 'x64' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )">
+    <None Include="$(MSBuildThisFileDirectory)../..//build/native/bin/x64/Release/libwebp.dll" Condition="(('$(AppContainerApplication.ToLower())' == 'true')) OR (('$(TargetPlatformIdentifier.ToLower())' == 'windows phone' And '$(TargetPlatformVersion)' == '8.0'))">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
+  <ItemGroup Label="x64 and Debug" Condition="'$(Platform.ToLower())' == 'x64' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )">
+    <None Include="$(MSBuildThisFileDirectory)../..//build/native/bin/x64/Debug/libwebp_debug.dll" Condition="(('$(AppContainerApplication.ToLower())' == 'true')) OR (('$(TargetPlatformIdentifier.ToLower())' == 'windows phone' And '$(TargetPlatformVersion)' == '8.0'))">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\default-propertiesui.xml" />
+  </ItemGroup>
+  <Target Name="libwebp_v140_redist_AfterBuild" AfterTargets="AfterBuild" />
+  <Target Name="libwebp_v140_redist_AfterBuild_Win32_and_Release" Label="Win32 and Release" Condition="'$(Platform.ToLower())' == 'win32' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )" AfterTargets="libwebp_v140_redist_AfterBuild">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)../..//build/native/bin/Win32/Release/libwebp.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="libwebp_v140_redist_AfterBuild_Win32_and_Debug" Label="Win32 and Debug" Condition="'$(Platform.ToLower())' == 'win32' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )" AfterTargets="libwebp_v140_redist_AfterBuild">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)../..//build/native/bin/Win32/Debug/libwebp_debug.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)../..//build/native/bin/Win32/Debug/libwebp_debug_dll.pdb" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="libwebp_v140_redist_AfterBuild_x64_and_Release" Label="x64 and Release" Condition="'$(Platform.ToLower())' == 'x64' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )" AfterTargets="libwebp_v140_redist_AfterBuild">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)../..//build/native/bin/x64/Release/libwebp.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="libwebp_v140_redist_AfterBuild_x64_and_Debug" Label="x64 and Debug" Condition="'$(Platform.ToLower())' == 'x64' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )" AfterTargets="libwebp_v140_redist_AfterBuild">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)../..//build/native/bin/x64/Debug/libwebp_debug.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)../..//build/native/bin/x64/Debug/libwebp_debug_dll.pdb" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <UsingTask TaskName="libwebp_v140_redist_Contains" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" TaskFactory="CodeTaskFactory">
+    <ParameterGroup>
+      <Text Output="false" ParameterType="System.String" />
+      <Library Output="false" Required="true" ParameterType="System.String" />
+      <Value Output="false" Required="true" ParameterType="System.String" />
+      <Result Output="true" ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Code>Result = ((Text ?? "").Split(';').Contains(Library) ) ? Value : String.Empty;</Code>
+    </Task>
+  </UsingTask>
+</Project>
