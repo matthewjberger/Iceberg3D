@@ -1,0 +1,3 @@
+[submodule "Build/Visual Studio"]
+	path = Build/Visual Studio
+	url = https://github.com/matthewjberger/Iceberg3D_Windows
