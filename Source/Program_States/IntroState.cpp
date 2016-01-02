@@ -1,5 +1,5 @@
 #include "IntroState.h"
-#include "../core/GlobalIncludes.h"
+#include "../Core/GlobalIncludes.h"
 void IntroState::Pause() {}
 void IntroState::Resume() {}
 IntroState *IntroState::inst = 0;
