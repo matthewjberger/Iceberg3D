@@ -54,7 +54,7 @@ void Model::LoadModel(std::string path)
 
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		cout << "ERROR: Assimp - " << importer.GetErrorString() << endl;
+		printf("ERROR: Assimp - %s", importer.GetErrorString());
 		return;
 	}
 

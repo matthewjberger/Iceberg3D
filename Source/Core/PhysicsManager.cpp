@@ -19,7 +19,7 @@ PhysicsManager::PhysicsManager()
 PhysicsManager::~PhysicsManager()
 {
     // Free Bullet
-    for(size_t i = 0; i < dynamicsWorld->getNumCollisionObjects(); i++)
+    for(int i = 0; i < dynamicsWorld->getNumCollisionObjects(); i++)
     {
         dynamicsWorld->removeRigidBody( btRigidBody::upcast(dynamicsWorld->getCollisionObjectArray()[i]) );
     }

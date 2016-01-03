@@ -14,8 +14,8 @@ Skybox::Skybox(string right, string left, string top, string bottom, string back
     faces.push_back(front.c_str());
 
     skyboxProgram.CreateProgram();
-    skyboxProgram.AddShaderFromFile("Assets/Shaders/skyVert.glsl", GL_VERTEX_SHADER);
-    skyboxProgram.AddShaderFromFile("Assets/Shaders/skyFrag.glsl", GL_FRAGMENT_SHADER);
+    skyboxProgram.AddShaderFromFile("Shaders/skyVert.glsl", GL_VERTEX_SHADER);
+    skyboxProgram.AddShaderFromFile("Shaders/skyFrag.glsl", GL_FRAGMENT_SHADER);
     skyboxProgram.LinkProgram();
 
     glGenTextures(1, &textureID);
