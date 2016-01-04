@@ -327,7 +327,7 @@ float Game::GetTimeDelta()
 float Game::GetAspectRatio()
 {
     // Prevent division by 0
-    float adjustedScreenHeight = screenHeight;
-    if(screenHeight == 0) adjustedScreenHeight = 1;
-    return (float(screenWidth)/float(adjustedScreenHeight));
+	float width  = float(screenWidth);
+	float height = float(screenHeight);
+	return (height == 0) ? (width) : (width/height);
 }

@@ -88,7 +88,7 @@ Mesh Model::ProcessMesh(aiMesh* mesh)
 	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
 		const aiFace& face = mesh->mFaces[i];
-		for (int j = 0; j < face.mNumIndices; j++)
+		for (unsigned int j = 0; j < face.mNumIndices; j++)
 		{
 			aiVector3D position = mesh->mVertices[face.mIndices[j]];
 			triArray[j] = btVector3(position.x, position.y, position.z);

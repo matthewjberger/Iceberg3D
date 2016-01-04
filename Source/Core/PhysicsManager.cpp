@@ -13,7 +13,7 @@ PhysicsManager::PhysicsManager()
     dynamicsWorld          = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
 
     // Add gravity
-    dynamicsWorld->setGravity(btVector3(0, -9.81, 0));
+    dynamicsWorld->setGravity(btVector3(0.0f, -9.81f, 0.0f));
 }
 
 PhysicsManager::~PhysicsManager()
