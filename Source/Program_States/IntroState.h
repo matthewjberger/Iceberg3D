@@ -35,10 +35,4 @@ private:
 	/**************************/
 	/* Place State Items here */
 	/**************************/
-	ShaderProgram shaderProgram;
-	Camera* camera;
-	Skybox *skybox;
-	Model* models[4];
-	Texture sunTexture;
-	PhysicsManager* physicsManager;
 };
