@@ -12,6 +12,7 @@ class Texture
         ~Texture();
 
         void Load(std::string path, bool genMipMaps = false);
+        void CreateFromSurface(SDL_Surface* surface, bool genMipMaps = false);
         void Bind(int textureUnit = 0);
 
         void SetSamplerParameter(GLenum parameter, GLenum value);

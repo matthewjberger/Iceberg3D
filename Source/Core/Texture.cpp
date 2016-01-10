@@ -66,22 +66,9 @@ void Texture::SetType(std::string _type)
     type = _type;
 }
 
-void Texture::Load(string path, bool genMipMaps)
+void Texture::CreateFromSurface(SDL_Surface* surface, bool genMipMaps)
 {
-
-    // The texture id
-    mTextureID = 0;
-
-    // Load the image
-    SDL_Surface* textureSurface = IMG_Load(path.c_str());
-
-    // Check for errors
-    if (textureSurface == NULL)
-    {
-        printf("Couldn't load image %s./nIMG_Error: %s", path.c_str(), IMG_GetError());
-    }
-
-    // Generate the texture and bind it
+	// Generate the texture and bind it
     glGenTextures(1, &mTextureID);
     glBindTexture(GL_TEXTURE_2D, mTextureID);
 
@@ -89,13 +76,13 @@ void Texture::Load(string path, bool genMipMaps)
     int pixelMode = GL_RGB;
 
     // Check for alpha component and set pixel mode appropriately
-    if (textureSurface->format->BytesPerPixel == 4)
+    if (surface->format->BytesPerPixel == 4)
     {
         pixelMode = GL_RGBA;
     }
 
     // Send data to gpu
-    glTexImage2D(GL_TEXTURE_2D, 0, pixelMode, textureSurface->w, textureSurface->h, 0, pixelMode, GL_UNSIGNED_BYTE, textureSurface->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, pixelMode, surface->w, surface->h, 0, pixelMode, GL_UNSIGNED_BYTE, surface->pixels);
 
     // Generate mipmaps if requested
     if (genMipMaps)
@@ -112,17 +99,35 @@ void Texture::Load(string path, bool genMipMaps)
     // Set filtering
     SetFiltering(GL_LINEAR, GL_LINEAR);
 
-    // Set path
-    mPath = path;
-
     // Parameters
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
 
-    // Get rid of the temporary surface
+void Texture::Load(string path, bool genMipMaps)
+{
+    // Set path
+    mPath = path;
+
+    // The texture id
+    mTextureID = 0;
+
+    // Load the image
+    SDL_Surface* textureSurface = IMG_Load(path.c_str());
+
+    // Check for errors
+    if (textureSurface == NULL)
+    {
+        printf("Couldn't load image %s./nIMG_Error: %s", path.c_str(), IMG_GetError());
+    }
+
+	// Create the texture from an SDL Surface
+	CreateFromSurface(textureSurface, genMipMaps);
+
+	// Get rid of the temporary surface
     SDL_FreeSurface(textureSurface);
 }
 

@@ -126,8 +126,15 @@ bool Game::Initialize()
 
                 // Initialize screen surface
                 screenSurface = SDL_GetWindowSurface(window);
-            }
 
+				// Initialize Sub Systems
+				if(TTF_Init != 0)
+				{
+					printf("Error initializing SDL_ttf! %s \n", TTF_GetError());
+
+					return false;
+				}
+            }
         }
     }
 
@@ -164,6 +171,7 @@ void Game::UnloadContent()
     window   = NULL;
 
     // Quit subsystems
+	TTF_Quit();
     SDL_Quit();
 }
 void Game::ChangeState(GameState *state)

@@ -9,6 +9,7 @@
 #include "GL/glew.h"
 #include "SDL_opengl.h"
 #include "SDL_image.h"
+#include "SDL_ttf.h"
 #include "GL/glu.h"
 
 // GLM
