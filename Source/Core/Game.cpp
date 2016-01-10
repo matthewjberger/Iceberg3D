@@ -128,7 +128,7 @@ bool Game::Initialize()
                 screenSurface = SDL_GetWindowSurface(window);
 
 				// Initialize Sub Systems
-				if(TTF_Init != 0)
+				if(TTF_Init() != 0)
 				{
 					printf("Error initializing SDL_ttf! %s \n", TTF_GetError());
 
