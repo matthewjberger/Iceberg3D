@@ -34,12 +34,9 @@ all: $(EXE_NAME)
 $(EXE_NAME): $(OBJECTS)
 	mkdir -p $(OUT_DIR) \
 	&& $(CC) $(OBJECTS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OUT_DIR)$(EXE_NAME) \
-	&& make clean
 
 %.o: %.cpp
 	g++ -c $(COMPILER_FLAGS) $(INCLUDE_PATHS)  $< -o $@
 
-clean:
-	-rm $(SRC_DIR)/*.o
-	-rm $(SRC_DIR)/core/*.o
-	-rm $(SRC_DIR)/program_states/*.o
+clean: $(OBJECTS)
+	-rm $(OBJECTS)

@@ -93,6 +93,5 @@ void PhysicsManager::ApplyForceAtIndex(btVector3* force, int index)
     btRigidBody* object = btRigidBody::upcast(dynamicsWorld->getCollisionObjectArray()[index]);
     object->applyCentralImpulse(*force);
     object->clearForces();
-
 }
 
