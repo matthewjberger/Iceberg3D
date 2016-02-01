@@ -1,3 +1,37 @@
+### https://raw.github.com/github/gitignore/fa441f903154d8159ef71db23d4816d802450fef/C++.gitignore
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Output directories
+Bin/
+
+# Visual Studio files
 Build/Visual Studio/Debug
 Build/Visual Studio/Iceberg3D/Debug
-Bin
