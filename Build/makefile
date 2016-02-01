@@ -33,10 +33,10 @@ all: $(EXE_NAME)
 
 $(EXE_NAME): $(OBJECTS)
 	mkdir -p $(OUT_DIR) \
-	&& $(CC) $(OBJECTS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OUT_DIR)$(EXE_NAME)
+	&& $(CC) $(OBJECTS) $(LINKER_FLAGS) -o $(OUT_DIR)$(EXE_NAME)
 
 %.o: %.cpp
-	g++ -c $(COMPILER_FLAGS) $(INCLUDE_PATHS)  $< -o $@
+	g++ -c $(COMPILER_FLAGS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $< -o $@
 
 clean: $(OBJECTS)
 	-rm $(OBJECTS)
