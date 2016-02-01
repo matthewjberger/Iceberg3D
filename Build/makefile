@@ -36,7 +36,7 @@ $(EXE_NAME): $(OBJECTS)
 	&& $(CC) $(OBJECTS) $(LINKER_FLAGS) -o $(OUT_DIR)$(EXE_NAME)
 
 %.o: %.cpp
-	g++ -c $(COMPILER_FLAGS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $< -o $@
+	$(CC) -c $(COMPILER_FLAGS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $< -o $@
 
 clean: $(OBJECTS)
 	-rm $(OBJECTS)
