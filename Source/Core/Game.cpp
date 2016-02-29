@@ -16,10 +16,10 @@ Game::Game()
     window        = NULL;
     screenSurface = NULL;
 
-    screenWidth   = 640;
-    screenHeight  = 480;
+    screenWidth   = 1920;
+    screenHeight  = 1080;
 
-    maxFPS        = 60;
+    maxFPS        = 144;
 
     previousTime = std::chrono::high_resolution_clock::now();
 }
@@ -98,7 +98,7 @@ bool Game::Initialize()
                 glDepthFunc(GL_LESS);
 
                 // Enable culling
-                //glEnable(GL_CULL_FACE);
+                glEnable(GL_CULL_FACE);
                 //glCullFace(GL_BACK);
                 //glFrontFace(GL_CW);
 
@@ -114,14 +114,14 @@ bool Game::Initialize()
                     return false;
                 }
 
-                /*
-                // Use Vsync
-                if (SDL_GL_SetSwapInterval(1) < 0)
-                {
-                printf("Warning: Unable to set VSync! SDL Error: %s", SDL_GetError());
+                
+				// Use Vsync
+				if (SDL_GL_SetSwapInterval(1) < 0)
+				{
+					printf("Warning: Unable to set VSync! SDL Error: %s", SDL_GetError());
 
-                return false;
-                }*/
+					return false;
+                }
 
 
                 // Initialize screen surface
@@ -163,8 +163,8 @@ void Game::UnloadContent()
     }
 
     /************************************************/
-    // TTF_Quit();
-    // Mix_CloseAudio();
+    TTF_Quit();
+    //Mix_CloseAudio();
     // Destroy Window
 
     SDL_DestroyWindow( window );

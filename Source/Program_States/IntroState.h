@@ -35,4 +35,13 @@ private:
 	/**************************/
 	/* Place State Items here */
 	/**************************/
+	Model *model;
+	Model *asteroid;
+	ShaderProgram shaderProgram;
+	glm::mat4 modelMatrix;
+	Camera* camera;
+	GLuint textureID;
+
+	glm::mat4* modelMatrices;
+	Skybox *skybox;
 };
