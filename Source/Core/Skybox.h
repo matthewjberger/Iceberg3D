@@ -1,5 +1,5 @@
-#ifndef __SKYBOX_H
-#define __SKYBOX_H
+#ifndef SKYBOX_H
+#define SKYBOX_H
 
 #include "GlobalIncludes.h"
 #include "VAO.h"
@@ -12,13 +12,13 @@ class Skybox
         Skybox(std::string right, std::string left, std::string top, std::string bottom, std::string back, std::string front);
         ~Skybox();
 
-        void Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
+        void draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) const;
 
     private:
-        VAO skyboxVAO;
-        VBO skyboxVBO;
-        ShaderProgram skyboxProgram;
-        GLuint textureID;
+        VAO skyboxVAO_;
+        VBO skyboxVBO_;
+        ShaderProgram skyboxProgram_;
+        GLuint textureID_;
 
 };
 

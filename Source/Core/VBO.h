@@ -1,5 +1,5 @@
-#ifndef __VBO_H
-#define __VBO_H
+#ifndef VBO_H
+#define VBO_H
 
 #include "GlobalIncludes.h"
 
@@ -12,33 +12,33 @@ class VBO
         ~VBO();
 
         // Creates buffer objects
-        void Create(GLint size = 0);
+        void create(GLint size = 0);
 
         // Destroys buffer object
-        void Free();
+        void free();
 
         // Binds as current buffer
-        void Bind(GLuint bufferType = GL_ARRAY_BUFFER);
+        void bind(GLuint bufferType = GL_ARRAY_BUFFER);
 
         // Unbinds as current buffer
-        void Unbind();
+        void unbind();
 
         // Adds data
-        void AddData( void* newData, GLuint dataSize);
+        void add_data( void* newData, GLuint dataSize);
 
         // Uploads data
-        void UploadData(GLenum drawingHint = GL_STATIC_DRAW);
+        void upload_data(GLenum drawingHint = GL_STATIC_DRAW);
 
     private:
 
         // The buffer
-        GLuint buffer;
+        GLuint buffer_;
 
         // Buffer type
-        GLuint type;
+        GLuint type_;
 
         // Expandable data vector
-        std::vector<GLbyte> data;
+        std::vector<GLbyte> data_;
 };
 
 #endif

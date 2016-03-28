@@ -1,5 +1,5 @@
-#ifndef __SHADER_PROGRAM_H
-#define __SHADER_PROGRAM_H
+#ifndef SHADER_PROGRAM_H
+#define SHADER_PROGRAM_H
 
 #include "Shader.h"
 
@@ -9,53 +9,54 @@ class ShaderProgram
         ShaderProgram();
         ~ShaderProgram();
 
-        void CreateProgram();
-        void DeleteProgram();
+        void create_program();
+        void delete_program();
 
-        bool AddShader(Shader* shader);
-        bool AddShaderFromFile(std::string path, GLuint shaderType);
-        bool LinkProgram();
+        bool add_shader(Shader* shader) const;
+        bool add_shader_from_file(const std::string &path, GLuint shaderType) const;
 
-        void PrintLog();
+        bool link_program();
 
-        void UseProgram();
-        void DisUseProgram();
+        void print_log() const;
+
+        void use() const;
+        void disuse() const;
 
         // Set floats
-        void SetUniform(std::string name, float* values, int count=1);
-        void SetUniform(std::string name, const float value);
+        void set_uniform(const std::string &name, float* values, int count=1) const;
+        void set_uniform(const std::string &name, const float value) const;
 
         // Set vectors
-        void SetUniform(std::string name, glm::vec2* vectors, int count=1);
-        void SetUniform(std::string name, const glm::vec2 &vector);
+        void set_uniform(const std::string &name, glm::vec2* vectors, int count=1) const;
+        void set_uniform(const std::string &name, const glm::vec2 &vector) const;
 
-        void SetUniform(std::string name, glm::vec3* vectors, int count=1);
-        void SetUniform(std::string name, const glm::vec3 &vector);
+        void set_uniform(const std::string &name, glm::vec3* vectors, int count=1) const;
+        void set_uniform(const std::string &name, const glm::vec3 &vector) const;
 
-        void SetUniform(std::string name, glm::vec4* vectors, int count=1);
-        void SetUniform(std::string name, const glm::vec4 &vector);
+        void set_uniform(const std::string &name, glm::vec4* vectors, int count=1) const;
+        void set_uniform(const std::string &name, const glm::vec4 &vector) const;
 
         // Set 4x4 matrices
-        void SetUniform(std::string name, glm::mat4* matrices, int count=1);
-        void SetUniform(std::string name, const glm::mat4 &matrix);
+        void set_uniform(const std::string &name, glm::mat4* matrices, int count=1) const;
+        void set_uniform(const std::string &name, const glm::mat4 & matrix) const;
 
         // Set integers
-        void SetUniform(std::string name, int* values, int count=1);
-        void SetUniform(std::string name, const int &value);
+        void set_uniform(const std::string &name, int* values, int count=1) const;
+        void set_uniform(const std::string &name, const int &value) const;
 
         // Get attribute locations
-        GLint GetAttributeLocation(std::string attributeName);
+        GLint get_attribute_location(const std::string &attributeName) const;
 
         // Get uniform locations
-        GLint GetUniformLocation(std::string uniformName);
+        GLint get_uniform_location(const std::string &uniformName) const;
 
-        GLuint GetID();
+        GLuint id() const;
 
     private:
 
-        GLuint programID;
+        GLuint programID_;
 
-        bool linked;
+        bool linked_;
 };
 
 #endif

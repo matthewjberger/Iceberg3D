@@ -12,14 +12,14 @@ void IntroState::Initialize()
 	asteroid = new Model("Assets/asteroid/asteroid.obj");
 	asteroid->LoadTexture("Assets/asteroid/asteroid.jpg", false);
 
-	shaderProgram.CreateProgram();
-	shaderProgram.AddShaderFromFile("Shaders/modelVert.glsl", GL_VERTEX_SHADER);
-	shaderProgram.AddShaderFromFile("Shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
-	shaderProgram.LinkProgram();
+	shaderProgram.create_program();
+	shaderProgram.add_shader_from_file("Shaders/modelVert.glsl", GL_VERTEX_SHADER);
+	shaderProgram.add_shader_from_file("Shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
+	shaderProgram.link_program();
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	camera = new Camera(glm::vec3(0.0, 8.0, -8.0));
-	camera->EnableInput();
+	camera->enable_input();
 
 
 	skybox = new Skybox("Assets/ame_starfield/starfield_rt.tga",
@@ -63,11 +63,11 @@ void IntroState::Finalize()
 	// Free resources
 	model->Free();
 	asteroid->Free();
-	shaderProgram.DeleteProgram();
+	shaderProgram.delete_program();
 	delete camera;
-	camera = NULL;
+	camera = nullptr;
 	delete skybox;
-	skybox = NULL;
+	skybox = nullptr;
 }
 
 void IntroState::HandleEvents()
@@ -80,12 +80,12 @@ void IntroState::Update()
 	// Update logic
 	static float angle = 0.0f;
 	angle += Game::GetInstance()->GetTimeDelta() * M_PI / 2;
-	camera->Update();
+	camera->update();
 	modelMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 1.0f, 1.0f));
 	modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));
-	glm::mat4 mvp = camera->GetMVP(modelMatrix);
-	shaderProgram.SetUniform("mvpMatrix", &mvp);
-	shaderProgram.SetUniform("sampler2D", 0);
+	glm::mat4 mvp = camera->make_mvp(modelMatrix);
+	shaderProgram.set_uniform("mvpMatrix", &mvp);
+	shaderProgram.set_uniform("sampler2D", 0);
 }
 
 void IntroState::Draw()
@@ -94,14 +94,14 @@ void IntroState::Draw()
 	glClearColor(0.392f, 0.584f, 0.93f, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	skybox->Draw(camera->projectionMatrix, camera->viewMatrix);
+	skybox->draw(camera->projection_matrix(), camera->view_matrix());
 
-	shaderProgram.UseProgram();
+	shaderProgram.use();
 	model->Draw();
 
 	for (GLuint i = 0; i < 1000; i++)
 	{
-		shaderProgram.SetUniform("mvpMatrix", camera->GetMVP(modelMatrices[i]));
+		shaderProgram.set_uniform("mvpMatrix", camera->make_mvp(modelMatrices[i]));
 		asteroid->Draw();
 	}
 }

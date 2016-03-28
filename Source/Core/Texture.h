@@ -1,5 +1,5 @@
-#ifndef __TEXTURE_H
-#define __TEXTURE_H
+#ifndef TEXTURE_H
+#define TEXTURE_H
 
 #include "GlobalIncludes.h"
 #include <string>
@@ -11,37 +11,30 @@ class Texture
         Texture();
         ~Texture();
 
-        void Load(std::string path, bool genMipMaps = false);
-        void CreateFromSurface(SDL_Surface* surface, bool genMipMaps = false);
-        void Bind(int textureUnit = 0);
+        bool load(const std::string &path, bool genMipMaps = false);
+        bool create_from_surface(SDL_Surface* surface, bool genMipMaps = false);
+        void bind(int textureUnit = 0) const;
+        void free() const;
 
-        void SetSamplerParameter(GLenum parameter, GLenum value);
-        void SetFiltering(int magnification, int minification);
+        void set_sampler_parameter(GLenum parameter, GLenum value) const;
+        void set_filtering(int magnification, int minification);
+        void set_wrap() const;
 
-        void SetWrap();
-
-        int GetMinificationFilter();
-        int GetMagnificationFilter();
-
-        void Free();
-
-        std::string GetType();
-        void SetType(std::string _type);
-
-        std::string GetPath();
-        void SetPath(std::string path);
+        int minification() const;
+        int magnification() const;
+        std::string path() const;
 
     private:
 
-        std::string type;
-        int mWidth, mHeight, mBPP;
-        GLuint mTextureID;
-        GLuint mSampler;
+        std::string type_;
+        int width_, height_, bpp_;
+        GLuint textureID_;
+        GLuint sampler_;
 
-        bool mMipMapsGenerated;
+        bool mipMapsGenerated_;
 
-        int mMinification, mMagnification;
+        int minification_, magnification_;
 
-        std::string mPath;
+        std::string path_;
 };
 #endif

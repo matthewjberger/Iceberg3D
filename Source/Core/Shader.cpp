@@ -79,7 +79,7 @@ bool Shader::Load(std::string path, GLuint shaderType)
     file.close();
 
     // Set shader source
-    glShaderSource(shaderID, 1, (const GLchar**)&shaderSource, NULL);
+    glShaderSource(shaderID, 1, (const GLchar**)&shaderSource, nullptr);
 
     // Compile shader
     glCompileShader(shaderID);

@@ -1,11 +1,9 @@
-#ifndef __MESH_H
-#define __MESH_H
+#ifndef MESH_H
+#define MESH_H
 
 #include "GlobalIncludes.h"
-#include "ShaderProgram.h"
 #include "VAO.h"
 #include "VBO.h"
-#include "Texture.h"
 
 struct Vertex
 {

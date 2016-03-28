@@ -5,50 +5,50 @@ using namespace glm;
 ShaderProgram::ShaderProgram()
 {
     // Initialize variables
-    programID = 0;
-    linked    = false;
+    programID_ = 0;
+    linked_    = false;
 }
 
 ShaderProgram::~ShaderProgram()
 {
-    DeleteProgram();
+    delete_program();
 }
 
-void ShaderProgram::DeleteProgram()
+void ShaderProgram::delete_program()
 {
-    if (linked)
+    if (linked_)
     {
         // Update status
-        linked = false;
+        linked_ = false;
 
         // Delete the program if linked
-        glDeleteProgram(programID);
+        glDeleteProgram(programID_);
     }
 }
 
-void ShaderProgram::CreateProgram()
+void ShaderProgram::create_program()
 {
-    programID = glCreateProgram();
+    programID_ = glCreateProgram();
 }
 
-bool ShaderProgram::AddShaderFromFile(std::string path, GLuint shaderType)
+bool ShaderProgram::add_shader_from_file(const string &path, GLuint shaderType) const
 {
     Shader *newShader = new Shader();
 
     newShader->Load(path, shaderType);
 
-    AddShader(newShader);
+    add_shader(newShader);
 
     newShader->DeleteShader();
 
     delete newShader;
 
-    newShader = NULL;
+    newShader = nullptr;
 
     return true;
 }
 
-bool ShaderProgram::AddShader(Shader* shader)
+bool ShaderProgram::add_shader(Shader* shader) const
 {
     if (!shader->IsLoaded())
     {
@@ -59,63 +59,63 @@ bool ShaderProgram::AddShader(Shader* shader)
         return false;
     }
 
-    glAttachShader(programID, shader->GetID());
+    glAttachShader(programID_, shader->GetID());
 
     // Return status
     return true;
 }
 
-bool ShaderProgram::LinkProgram()
+bool ShaderProgram::link_program()
 {
     // Success flag
     GLint success = GL_TRUE;
 
     // Make the shader Program
-    glLinkProgram(programID);
+    glLinkProgram(programID_);
 
     // Check if program was created successfully
-    glGetProgramiv(programID, GL_COMPILE_STATUS, &success);
+    glGetProgramiv(programID_, GL_COMPILE_STATUS, &success);
 
     // If program creation failed
     if (success != GL_TRUE)
     {
         // Print an error message
-        printf("Couldn't link program %d\n", programID);
+        printf("Couldn't link program %d\n", programID_);
 
         // Print log
-        PrintLog();
+        print_log();
 
         // Delete the program
-        glDeleteProgram(programID);
+        glDeleteProgram(programID_);
 
         // Set program ID to 0
-        programID = 0;
+        programID_ = 0;
 
         // Return status
         return false;
     }
 
     // Update status
-    linked = true;
+    linked_ = true;
 
     // Return status
     return true;
 }
 
-void ShaderProgram::PrintLog()
+void ShaderProgram::print_log() const
 {
     // Shader program log length
     int infoLogLength = 0;
     int maxLength = infoLogLength;
 
     //Get info string length
-    glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &maxLength);
+    glGetProgramiv(programID_, GL_INFO_LOG_LENGTH, &maxLength);
 
     //Allocate string
     char* infoLog = new char[maxLength];
 
     //Get info log
-    glGetProgramInfoLog(programID, maxLength, &infoLogLength, infoLog);
+    glGetProgramInfoLog(programID_, maxLength, &infoLogLength, infoLog);
     if (infoLogLength > 0)
     {
         //Print Log
@@ -126,18 +126,18 @@ void ShaderProgram::PrintLog()
     delete[] infoLog;
 }
 
-void ShaderProgram::UseProgram()
+void ShaderProgram::use() const
 {
-    if (linked)
+    if (linked_)
     {
         // If linked, use program
-        glUseProgram(programID);
+        glUseProgram(programID_);
     }
 }
 
-void ShaderProgram::DisUseProgram()
+void ShaderProgram::disuse() const
 {
-    if (linked)
+    if (linked_)
     {
         // If linked, use program
         glUseProgram(0);
@@ -145,98 +145,98 @@ void ShaderProgram::DisUseProgram()
 }
 
 // Set floats
-void ShaderProgram::SetUniform(string name, float* values, int count)
+void ShaderProgram::set_uniform(const string &name, float* values, int count) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniform1fv(location, count, values);
 }
 
-void ShaderProgram::SetUniform(string name, const float value)
+void ShaderProgram::set_uniform(const string &name, const float value) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniform1fv(location, 1, &value);
 }
 
 // Set vectors
 
 // vec2
-void ShaderProgram::SetUniform(string name, vec2* vectors, int count)
+void ShaderProgram::set_uniform(const string &name, vec2* vectors, int count) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniform2fv(location, count, (GLfloat*)vectors); // cast vectors to GLfloat arrays
 }
 
-void ShaderProgram::SetUniform(string name, const vec2 &vector)
+void ShaderProgram::set_uniform(const string &name, const vec2 &vector) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniform2fv(location, 1, (GLfloat*)&vector); // cast vectors to GLfloat arrays
 }
 
 // vec3
-void ShaderProgram::SetUniform(string name, vec3* vectors, int count)
+void ShaderProgram::set_uniform(const string &name, vec3* vectors, int count) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniform3fv(location, count, (GLfloat*)vectors); // cast vectors to GLfloat arrays
 }
 
-void ShaderProgram::SetUniform(string name, const vec3 &vector)
+void ShaderProgram::set_uniform(const string &name, const vec3 &vector) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniform3fv(location, 1, (GLfloat*)&vector); // cast vectors to GLfloat arrays
 }
 
 // vec4
-void ShaderProgram::SetUniform(string name, vec4* vectors, int count)
+void ShaderProgram::set_uniform(const string &name, vec4* vectors, int count) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniform4fv(location, count, (GLfloat*)vectors); // cast vectors to GLfloat arrays
 }
 
-void ShaderProgram::SetUniform(string name, const vec4 &vector)
+void ShaderProgram::set_uniform(const string &name, const vec4 &vector) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniform4fv(location, 1, (GLfloat*)&vector); // cast vectors to GLfloat arrays
 }
 
 // Set 4x4 matrices
-void ShaderProgram::SetUniform(string name, mat4* matrices, int count)
+void ShaderProgram::set_uniform(const string &name, mat4* matrices, int count) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniformMatrix4fv(location, count, GL_FALSE, (GLfloat*)matrices);
 }
 
-void ShaderProgram::SetUniform(string name, const mat4 &matrix)
+void ShaderProgram::set_uniform(const string &name, const mat4 &matrix) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)&matrix);
 }
 
 // Set ints
-void ShaderProgram::SetUniform(string name, int* values, int count)
+void ShaderProgram::set_uniform(const string &name, int* values, int count) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniform1iv(location, count, values);
 }
 
-void ShaderProgram::SetUniform(string name, const int &value)
+void ShaderProgram::set_uniform(const string &name, const int &value) const
 {
-    int location = glGetUniformLocation(programID, name.c_str());
+    int location = glGetUniformLocation(programID_, name.c_str());
     glUniform1i(location, value);
 }
 
-GLint ShaderProgram::GetAttributeLocation(std::string attributeName)
+GLint ShaderProgram::get_attribute_location(const string &attributeName) const
 {
-    GLint location = glGetAttribLocation(programID, const_cast<const char*>(attributeName.c_str()));
+    GLint location = glGetAttribLocation(programID_, const_cast<const char*>(attributeName.c_str()));
     return location;
 }
 
-GLint ShaderProgram::GetUniformLocation(std::string uniformName)
+GLint ShaderProgram::get_uniform_location(const string &uniformName) const
 {
-    GLint location = glGetUniformLocation(programID, const_cast<const char*>(uniformName.c_str()));
+    GLint location = glGetUniformLocation(programID_, const_cast<const char*>(uniformName.c_str()));
     return location;
 }
 
-GLuint ShaderProgram::GetID()
+GLuint ShaderProgram::id() const
 {
-    return programID;
+    return programID_;
 }

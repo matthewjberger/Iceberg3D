@@ -1,9 +1,8 @@
-#ifndef __MODEL_H
-#define __MODEL_H
+#ifndef MODEL_H
+#define MODEL_H
 
 #include "../Core/GlobalIncludes.h"
 #include "Texture.h"
-#include "ShaderProgram.h"
 #include "Mesh.h"
 
 class Model

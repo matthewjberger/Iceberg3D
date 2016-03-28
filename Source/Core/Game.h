@@ -1,5 +1,5 @@
-#ifndef __GAME_H
-#define __GAME_H
+#ifndef GAME_H
+#define GAME_H
 
 // Define this symbol (VIRTUAL_MACHINE) if using a virtual machine
 // Currently, vmware doesn't support OpenGL 3

@@ -7,40 +7,40 @@ VAO::VAO()
 
 VAO::~VAO()
 {
-    Free();
+    free();
 }
 
-void VAO::Create()
+void VAO::create()
 {
     glGenVertexArrays(1, &vertexArray);
 }
 
-void VAO::Free()
+void VAO::free() const
 {
     glDeleteVertexArrays(1, &vertexArray);
 }
 
-void VAO::Bind()
+void VAO::bind() const
 {
     glBindVertexArray(vertexArray);
 }
 
-void VAO::Unbind()
+void VAO::unbind() 
 {
     glBindVertexArray(0);
 }
 
-void VAO::EnableAttribute(GLint location)
+void VAO::enable_attribute(GLint location)
 {
     glEnableVertexAttribArray(location);
 }
 
-void VAO::DisableAttribute(GLint location)
+void VAO::disable_attribute(GLint location)
 {
     glDisableVertexAttribArray(location);
 }
 
-void VAO::ConfigureAttribute(GLuint index, GLint size, GLenum type,
+void VAO::configure_attribute(GLuint index, GLint size, GLenum type,
                                 GLboolean normalized, GLsizei stride, const GLvoid* pointer)
 {
     glVertexAttribPointer(index, size, type, normalized, stride, pointer);

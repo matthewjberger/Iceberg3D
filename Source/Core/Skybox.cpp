@@ -13,23 +13,23 @@ Skybox::Skybox(string right, string left, string top, string bottom, string back
     faces.push_back(back.c_str());
     faces.push_back(front.c_str());
 
-    skyboxProgram.CreateProgram();
-    skyboxProgram.AddShaderFromFile("Shaders/skyVert.glsl", GL_VERTEX_SHADER);
-    skyboxProgram.AddShaderFromFile("Shaders/skyFrag.glsl", GL_FRAGMENT_SHADER);
-    skyboxProgram.LinkProgram();
+    skyboxProgram_.create_program();
+    skyboxProgram_.add_shader_from_file("Shaders/skyVert.glsl", GL_VERTEX_SHADER);
+    skyboxProgram_.add_shader_from_file("Shaders/skyFrag.glsl", GL_FRAGMENT_SHADER);
+    skyboxProgram_.link_program();
 
-    glGenTextures(1, &textureID);
+    glGenTextures(1, &textureID_);
     glActiveTexture(GL_TEXTURE0);
 
-    SDL_Surface* image = NULL;
+    SDL_Surface* image = nullptr;
 
-    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID_);
     for(GLuint i = 0; i < faces.size(); i++)
     {
         image = IMG_Load(faces[i]);
 
         // Check for errors
-        if (image == NULL)
+        if (image == nullptr)
         {
             printf("Couldn't load image %s./nIMG_Error: %s", faces[i], IMG_GetError());
             break;
@@ -47,7 +47,7 @@ Skybox::Skybox(string right, string left, string top, string bottom, string back
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, pixelMode, image->w, image->h, 0, pixelMode, GL_UNSIGNED_BYTE, image->pixels);
 
         SDL_FreeSurface(image);
-        image = NULL;
+        image = nullptr;
 
     }
 
@@ -104,18 +104,18 @@ Skybox::Skybox(string right, string left, string top, string bottom, string back
         1.0f, -1.0f,  1.0f
     };
 
-    skyboxVAO.Create();
-    skyboxVBO.Create();
+    skyboxVAO_.create();
+    skyboxVBO_.create();
 
-    skyboxVAO.Bind();
-    skyboxVBO.Bind();
+    skyboxVAO_.bind();
+    skyboxVBO_.bind();
 
-    skyboxVBO.AddData(&skyboxVertices, sizeof(skyboxVertices));
-    skyboxVBO.UploadData();
+    skyboxVBO_.add_data(&skyboxVertices, sizeof(skyboxVertices));
+    skyboxVBO_.upload_data();
 
-    skyboxVAO.EnableAttribute(0);
-    skyboxVAO.ConfigureAttribute(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), (GLvoid*)0);
-    skyboxVAO.Unbind();
+    skyboxVAO_.enable_attribute(0);
+    skyboxVAO_.configure_attribute(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), (GLvoid*)0);
+    skyboxVAO_.unbind();
 
 }
 
@@ -123,24 +123,24 @@ Skybox::~Skybox()
 {
 }
 
-void Skybox::Draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
+void Skybox::draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) const
 {
     glDepthFunc(GL_LEQUAL);
 
-    skyboxProgram.UseProgram();
+    skyboxProgram_.use();
 
     glm::mat4 view = glm::mat4(glm::mat3(viewMatrix));
-    skyboxProgram.SetUniform("projection", projectionMatrix);
-    skyboxProgram.SetUniform("view", view);
+    skyboxProgram_.set_uniform("projection", projectionMatrix);
+    skyboxProgram_.set_uniform("view", view);
 
-    skyboxVAO.Bind();
+    skyboxVAO_.bind();
 
     glActiveTexture(GL_TEXTURE0);
-    skyboxProgram.SetUniform("skybox", 0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+    skyboxProgram_.set_uniform("skybox", 0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID_);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    skyboxVAO.Unbind();
+    skyboxVAO_.unbind();
 
     glDepthFunc(GL_LESS);
 }

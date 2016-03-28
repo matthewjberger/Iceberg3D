@@ -1,5 +1,5 @@
-#ifndef __CAMERA_H
-#define __CAMERA_H
+#ifndef CAMERA_H
+#define CAMERA_H
 
 #include "GlobalIncludes.h"
 
@@ -7,51 +7,49 @@ class Camera
 {
 public:
 
-	Camera(glm::vec3 position = glm::vec3(0.0f), glm::vec3 focusPoint = glm::vec3(0.0f), float speed = 0.7);
-	~Camera() {}
+    Camera(glm::vec3 position = glm::vec3(0.0f), glm::vec3 focusPoint = glm::vec3(0.0f), float speed = 0.7);
+    ~Camera() {}
 
-	void Update();
+    void update();
 
-	// Membor Accessors
-	float GetPitchSensitivity();
-	void  SetPitchSensitivity(float newSens);
-	float GetYawSensitivity();
-	void  SetYawSensitivity(float newSens);
+    void enable_input(bool enabled = true);
 
-	void EnableInput(bool enabled = true);
+    glm::mat4 make_mvp(glm::mat4 modelMatrix) const;
+    glm::mat4 projection_matrix() const;
+    glm::mat4 view_matrix() const;
 
-	glm::mat4 GetMVP(glm::mat4 modelMatrix);
-	glm::mat4 GetProjectionMatrix();
-	glm::mat4 GetViewMatrix();
+    float pitch() const;
+    float yaw() const;
 
-	glm::mat4 projectionMatrix;
-	glm::mat4 viewMatrix;
 
-	void LookAt(glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up);
+    void LookAt(glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up);
 
 private:
 
-	void CalculateVectors(int mouseX, int mouseY);
+    void calculate_vectors(int mouseX, int mouseY);
 
-	bool inputEnabled;
+    bool inputEnabled_;
 
-	glm::vec3 position;
-	glm::vec3 direction;
-	glm::vec3 right;
-	glm::vec3 up;
+    glm::mat4 projectionMatrix_;
+    glm::mat4 viewMatrix_;
 
-	float horizontalAngle;
-	float verticalAngle;
+    glm::vec3 position_;
+    glm::vec3 direction_;
+    glm::vec3 right_;
+    glm::vec3 up_;
 
-	float initialFOV;
-	float curFOV;
+    float horizontalAngle_;
+    float verticalAngle_;
 
-	float speed;
-	float pitchSensitivity;
-	float yawSensitivity;
+    float initialFOV_;
+    float curFOV_;
 
-	int mouseX;
-	int mouseY;
+    float speed_;
+    float pitchSensitivity_;
+    float yawSensitivity_;
+
+    int mouseX_;
+    int mouseY_;
 
 };
 

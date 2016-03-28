@@ -13,13 +13,13 @@ Game::Game()
 
     caption       = "Iceberg3D";
 
-    window        = NULL;
-    screenSurface = NULL;
+    window        = nullptr;
+    screenSurface = nullptr;
 
-    screenWidth   = 1920;
-    screenHeight  = 1080;
+    screenWidth   = 640;
+    screenHeight  = 480;
 
-    maxFPS        = 144;
+    maxFPS        = 60;
 
     previousTime = std::chrono::high_resolution_clock::now();
 }
@@ -69,7 +69,7 @@ bool Game::Initialize()
             window = SDL_CreateWindow(caption.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth, screenHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
         }
 
-        if (window == NULL)
+        if (window == nullptr)
         {
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 
@@ -80,7 +80,7 @@ bool Game::Initialize()
             // Create OpenGL Context
             context = SDL_GL_CreateContext(window);
 
-            if (context == NULL)
+            if (context == nullptr)
             {
                 printf("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 
@@ -115,25 +115,25 @@ bool Game::Initialize()
                 }
 
                 
-				// Use Vsync
-				if (SDL_GL_SetSwapInterval(1) < 0)
-				{
-					printf("Warning: Unable to set VSync! SDL Error: %s", SDL_GetError());
+                // Use Vsync
+                if (SDL_GL_SetSwapInterval(1) < 0)
+                {
+                    printf("Warning: Unable to set VSync! SDL Error: %s", SDL_GetError());
 
-					return false;
+                    return false;
                 }
 
 
                 // Initialize screen surface
                 screenSurface = SDL_GetWindowSurface(window);
 
-				// Initialize Sub Systems
-				if(TTF_Init() != 0)
-				{
-					printf("Error initializing SDL_ttf! %s \n", TTF_GetError());
+                // Initialize Sub Systems
+                if(TTF_Init() != 0)
+                {
+                    printf("Error initializing SDL_ttf! %s \n", TTF_GetError());
 
-					return false;
-				}
+                    return false;
+                }
             }
         }
     }
@@ -168,10 +168,10 @@ void Game::UnloadContent()
     // Destroy Window
 
     SDL_DestroyWindow( window );
-    window   = NULL;
+    window   = nullptr;
 
     // Quit subsystems
-	TTF_Quit();
+    TTF_Quit();
     SDL_Quit();
 }
 void Game::ChangeState(GameState *state)
@@ -305,12 +305,12 @@ SDL_Event Game::GetEvent()
 
 SDL_Surface* Game::GetSurface()
 {
-    return screenSurface; // null
+    return screenSurface; // nullptr
 }
 
 SDL_Window* Game::GetWindow()
 {
-    return window; // null
+    return window; // nullptr
 }
 
 void Game::SetMaxFPS(int newFPS)
@@ -335,7 +335,7 @@ float Game::GetTimeDelta()
 float Game::GetAspectRatio()
 {
     // Prevent division by 0
-	float width  = float(screenWidth);
-	float height = float(screenHeight);
-	return (height == 0) ? (width) : (width/height);
+    float width  = float(screenWidth);
+    float height = float(screenHeight);
+    return (height == 0) ? (width) : (width/height);
 }

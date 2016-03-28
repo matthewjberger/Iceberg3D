@@ -1,6 +1,4 @@
 #include "Mesh.h"
-#include "Texture.h"
-#include <sstream>
 using namespace std;
 
 Mesh::Mesh(vector<Vertex> _vertices)
@@ -11,36 +9,36 @@ Mesh::Mesh(vector<Vertex> _vertices)
 void Mesh::Draw()
 {
     // Render the mesh
-    meshVAO.Bind();
+    meshVAO.bind();
     glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-    meshVAO.Unbind();
+    meshVAO.unbind();
 }
 
 void Mesh::SetupMesh()
 {
-    meshVAO.Create();
-    meshVBO.Create();
+    meshVAO.create();
+    meshVBO.create();
 
-    meshVAO.Bind();
+    meshVAO.bind();
 
-        meshVBO.Bind();
-        meshVBO.AddData(&vertices.front(), sizeof(Vertex) * vertices.size());
-        meshVBO.UploadData();
+        meshVBO.bind();
+        meshVBO.add_data(&vertices.front(), sizeof(Vertex) * vertices.size());
+        meshVBO.upload_data();
 
         // Vertex Positions
-        meshVAO.EnableAttribute(0);
-        meshVAO.ConfigureAttribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
+        meshVAO.enable_attribute(0);
+        meshVAO.configure_attribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
 
         // Vertex Texture Coordinates
-        meshVAO.EnableAttribute(1);
-        meshVAO.ConfigureAttribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
+        meshVAO.enable_attribute(1);
+        meshVAO.configure_attribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
 
-    meshVAO.Unbind();
+    meshVAO.unbind();
 }
 
 void Mesh::Free()
 {
-    meshVAO.Free();
-    meshVBO.Free();
+    meshVAO.free();
+    meshVBO.free();
 }
 

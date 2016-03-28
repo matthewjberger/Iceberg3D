@@ -1,5 +1,5 @@
-#ifndef __PHYSICS_MANAGER_H
-#define __PHYSICS_MANAGER_H
+#ifndef PHYSICS_MANAGER_H
+#define PHYSICS_MANAGER_H
 
 #include "GlobalIncludes.h"
 

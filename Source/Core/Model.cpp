@@ -24,16 +24,16 @@ void Model::Free()
 		meshes[i].Free();
 	}
 
-	if (collisionMesh != NULL)
+	if (collisionMesh != nullptr)
 	{
 		delete collisionMesh;
-		collisionMesh = NULL;
+		collisionMesh = nullptr;
 	}
 
-	if (collisionShape != NULL)
+	if (collisionShape != nullptr)
 	{
 		delete collisionShape;
-		collisionShape = NULL;
+		collisionShape = nullptr;
 	}
 }
 
@@ -42,7 +42,9 @@ void Model::Draw()
 	for (GLuint i = 0; i < meshes.size(); i++)
 	{
 		if (textureLoaded)
-			texture.Bind(0);
+		{
+			texture.bind();
+		}
 		meshes[i].Draw();
 	}
 }
@@ -123,7 +125,7 @@ Mesh Model::ProcessMesh(aiMesh* mesh)
 
 void Model::LoadTexture(string image, bool genMipMaps)
 {
-	texture.Load(image, genMipMaps);
+	texture.load(image, genMipMaps);
 	textureLoaded = true;
 }
 
@@ -164,7 +166,7 @@ glm::mat4 Model::GetModelMatrix()
 
 btCollisionShape* Model::GetCollisionShape()
 {
-	return collisionShape; // null
+	return collisionShape; // nullptr
 }
 
 void Model::SetModelMatrix(glm::mat4 matrix)

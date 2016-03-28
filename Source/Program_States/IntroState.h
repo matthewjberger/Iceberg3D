@@ -1,12 +1,8 @@
 #include "../Core/Game.h"
 #include "../Core/ShaderProgram.h"
-#include "../Core/VAO.h"
-#include "../Core/VBO.h"
 #include "../Core/Camera.h"
-#include "../Core/Texture.h"
 #include "../Core/Model.h"
 #include "../Core/Skybox.h"
-#include "../Core/PhysicsManager.h"
 
 class IntroState : public GameState
 {

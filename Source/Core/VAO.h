@@ -1,5 +1,5 @@
-#ifndef __VAO_H
-#define __VAO_H
+#ifndef VAO_H
+#define VAO_H
 
 #include "GlobalIncludes.h"
 
@@ -10,13 +10,13 @@ class VAO
         VAO();
         ~VAO();
 
-        void Create();
-        void Free();
-        void Bind();
-        void Unbind();
-        void EnableAttribute(GLint location = 0);
-        void DisableAttribute(GLint location = 0);
-        void ConfigureAttribute(GLuint index, GLint size, GLenum type,
+        void create();
+        void free() const;
+        void bind() const;
+        static void unbind();
+        static void enable_attribute(GLint location = 0);
+        static void disable_attribute(GLint location = 0);
+        static void configure_attribute(GLuint index, GLint size, GLenum type,
                                 GLboolean normalized, GLsizei stride, const GLvoid* pointer);
 
     private:

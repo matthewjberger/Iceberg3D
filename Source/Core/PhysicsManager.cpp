@@ -30,11 +30,11 @@ PhysicsManager::~PhysicsManager()
     delete dispatcher;
     delete solver;
 
-    dynamicsWorld          = NULL;
-    broadphase             = NULL;
-    collisionConfiguration = NULL;
-    dispatcher             = NULL;
-    solver                 = NULL;
+    dynamicsWorld          = nullptr;
+    broadphase             = nullptr;
+    collisionConfiguration = nullptr;
+    dispatcher             = nullptr;
+    solver                 = nullptr;
 
 }
 

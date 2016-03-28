@@ -1,5 +1,5 @@
-#ifndef __SHADER_H
-#define __SHADER_H
+#ifndef SHADER_H
+#define SHADER_H
 
 #include "GlobalIncludes.h"
 
