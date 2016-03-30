@@ -29,10 +29,12 @@ void IntroState::initialize()
                         "Assets/ame_starfield/starfield_ft.tga"
     );
 
+    // This asteroid belt code was copied from
+    // an example written by Joey DeVries from learnopengl.com
     GLuint amount = 1000;
     modelMatrices_ = new glm::mat4[amount];
     srand(SDL_GetTicks()); // initialize random seed
-    GLfloat radius = 50.0;
+    GLfloat radius = 25.0;
     GLfloat offset = 2.5f;
     for (GLuint i = 0; i < amount; i++)
     {
