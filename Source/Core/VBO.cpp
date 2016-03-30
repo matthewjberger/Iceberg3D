@@ -39,7 +39,7 @@ void VBO::bind(GLuint bufferType)
     glBindBuffer(type_, buffer_);
 }
 
-void VBO::unbind()
+void VBO::unbind() const
 {
     // Unbind VBO as current array
     glBindBuffer(type_, 0);

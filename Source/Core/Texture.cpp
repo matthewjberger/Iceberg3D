@@ -5,16 +5,16 @@ using namespace std;
 Texture::Texture()
 {
     // Initialize variables
-    width_    = 0;
-    height_   = 0;
-    bpp_      = 0;
+    width_ = 0;
+    height_ = 0;
+    bpp_ = 0;
 
     textureID_ = 0;
-    sampler_   = 0;
+    sampler_ = 0;
 
     mipMapsGenerated_ = false;
 
-    minification_  = 0;
+    minification_ = 0;
     magnification_ = 0;
 }
 
@@ -44,7 +44,7 @@ void Texture::set_filtering(int magnification, int minification)
     // Set magnification member variable
     magnification_ = magnification;
 
-    // Set miniification member variable
+    // Set minification member variable
     minification_ = minification;
 }
 
@@ -101,7 +101,7 @@ bool Texture::create_from_surface(SDL_Surface* surface, bool genMipMaps)
     return true;
 }
 
-bool Texture::load(const string &path, bool genMipMaps)
+bool Texture::load(const string& path, bool genMipMaps)
 {
     // Set path
     path_ = path;
@@ -120,7 +120,7 @@ bool Texture::load(const string &path, bool genMipMaps)
     }
 
     // Create the texture from an SDL Surface
-    if(!create_from_surface(textureSurface, genMipMaps))
+    if (!create_from_surface(textureSurface, genMipMaps))
     {
         return false;
     }
@@ -146,7 +146,6 @@ int Texture::magnification() const
     return magnification_;
 }
 
-
 void Texture::set_sampler_parameter(GLenum parameter, GLenum value) const
 {
     glSamplerParameteri(sampler_, parameter, value);
@@ -158,3 +157,4 @@ void Texture::set_wrap() const
     glSamplerParameteri(sampler_, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glSamplerParameteri(sampler_, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
+

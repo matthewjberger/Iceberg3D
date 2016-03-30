@@ -8,7 +8,10 @@ class Camera
 public:
 
     Camera(glm::vec3 position = glm::vec3(0.0f), glm::vec3 focusPoint = glm::vec3(0.0f), float speed = 0.7);
-    ~Camera() {}
+
+    ~Camera()
+    {
+    }
 
     void update();
 
@@ -20,7 +23,6 @@ public:
 
     float pitch() const;
     float yaw() const;
-
 
     void LookAt(glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up);
 
@@ -50,7 +52,7 @@ private:
 
     int mouseX_;
     int mouseY_;
-
 };
 
 #endif
+

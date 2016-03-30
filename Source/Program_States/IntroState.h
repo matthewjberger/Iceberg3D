@@ -7,37 +7,44 @@
 class IntroState : public GameState
 {
 public:
-	void Initialize();
-	void Finalize();
+    void Initialize() override;
+    void Finalize() override;
 
-	void Pause();
-	void Resume();
+    void Pause() override;
+    void Resume() override;
 
-	void Draw();
-	void HandleEvents();
-	void Update();
+    void Draw() override;
+    void HandleEvents() override;
+    void Update() override;
 
-	static IntroState *GetInstance()
-	{
-		if (inst == 0) inst = new IntroState();
-		return inst;
-	}
+    static IntroState* GetInstance()
+    {
+        if (inst == nullptr) inst = new IntroState();
+        return inst;
+    }
 
 private:
-	IntroState() {}
-	~IntroState() {}
-	static IntroState *inst;
+    IntroState()
+    {
+    }
 
-	/**************************/
-	/* Place State Items here */
-	/**************************/
-	Model *model;
-	Model *asteroid;
-	ShaderProgram shaderProgram;
-	glm::mat4 modelMatrix;
-	Camera* camera;
-	GLuint textureID;
+    ~IntroState()
+    {
+    }
 
-	glm::mat4* modelMatrices;
-	Skybox *skybox;
+    static IntroState* inst;
+
+    /**************************/
+    /* Place State Items here */
+    /**************************/
+    Model* model;
+    Model* asteroid;
+    ShaderProgram shaderProgram;
+    glm::mat4 modelMatrix;
+    Camera* camera;
+    GLuint textureID;
+
+    glm::mat4* modelMatrices;
+    Skybox* skybox;
 };
+

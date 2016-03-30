@@ -5,36 +5,37 @@
 
 class Shader
 {
-    public:
+public:
 
-        Shader();
-        ~Shader();
+    Shader();
+    ~Shader();
 
-        // Loads shader from file
-        bool Load(std::string path, GLuint shaderType);
+    // Loads shader from file
+    bool Load(std::string path, GLuint shaderType);
 
-        // Deletes shader
-        void DeleteShader();
+    // Deletes shader
+    void DeleteShader();
 
-        // Print log
-        void PrintLog();
+    // Print log
+    void PrintLog();
 
-        // Loaded if shader was compiled succesfully
-        bool IsLoaded();
+    // Loaded if shader was compiled successfully
+    bool IsLoaded();
 
-        // Returns ID
-        GLuint GetID();
+    // Returns ID
+    GLuint GetID();
 
-    private:
+private:
 
-        // Shader ID
-        GLuint shaderID;
+    // Shader ID
+    GLuint shaderID;
 
-        // Shader type
-        GLuint type;
+    // Shader type
+    GLuint type;
 
-        // Load success flag
-        bool loaded;
+    // Load success flag
+    bool loaded;
 };
 
 #endif
+

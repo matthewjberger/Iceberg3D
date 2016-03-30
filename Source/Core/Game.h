@@ -14,83 +14,88 @@ class GameState;
 
 class Game
 {
-    public:
+public:
 
-        static Game *GetInstance();
+    static Game* GetInstance();
 
-        bool Initialize();
-        bool LoadContent(GameState *state);
-        void UnloadContent();
-        void Update();
-        void Draw();
-        void EventHandler();
-        void ChangeState(GameState *state);
-        void PushState(GameState *state);
-        void PopState();
-        void DestroyInstance();
-        void ToggleFullScreen();
+    bool Initialize();
+    bool LoadContent(GameState* state);
+    void UnloadContent();
+    void Update();
+    void Draw();
+    void EventHandler();
+    void ChangeState(GameState* state);
+    void PushState(GameState* state);
+    void PopState();
+    static void DestroyInstance();
+    void ToggleFullScreen();
 
-        // Member Accessors
-        SDL_Event GetEvent();
-        bool IsRunning();
-        void StopRunning();
-        SDL_Window* GetWindow();
-        SDL_Surface* GetSurface();
-        int GetScreenWidth();
-        int GetScreenHeight();
-        int GetMaxFPS();
-        void SetMaxFPS(int newFPS);
-        float GetAspectRatio();
+    // Member Accessors
+    SDL_Event GetEvent() const;
+    bool IsRunning() const;
+    void StopRunning();
+    SDL_Window* GetWindow() const;
+    SDL_Surface* GetSurface() const;
+    int GetScreenWidth() const;
+    int GetScreenHeight() const;
+    int GetMaxFPS() const;
+    void SetMaxFPS(int newFPS);
+    float GetAspectRatio() const;
 
-        std::vector<GameState *> GameStates; //GameState stack
+    std::vector<GameState *> GameStates; //GameState stack
 
-        std::chrono::time_point<std::chrono::high_resolution_clock> previousTime, currentTime;
-        float GetTimeDelta();
+    std::chrono::time_point<std::chrono::high_resolution_clock> previousTime, currentTime;
+    float GetTimeDelta();
 
-    private:
+private:
 
-        static Game *inst;
+    static Game* inst;
 
-        Game();
-        ~Game(){};
+    Game();
 
-        bool isRunning;
-        bool isFullscreen;
-        std::string caption;
-        SDL_Window*  window;
-        SDL_Surface* screenSurface;
-        SDL_Event event;
-        SDL_GLContext context;
+    ~Game()
+    {
+    };
 
-        int screenWidth;
-        int screenHeight;
+    bool isRunning;
+    bool isFullscreen;
+    std::string caption;
+    SDL_Window* window;
+    SDL_Surface* screenSurface;
+    SDL_Event event;
+    SDL_GLContext context;
 
-        int maxFPS;
+    int screenWidth;
+    int screenHeight;
 
-        SDL_DisplayMode currentDisplayMode;
+    int maxFPS;
 
+    SDL_DisplayMode currentDisplayMode;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class GameState
 {
-    public:
-        virtual void Initialize()   = 0;
-        virtual void Finalize()     = 0;
+public:
+    virtual ~GameState() {};
 
-        virtual void Pause()        = 0;
-        virtual void Resume()       = 0;
+    virtual void Initialize() = 0;
+    virtual void Finalize() = 0;
 
-        virtual void HandleEvents() = 0;
-        virtual void Draw()         = 0;
-        virtual void Update()       = 0;
+    virtual void Pause() = 0;
+    virtual void Resume() = 0;
 
-        void ChangeState(GameState *state)
-        {
-            Game::GetInstance()->ChangeState(state);
-        }
+    virtual void HandleEvents() = 0;
+    virtual void Draw() = 0;
+    virtual void Update() = 0;
+
+    static void ChangeState(GameState* state)
+    {
+        Game::GetInstance()->ChangeState(state);
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif
+

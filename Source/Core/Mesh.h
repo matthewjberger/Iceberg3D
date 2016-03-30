@@ -14,20 +14,23 @@ struct Vertex
 
 class Mesh
 {
-    public:
-        // Mesh Data
-        std::vector<Vertex> vertices;
+public:
+    // Mesh Data
+    std::vector<Vertex> vertices;
 
-        // Functions
-        Mesh(std::vector<Vertex> _vertices);
-        void Draw();
+    // Functions
+    Mesh(std::vector<Vertex> _vertices);
+    ~Mesh();
 
-        void SetupMesh();
-        void Free();
+    void draw() const;
 
-    private:
-        VAO meshVAO;
-        VBO meshVBO;
+    void setup_mesh();
+    void free();
+
+private:
+    VAO meshVAO;
+    VBO meshVBO;
 };
 
 #endif
+

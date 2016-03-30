@@ -6,7 +6,12 @@ Mesh::Mesh(vector<Vertex> _vertices)
     vertices = _vertices;
 }
 
-void Mesh::Draw()
+Mesh::~Mesh()
+{
+    free();
+}
+
+void Mesh::draw() const
 {
     // Render the mesh
     meshVAO.bind();
@@ -14,29 +19,29 @@ void Mesh::Draw()
     meshVAO.unbind();
 }
 
-void Mesh::SetupMesh()
+void Mesh::setup_mesh()
 {
     meshVAO.create();
     meshVBO.create();
 
     meshVAO.bind();
 
-        meshVBO.bind();
-        meshVBO.add_data(&vertices.front(), sizeof(Vertex) * vertices.size());
-        meshVBO.upload_data();
+    meshVBO.bind();
+    meshVBO.add_data(&vertices.front(), sizeof(Vertex) * vertices.size());
+    meshVBO.upload_data();
 
-        // Vertex Positions
-        meshVAO.enable_attribute(0);
-        meshVAO.configure_attribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
+    // Vertex Positions
+    meshVAO.enable_attribute(0);
+    meshVAO.configure_attribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
 
-        // Vertex Texture Coordinates
-        meshVAO.enable_attribute(1);
-        meshVAO.configure_attribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
+    // Vertex Texture Coordinates
+    meshVAO.enable_attribute(1);
+    meshVAO.configure_attribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
 
     meshVAO.unbind();
 }
 
-void Mesh::Free()
+void Mesh::free()
 {
     meshVAO.free();
     meshVBO.free();

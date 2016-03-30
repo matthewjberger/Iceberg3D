@@ -5,8 +5,8 @@ Shader::Shader()
 {
     // Initialize variables
     shaderID = 0;
-    type     = 0;
-    loaded   = false;
+    type = 0;
+    loaded = false;
 }
 
 Shader::~Shader()
@@ -54,14 +54,13 @@ bool Shader::Load(std::string path, GLuint shaderType)
         file.seekg(0, ios::end);
 
         // Set string size to length of file
-        shaderSource.reserve((unsigned int)file.tellg());
+        shaderSource.reserve(static_cast<unsigned int>(file.tellg()));
 
         // Reset cursor to beginning of file
         file.seekg(0, ios::beg);
 
         // Read in file as one string
         shaderSource.assign((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
-
     }
     else
     {
@@ -109,7 +108,7 @@ bool Shader::Load(std::string path, GLuint shaderType)
     // Set type
     type = shaderType;
 
-    // loaded succesfully
+    // loaded successfully
     loaded = true;
 
     // Return success

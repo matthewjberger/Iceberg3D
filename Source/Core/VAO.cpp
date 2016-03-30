@@ -25,7 +25,7 @@ void VAO::bind() const
     glBindVertexArray(vertexArray);
 }
 
-void VAO::unbind() 
+void VAO::unbind()
 {
     glBindVertexArray(0);
 }
@@ -41,7 +41,8 @@ void VAO::disable_attribute(GLint location)
 }
 
 void VAO::configure_attribute(GLuint index, GLint size, GLenum type,
-                                GLboolean normalized, GLsizei stride, const GLvoid* pointer)
+                              GLboolean normalized, GLsizei stride, const GLvoid* pointer)
 {
     glVertexAttribPointer(index, size, type, normalized, stride, pointer);
 }
+

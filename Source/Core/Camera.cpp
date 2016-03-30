@@ -5,7 +5,7 @@ using namespace std;
 using namespace glm;
 
 // Grab the game instance
-Game *game = Game::GetInstance();
+Game* game = Game::GetInstance();
 
 Camera::Camera(vec3 position_, glm::vec3 focusPoint, float speed_)
 {
@@ -34,8 +34,8 @@ Camera::Camera(vec3 position_, glm::vec3 focusPoint, float speed_)
 void Camera::calculate_vectors(int mouseX_, int mouseY_)
 {
     // up_date angles
-    horizontalAngle_ += yawSensitivity_   * float((game->GetScreenWidth() / 2) - mouseX_);
-    verticalAngle_   += pitchSensitivity_ * float((game->GetScreenHeight() / 2) - mouseY_);
+    horizontalAngle_ += yawSensitivity_ * float((game->GetScreenWidth() / 2) - mouseX_);
+    verticalAngle_ += pitchSensitivity_ * float((game->GetScreenHeight() / 2) - mouseY_);
 
     // 1.55f radians is 89 degrees, which is a reasonable vertical constraint
     if (verticalAngle_ > 1.55f)
@@ -43,19 +43,19 @@ void Camera::calculate_vectors(int mouseX_, int mouseY_)
     else if (verticalAngle_ < -1.55f)
         verticalAngle_ = -1.55f;
 
-    // Set new direction_ by converting spherical coordinates to cartesian
+    // Set new direction_ by converting spherical coordinates to Cartesian
     direction_ = vec3(
         cos(verticalAngle_) * sin(horizontalAngle_),
         sin(verticalAngle_),
         cos(verticalAngle_) * cos(horizontalAngle_)
-        );
+    );
 
     // Calculate right_ vector
     right_ = vec3(
         sin(horizontalAngle_ - pi<float>() / 2),
         0,
         cos(horizontalAngle_ - pi<float>() / 2)
-        );
+    );
 
     // Calculate up_ vector
     up_ = cross(right_, direction_);
@@ -69,7 +69,7 @@ void Camera::update()
     }
 
     // Get keyboard state
-    const Uint8 *keystates = SDL_GetKeyboardState(nullptr);
+    const Uint8* keystates = SDL_GetKeyboardState(nullptr);
 
     // Hide the mouse
     SDL_ShowCursor(SDL_DISABLE);
@@ -79,32 +79,32 @@ void Camera::update()
 
     // Reset mouse to center of the screen
     SDL_WarpMouseInWindow(game->GetWindow(), game->GetScreenWidth() / 2, game->GetScreenHeight() / 2);
-    
+
     // Calculate up_, right_, and direction_ vectors
     calculate_vectors(mouseX_, mouseY_);
 
     // Move forward if 'W' is pressed
     if (keystates[SDL_SCANCODE_W])
     {
-        position_ += direction_*speed_;
+        position_ += direction_ * speed_;
     }
 
     // Move backward if 'S' is pressed
     if (keystates[SDL_SCANCODE_S])
     {
-        position_ -= direction_*speed_;
+        position_ -= direction_ * speed_;
     }
 
     // Strafe left if 'D' is pressed
     if (keystates[SDL_SCANCODE_D])
     {
-        position_ += right_*speed_;
+        position_ += right_ * speed_;
     }
 
     // Strafe right_ if 'A' is pressed
     if (keystates[SDL_SCANCODE_A])
     {
-        position_ -= right_*speed_;
+        position_ -= right_ * speed_;
     }
 
     projectionMatrix_ = perspective(initialFOV_, game->GetAspectRatio(), 0.1f, 1000.0f);
@@ -148,3 +148,4 @@ glm::mat4 Camera::view_matrix() const
 {
     return viewMatrix_;
 }
+

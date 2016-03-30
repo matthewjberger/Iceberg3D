@@ -3,30 +3,30 @@
 using namespace std;
 using namespace glm;
 
-Game *Game::inst = 0;
+Game* Game::inst = nullptr;
 
 Game::Game()
 {
     // Initialize game variables and settings
-    isRunning     = true;
-    isFullscreen  = false;
+    isRunning = true;
+    isFullscreen = false;
 
-    caption       = "Iceberg3D";
+    caption = "Iceberg3D";
 
-    window        = nullptr;
+    window = nullptr;
     screenSurface = nullptr;
 
-    screenWidth   = 640;
-    screenHeight  = 480;
+    screenWidth = 640;
+    screenHeight = 480;
 
-    maxFPS        = 60;
+    maxFPS = 60;
 
     previousTime = std::chrono::high_resolution_clock::now();
 }
 
-Game *Game::GetInstance()
+Game* Game::GetInstance()
 {
-    if (inst == 0)
+    if (inst == nullptr)
     {
         inst = new Game();
     }
@@ -42,13 +42,12 @@ bool Game::Initialize()
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        printf("SDL could not be initialized! SDL_Error: %s", SDL_GetError() );
+        printf("SDL could not be initialized! SDL_Error: %s", SDL_GetError());
 
         return false;
     }
     else
     {
-
 #ifdef VIRTUAL_MACHINE
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
@@ -109,12 +108,11 @@ bool Game::Initialize()
 
                 if (glewError != GLEW_OK)
                 {
-                    printf("Error initializing GLEW! %s \n", glewGetErrorString(glewError));
+                    printf("Error initializing GLEW! %p \n", glewGetErrorString(glewError));
 
                     return false;
                 }
 
-                
                 // Use Vsync
                 if (SDL_GL_SetSwapInterval(1) < 0)
                 {
@@ -123,12 +121,11 @@ bool Game::Initialize()
                     return false;
                 }
 
-
                 // Initialize screen surface
                 screenSurface = SDL_GetWindowSurface(window);
 
                 // Initialize Sub Systems
-                if(TTF_Init() != 0)
+                if (TTF_Init() != 0)
                 {
                     printf("Error initializing SDL_ttf! %s \n", TTF_GetError());
 
@@ -141,7 +138,7 @@ bool Game::Initialize()
     return true;
 }
 
-bool Game::LoadContent(GameState *state)
+bool Game::LoadContent(GameState* state)
 {
     //-- Load game content here
 
@@ -154,7 +151,6 @@ bool Game::LoadContent(GameState *state)
 
 void Game::UnloadContent()
 {
-
     // Release game content, Free Surfaces, Close Libraries
     if (!GameStates.empty())
     {
@@ -167,14 +163,15 @@ void Game::UnloadContent()
     //Mix_CloseAudio();
     // Destroy Window
 
-    SDL_DestroyWindow( window );
-    window   = nullptr;
+    SDL_DestroyWindow(window);
+    window = nullptr;
 
     // Quit subsystems
     TTF_Quit();
     SDL_Quit();
 }
-void Game::ChangeState(GameState *state)
+
+void Game::ChangeState(GameState* state)
 {
     // If there is a state, clean it up and pop it off
     if (!GameStates.empty())
@@ -188,7 +185,7 @@ void Game::ChangeState(GameState *state)
     GameStates.back()->Initialize();
 }
 
-void Game::PushState(GameState *state)
+void Game::PushState(GameState* state)
 {
     // Pause state if there is one already on stack
     if (!GameStates.empty())
@@ -218,19 +215,17 @@ void Game::Update()
 {
     // Place Update logic here
     GameStates.back()->Update();
-
 }
 
 void Game::Draw()
 {
     // Place Rendering logic here
     GameStates.back()->Draw();
-
 }
 
 void Game::EventHandler()
 {
-    while( SDL_PollEvent(&event) != 0 )
+    while (SDL_PollEvent(&event) != 0)
     {
         //Place Event Handling Functions here
         GameStates.back()->HandleEvents();
@@ -243,13 +238,13 @@ void Game::EventHandler()
         {
             switch (event.key.keysym.sym)
             {
-                case SDLK_F11:
-                    this->ToggleFullScreen();
-                    break;
+            case SDLK_F11:
+                this->ToggleFullScreen();
+                break;
 
-                case SDLK_ESCAPE:
-                    this->StopRunning();
-                    break;
+            case SDLK_ESCAPE:
+                this->StopRunning();
+                break;
             }
         }
     }
@@ -259,7 +254,7 @@ void Game::DestroyInstance()
 {
     delete inst;
 
-    inst = 0;
+    inst = nullptr;
 }
 
 void Game::ToggleFullScreen()
@@ -278,39 +273,39 @@ void Game::ToggleFullScreen()
     }
 }
 
-bool Game::IsRunning()
+bool Game::IsRunning() const
 {
     return isRunning;
 }
 
-int Game::GetMaxFPS()
+int Game::GetMaxFPS() const
 {
     return maxFPS;
 }
 
-int Game::GetScreenWidth()
+int Game::GetScreenWidth() const
 {
     return screenWidth;
 }
 
-int Game::GetScreenHeight()
+int Game::GetScreenHeight() const
 {
     return screenHeight;
 }
 
-SDL_Event Game::GetEvent()
+SDL_Event Game::GetEvent() const
 {
     return event;
 }
 
-SDL_Surface* Game::GetSurface()
+SDL_Surface* Game::GetSurface() const
 {
-    return screenSurface; // nullptr
+    return screenSurface;
 }
 
-SDL_Window* Game::GetWindow()
+SDL_Window* Game::GetWindow() const
 {
-    return window; // nullptr
+    return window;
 }
 
 void Game::SetMaxFPS(int newFPS)
@@ -325,17 +320,18 @@ void Game::StopRunning()
 
 float Game::GetTimeDelta()
 {
-    currentTime       = std::chrono::high_resolution_clock::now();
-    float returnValue = std::chrono::duration_cast< std::chrono::duration<float> >(currentTime - previousTime).count();
-    previousTime      = std::chrono::high_resolution_clock::now();
+    currentTime = std::chrono::high_resolution_clock::now();
+    float returnValue = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime - previousTime).count();
+    previousTime = std::chrono::high_resolution_clock::now();
 
     return returnValue;
 }
 
-float Game::GetAspectRatio()
+float Game::GetAspectRatio() const
 {
     // Prevent division by 0
-    float width  = float(screenWidth);
+    float width = float(screenWidth);
     float height = float(screenHeight);
-    return (height == 0) ? (width) : (width/height);
+    return (height == 0) ? (width) : (width / height);
 }
+

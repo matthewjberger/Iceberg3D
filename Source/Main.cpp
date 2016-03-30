@@ -1,12 +1,10 @@
 #include "Core/Game.h"
 #include "Program_States/IntroState.h"
 
-int main(int argc, char *args[])
+int main(int argc, char* args[])
 {
     // Create Game and debug instances
-    Game *game = Game::GetInstance();
-
-    bool fullscreen = false;
+    Game* game = Game::GetInstance();
 
     if (game->Initialize() == false)
     {
@@ -22,7 +20,6 @@ int main(int argc, char *args[])
 
     while (game->IsRunning())
     {
-
         game->EventHandler();
         game->Update();
         game->Draw();
@@ -32,9 +29,8 @@ int main(int argc, char *args[])
         // Update window
         SDL_GL_SwapWindow(game->GetWindow());
 
-        // Control framerate
+        // Control frame rate
         SDL_Delay(1000 / game->GetMaxFPS());
-
     }
 
     game->UnloadContent();
@@ -42,3 +38,4 @@ int main(int argc, char *args[])
 
     return 0;
 }
+

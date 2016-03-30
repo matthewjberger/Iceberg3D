@@ -6,7 +6,7 @@ ShaderProgram::ShaderProgram()
 {
     // Initialize variables
     programID_ = 0;
-    linked_    = false;
+    linked_ = false;
 }
 
 ShaderProgram::~ShaderProgram()
@@ -31,9 +31,9 @@ void ShaderProgram::create_program()
     programID_ = glCreateProgram();
 }
 
-bool ShaderProgram::add_shader_from_file(const string &path, GLuint shaderType) const
+bool ShaderProgram::add_shader_from_file(const string& path, GLuint shaderType) const
 {
-    Shader *newShader = new Shader();
+    Shader* newShader = new Shader();
 
     newShader->Load(path, shaderType);
 
@@ -145,13 +145,13 @@ void ShaderProgram::disuse() const
 }
 
 // Set floats
-void ShaderProgram::set_uniform(const string &name, float* values, int count) const
+void ShaderProgram::set_uniform(const string& name, float* values, int count) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniform1fv(location, count, values);
 }
 
-void ShaderProgram::set_uniform(const string &name, const float value) const
+void ShaderProgram::set_uniform(const string& name, const float value) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniform1fv(location, 1, &value);
@@ -160,77 +160,77 @@ void ShaderProgram::set_uniform(const string &name, const float value) const
 // Set vectors
 
 // vec2
-void ShaderProgram::set_uniform(const string &name, vec2* vectors, int count) const
+void ShaderProgram::set_uniform(const string& name, vec2* vectors, int count) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniform2fv(location, count, (GLfloat*)vectors); // cast vectors to GLfloat arrays
 }
 
-void ShaderProgram::set_uniform(const string &name, const vec2 &vector) const
+void ShaderProgram::set_uniform(const string& name, const vec2& vector) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniform2fv(location, 1, (GLfloat*)&vector); // cast vectors to GLfloat arrays
 }
 
 // vec3
-void ShaderProgram::set_uniform(const string &name, vec3* vectors, int count) const
+void ShaderProgram::set_uniform(const string& name, vec3* vectors, int count) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniform3fv(location, count, (GLfloat*)vectors); // cast vectors to GLfloat arrays
 }
 
-void ShaderProgram::set_uniform(const string &name, const vec3 &vector) const
+void ShaderProgram::set_uniform(const string& name, const vec3& vector) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniform3fv(location, 1, (GLfloat*)&vector); // cast vectors to GLfloat arrays
 }
 
 // vec4
-void ShaderProgram::set_uniform(const string &name, vec4* vectors, int count) const
+void ShaderProgram::set_uniform(const string& name, vec4* vectors, int count) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniform4fv(location, count, (GLfloat*)vectors); // cast vectors to GLfloat arrays
 }
 
-void ShaderProgram::set_uniform(const string &name, const vec4 &vector) const
+void ShaderProgram::set_uniform(const string& name, const vec4& vector) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniform4fv(location, 1, (GLfloat*)&vector); // cast vectors to GLfloat arrays
 }
 
 // Set 4x4 matrices
-void ShaderProgram::set_uniform(const string &name, mat4* matrices, int count) const
+void ShaderProgram::set_uniform(const string& name, mat4* matrices, int count) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniformMatrix4fv(location, count, GL_FALSE, (GLfloat*)matrices);
 }
 
-void ShaderProgram::set_uniform(const string &name, const mat4 &matrix) const
+void ShaderProgram::set_uniform(const string& name, const mat4& matrix) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)&matrix);
 }
 
-// Set ints
-void ShaderProgram::set_uniform(const string &name, int* values, int count) const
+// Set integers
+void ShaderProgram::set_uniform(const string& name, int* values, int count) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniform1iv(location, count, values);
 }
 
-void ShaderProgram::set_uniform(const string &name, const int &value) const
+void ShaderProgram::set_uniform(const string& name, const int& value) const
 {
     int location = glGetUniformLocation(programID_, name.c_str());
     glUniform1i(location, value);
 }
 
-GLint ShaderProgram::get_attribute_location(const string &attributeName) const
+GLint ShaderProgram::get_attribute_location(const string& attributeName) const
 {
     GLint location = glGetAttribLocation(programID_, const_cast<const char*>(attributeName.c_str()));
     return location;
 }
 
-GLint ShaderProgram::get_uniform_location(const string &uniformName) const
+GLint ShaderProgram::get_uniform_location(const string& uniformName) const
 {
     GLint location = glGetUniformLocation(programID_, const_cast<const char*>(uniformName.c_str()));
     return location;
@@ -240,3 +240,4 @@ GLuint ShaderProgram::id() const
 {
     return programID_;
 }
+
