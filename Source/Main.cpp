@@ -6,13 +6,13 @@ int main(int argc, char* args[])
     // Create Game and debug instances
     Game* game = Game::GetInstance();
 
-    if (game->Initialize() == false)
+    if (game->initialize() == false)
     {
         printf("Failed to Initialize!");
         return 1;
     }
 
-    if (game->LoadContent(IntroState::GetInstance()) == false)
+    if (game->load_content(IntroState::GetInstance()) == false)
     {
         printf("Failed to load content");
         return 1;
@@ -20,9 +20,9 @@ int main(int argc, char* args[])
 
     while (game->IsRunning())
     {
-        game->EventHandler();
-        game->Update();
-        game->Draw();
+        game->HandleEvent();
+        game->update();
+        game->draw();
 
         //SDL_UpdateWindowSurface( game->GetWindow() );
 
@@ -33,8 +33,8 @@ int main(int argc, char* args[])
         SDL_Delay(1000 / game->GetMaxFPS());
     }
 
-    game->UnloadContent();
-    game->DestroyInstance();
+    game->unload_content();
+    game->destroy_instance();
 
     return 0;
 }

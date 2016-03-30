@@ -4,39 +4,39 @@ using namespace std;
 Shader::Shader()
 {
     // Initialize variables
-    shaderID = 0;
-    type = 0;
-    loaded = false;
+    id_ = 0;
+    type_ = 0;
+    loaded_ = false;
 }
 
 Shader::~Shader()
 {
     // Delete the shader
-    DeleteShader();
+    delete_shader();
 }
 
-void Shader::DeleteShader()
+void Shader::delete_shader()
 {
-    if (IsLoaded())
+    if (loaded())
     {
         // Delete the shader
-        glDeleteShader(shaderID);
+        glDeleteShader(id_);
 
         // Set shaderID to 0
-        shaderID = 0;
+        id_ = 0;
 
         // Set loaded to false
-        loaded = false;
+        loaded_ = false;
     }
 }
 
-bool Shader::Load(std::string path, GLuint shaderType)
+bool Shader::load(std::string path, GLuint shadertype_)
 {
     //  Success flag
     GLint compiled = GL_FALSE;
 
-    // Create a shader of the correct type
-    shaderID = glCreateShader(shaderType);
+    // Create a shader of the correct type_
+    id_ = glCreateShader(shadertype_);
 
     // Input stream
     ifstream file(path.c_str());
@@ -78,60 +78,60 @@ bool Shader::Load(std::string path, GLuint shaderType)
     file.close();
 
     // Set shader source
-    glShaderSource(shaderID, 1, (const GLchar**)&shaderSource, nullptr);
+    glShaderSource(id_, 1, (const GLchar**)&shaderSource, nullptr);
 
     // Compile shader
-    glCompileShader(shaderID);
+    glCompileShader(id_);
 
     // Check if shader compiled successfully
-    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compiled);
+    glGetShaderiv(id_, GL_COMPILE_STATUS, &compiled);
 
     // If compilation failed
     if (compiled != GL_TRUE)
     {
         // Print an error message
-        printf("Couldn't compile shader %d\n\n Source code\n%s\n", shaderID, shaderSource.c_str());
+        printf("Couldn't compile shader %d\n\n Source code\n%s\n", id_, shaderSource.c_str());
 
         // Print shader log
-        PrintLog();
+        print_log();
 
         // Delete the shader
-        glDeleteShader(shaderID);
+        glDeleteShader(id_);
 
         // Set shaderID to 0
-        shaderID = 0;
+        id_ = 0;
 
         // Return false
         return false;
     }
 
-    // Set type
-    type = shaderType;
+    // Set type_
+    type_ = shadertype_;
 
     // loaded successfully
-    loaded = true;
+    loaded_ = true;
 
     // Return success
     return true;
 }
 
-void Shader::PrintLog()
+void Shader::print_log()
 {
     //Make sure name is shader
-    if (glIsShader(shaderID))
+    if (glIsShader(id_))
     {
         //Shader log length
         int infoLogLength = 0;
         int maxLength = infoLogLength;
 
         //Get info string length
-        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &maxLength);
+        glGetShaderiv(id_, GL_INFO_LOG_LENGTH, &maxLength);
 
         //Allocate string
         char* infoLog = new char[maxLength];
 
         //Get info log
-        glGetShaderInfoLog(shaderID, maxLength, &infoLogLength, infoLog);
+        glGetShaderInfoLog(id_, maxLength, &infoLogLength, infoLog);
 
         if (infoLogLength > 0)
         {
@@ -144,17 +144,17 @@ void Shader::PrintLog()
     }
     else
     {
-        printf("Name %d is not a shader\n", shaderID);
+        printf("Name %d is not a shader\n", id_);
     }
 }
 
-bool Shader::IsLoaded()
+bool Shader::loaded()
 {
-    return loaded;
+    return loaded_;
 }
 
-GLuint Shader::GetID()
+GLuint Shader::id()
 {
-    return shaderID;
+    return id_;
 }
 

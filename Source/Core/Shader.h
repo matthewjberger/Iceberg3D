@@ -11,30 +11,30 @@ public:
     ~Shader();
 
     // Loads shader from file
-    bool Load(std::string path, GLuint shaderType);
+    bool load(std::string path, GLuint shaderType);
 
     // Deletes shader
-    void DeleteShader();
+    void delete_shader();
 
     // Print log
-    void PrintLog();
+    void print_log();
 
     // Loaded if shader was compiled successfully
-    bool IsLoaded();
+    bool loaded();
 
     // Returns ID
-    GLuint GetID();
+    GLuint id();
 
 private:
 
     // Shader ID
-    GLuint shaderID;
+    GLuint id_;
 
     // Shader type
-    GLuint type;
+    GLuint type_;
 
     // Load success flag
-    bool loaded;
+    bool loaded_;
 };
 
 #endif

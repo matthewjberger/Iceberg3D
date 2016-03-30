@@ -35,11 +35,11 @@ bool ShaderProgram::add_shader_from_file(const string& path, GLuint shaderType) 
 {
     Shader* newShader = new Shader();
 
-    newShader->Load(path, shaderType);
+    newShader->load(path, shaderType);
 
     add_shader(newShader);
 
-    newShader->DeleteShader();
+    newShader->delete_shader();
 
     delete newShader;
 
@@ -50,7 +50,7 @@ bool ShaderProgram::add_shader_from_file(const string& path, GLuint shaderType) 
 
 bool ShaderProgram::add_shader(Shader* shader) const
 {
-    if (!shader->IsLoaded())
+    if (!shader->loaded())
     {
         // Print error message
         printf("Error: Tried to attach shader that wasn't loaded!\n");
@@ -59,7 +59,7 @@ bool ShaderProgram::add_shader(Shader* shader) const
         return false;
     }
 
-    glAttachShader(programID_, shader->GetID());
+    glAttachShader(programID_, shader->id());
 
     // Return status
     return true;

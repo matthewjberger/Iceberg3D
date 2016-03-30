@@ -18,18 +18,20 @@ public:
 
     static Game* GetInstance();
 
-    bool Initialize();
-    bool LoadContent(GameState* state);
-    void UnloadContent();
-    void Update();
-    void Draw();
-    void EventHandler();
-    void ChangeState(GameState* state);
-    void PushState(GameState* state);
-    void PopState();
-    static void DestroyInstance();
-    void ToggleFullScreen();
+    bool initialize();
+    bool load_content(GameState* state);
+    void unload_content();
+    void update();
+    void draw();
+    void HandleEvent();
+    void change_state(GameState* state);
+    void push_state(GameState* state);
+    void pop_state();
+    static void destroy_instance();
+    void toggle_fullscreen();
 
+    // TODO: Refactor class to make these unnecessary
+    // using the component pattern
     // Member Accessors
     SDL_Event GetEvent() const;
     bool IsRunning() const;
@@ -73,7 +75,6 @@ private:
     SDL_DisplayMode currentDisplayMode;
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class GameState
 {
@@ -92,10 +93,9 @@ public:
 
     static void ChangeState(GameState* state)
     {
-        Game::GetInstance()->ChangeState(state);
+        Game::GetInstance()->change_state(state);
     }
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif
 

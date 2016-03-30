@@ -34,7 +34,7 @@ Game* Game::GetInstance()
     return inst;
 }
 
-bool Game::Initialize()
+bool Game::initialize()
 {
     // Set caption
     caption = "Matthew Berger's Game Engine";
@@ -138,18 +138,18 @@ bool Game::Initialize()
     return true;
 }
 
-bool Game::LoadContent(GameState* state)
+bool Game::load_content(GameState* state)
 {
     //-- Load game content here
 
-    ChangeState(state);
+    change_state(state);
 
     //--
 
     return true;
 }
 
-void Game::UnloadContent()
+void Game::unload_content()
 {
     // Release game content, Free Surfaces, Close Libraries
     if (!GameStates.empty())
@@ -171,7 +171,7 @@ void Game::UnloadContent()
     SDL_Quit();
 }
 
-void Game::ChangeState(GameState* state)
+void Game::change_state(GameState* state)
 {
     // If there is a state, clean it up and pop it off
     if (!GameStates.empty())
@@ -185,7 +185,7 @@ void Game::ChangeState(GameState* state)
     GameStates.back()->Initialize();
 }
 
-void Game::PushState(GameState* state)
+void Game::push_state(GameState* state)
 {
     // Pause state if there is one already on stack
     if (!GameStates.empty())
@@ -198,7 +198,7 @@ void Game::PushState(GameState* state)
     GameStates.back()->Initialize();
 }
 
-void Game::PopState()
+void Game::pop_state()
 {
     if (!GameStates.empty())
     {
@@ -211,19 +211,19 @@ void Game::PopState()
     }
 }
 
-void Game::Update()
+void Game::update()
 {
     // Place Update logic here
     GameStates.back()->Update();
 }
 
-void Game::Draw()
+void Game::draw()
 {
     // Place Rendering logic here
     GameStates.back()->Draw();
 }
 
-void Game::EventHandler()
+void Game::HandleEvent()
 {
     while (SDL_PollEvent(&event) != 0)
     {
@@ -239,7 +239,7 @@ void Game::EventHandler()
             switch (event.key.keysym.sym)
             {
             case SDLK_F11:
-                this->ToggleFullScreen();
+                this->toggle_fullscreen();
                 break;
 
             case SDLK_ESCAPE:
@@ -250,14 +250,14 @@ void Game::EventHandler()
     }
 }
 
-void Game::DestroyInstance()
+void Game::destroy_instance()
 {
     delete inst;
 
     inst = nullptr;
 }
 
-void Game::ToggleFullScreen()
+void Game::toggle_fullscreen()
 {
     if (isFullscreen == false)
     {
