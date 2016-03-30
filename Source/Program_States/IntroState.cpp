@@ -1,17 +1,10 @@
 #include "IntroState.h"
 #include "../Core/GlobalIncludes.h"
 
-void IntroState::Pause()
-{
-}
+void IntroState::pause(){}
+void IntroState::resume(){}
 
-void IntroState::Resume()
-{
-}
-
-IntroState* IntroState::inst = nullptr;
-
-void IntroState::Initialize()
+void IntroState::initialize()
 {
     // Initialize resources
     model = new Model("Assets/house/house.obj");
@@ -25,7 +18,7 @@ void IntroState::Initialize()
     shaderProgram.link_program();
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    camera = new Camera(glm::vec3(0.0, 8.0, -8.0));
+    camera = new Camera(game_, glm::vec3(0.0, 8.0, -8.0));
     camera->enable_input();
 
     skybox = new Skybox("Assets/ame_starfield/starfield_rt.tga",
@@ -64,7 +57,7 @@ void IntroState::Initialize()
     }
 }
 
-void IntroState::Finalize()
+void IntroState::finalize()
 {
     // Free resources
     model->Free();
@@ -76,17 +69,17 @@ void IntroState::Finalize()
     skybox = nullptr;
 }
 
-void IntroState::HandleEvents()
+void IntroState::handle_events()
 {
     // Handle input logic
 }
 
-void IntroState::Update()
+void IntroState::update()
 {
     // Update logic
     static float angle = 0.0f;
-    angle += Game::GetInstance()->GetTimeDelta() * M_PI / 2;
-    camera->update();
+    angle += game_->GetTimeDelta() * M_PI / 2;
+    camera->update(game_);
     modelMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 1.0f, 1.0f));
     modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));
     glm::mat4 mvp = camera->make_mvp(modelMatrix);
@@ -94,7 +87,7 @@ void IntroState::Update()
     shaderProgram.set_uniform("sampler2D", 0);
 }
 
-void IntroState::Draw()
+void IntroState::draw()
 {
     // Clear the screen to Cornflower Blue
     glClearColor(0.392f, 0.584f, 0.93f, 1.0);

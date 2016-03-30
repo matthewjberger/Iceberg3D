@@ -7,32 +7,21 @@
 class IntroState : public GameState
 {
 public:
-    void Initialize() override;
-    void Finalize() override;
 
-    void Pause() override;
-    void Resume() override;
+    IntroState(Game* game) : GameState(game){}
+    ~IntroState(){}
 
-    void Draw() override;
-    void HandleEvents() override;
-    void Update() override;
+    void initialize() override;
+    void finalize() override;
 
-    static IntroState* GetInstance()
-    {
-        if (inst == nullptr) inst = new IntroState();
-        return inst;
-    }
+    void pause() override;
+    void resume() override;
+
+    void draw() override;
+    void handle_events() override;
+    void update() override;
 
 private:
-    IntroState()
-    {
-    }
-
-    ~IntroState()
-    {
-    }
-
-    static IntroState* inst;
 
     /**************************/
     /* Place State Items here */

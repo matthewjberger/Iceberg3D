@@ -16,7 +16,8 @@ class Game
 {
 public:
 
-    static Game* GetInstance();
+    Game();
+    ~Game() {};
 
     bool initialize();
     bool load_content(GameState* state);
@@ -27,7 +28,6 @@ public:
     void change_state(GameState* state);
     void push_state(GameState* state);
     void pop_state();
-    static void destroy_instance();
     void toggle_fullscreen();
 
     // TODO: Refactor class to make these unnecessary
@@ -51,14 +51,6 @@ public:
 
 private:
 
-    static Game* inst;
-
-    Game();
-
-    ~Game()
-    {
-    };
-
     bool isRunning;
     bool isFullscreen;
     std::string caption;
@@ -75,27 +67,33 @@ private:
     SDL_DisplayMode currentDisplayMode;
 };
 
-
 class GameState
 {
+
 public:
     virtual ~GameState() {};
 
-    virtual void Initialize() = 0;
-    virtual void Finalize() = 0;
+    virtual void initialize() = 0;
+    virtual void finalize() = 0;
 
-    virtual void Pause() = 0;
-    virtual void Resume() = 0;
+    virtual void pause() = 0;
+    virtual void resume() = 0;
 
-    virtual void HandleEvents() = 0;
-    virtual void Draw() = 0;
-    virtual void Update() = 0;
+    virtual void handle_events() = 0;
+    virtual void draw() = 0;
+    virtual void update() = 0;
 
-    static void ChangeState(GameState* state)
+    void ChangeState(GameState* state)
     {
-        Game::GetInstance()->change_state(state);
+        game_->change_state(state);
     }
+
+protected:
+    GameState(Game* game) : game_(game){};
+    Game* game_;
+
 };
+
 
 #endif
 

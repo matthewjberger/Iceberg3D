@@ -4,7 +4,8 @@
 int main(int argc, char* args[])
 {
     // Create Game and debug instances
-    Game* game = Game::GetInstance();
+    Game* game = new Game();
+    IntroState* intro = new IntroState(game);
 
     if (game->initialize() == false)
     {
@@ -12,7 +13,7 @@ int main(int argc, char* args[])
         return 1;
     }
 
-    if (game->load_content(IntroState::GetInstance()) == false)
+    if (game->load_content(intro) == false)
     {
         printf("Failed to load content");
         return 1;
@@ -34,7 +35,9 @@ int main(int argc, char* args[])
     }
 
     game->unload_content();
-    game->destroy_instance();
+
+    delete game;
+    game = nullptr;
 
     return 0;
 }

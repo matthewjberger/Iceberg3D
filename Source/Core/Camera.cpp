@@ -4,10 +4,7 @@
 using namespace std;
 using namespace glm;
 
-// Grab the game instance
-Game* game = Game::GetInstance();
-
-Camera::Camera(vec3 position_, glm::vec3 focusPoint, float speed_)
+Camera::Camera(Game* game, vec3 position_, glm::vec3 focusPoint, float speed_)
 {
     // Initialize variables
     direction_ = vec3(0, 0, 0);
@@ -26,12 +23,12 @@ Camera::Camera(vec3 position_, glm::vec3 focusPoint, float speed_)
 
     inputEnabled_ = false;
 
-    calculate_vectors(mouseX_, mouseY_);
-    LookAt(position_, focusPoint, up_);
+    calculate_vectors(game, mouseX_, mouseY_);
+    LookAt(game, position_, focusPoint, up_);
 }
 
 // Calculate direction_, right_, and up_ vectors based on mouse offsets interpreted as angles
-void Camera::calculate_vectors(int mouseX_, int mouseY_)
+void Camera::calculate_vectors(Game* game, int mouseX_, int mouseY_)
 {
     // up_date angles
     horizontalAngle_ += yawSensitivity_ * float((game->GetScreenWidth() / 2) - mouseX_);
@@ -61,7 +58,7 @@ void Camera::calculate_vectors(int mouseX_, int mouseY_)
     up_ = cross(right_, direction_);
 }
 
-void Camera::update()
+void Camera::update(Game *game)
 {
     if (!inputEnabled_)
     {
@@ -81,7 +78,7 @@ void Camera::update()
     SDL_WarpMouseInWindow(game->GetWindow(), game->GetScreenWidth() / 2, game->GetScreenHeight() / 2);
 
     // Calculate up_, right_, and direction_ vectors
-    calculate_vectors(mouseX_, mouseY_);
+    calculate_vectors(game, mouseX_, mouseY_);
 
     // Move forward if 'W' is pressed
     if (keystates[SDL_SCANCODE_W])
@@ -132,9 +129,9 @@ void Camera::enable_input(bool enabled)
     inputEnabled_ = enabled;
 }
 
-void Camera::LookAt(glm::vec3 position_, glm::vec3 focusPoint, glm::vec3 up_)
+void Camera::LookAt(Game *game, glm::vec3 position_, glm::vec3 focusPoint, glm::vec3 up_)
 {
-    this->projectionMatrix_ = perspective(initialFOV_, Game::GetInstance()->GetAspectRatio(), 0.1f, 1000.0f);
+    this->projectionMatrix_ = perspective(initialFOV_, game->GetAspectRatio(), 0.1f, 1000.0f);
     this->position_ = position_;
     this->viewMatrix_ = glm::lookAt(position_, focusPoint, up_);
 }

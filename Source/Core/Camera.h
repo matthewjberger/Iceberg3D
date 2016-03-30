@@ -2,18 +2,19 @@
 #define CAMERA_H
 
 #include "GlobalIncludes.h"
+#include "Game.h"
 
 class Camera
 {
 public:
 
-    Camera(glm::vec3 position = glm::vec3(0.0f), glm::vec3 focusPoint = glm::vec3(0.0f), float speed = 0.7);
+    Camera(Game* game, glm::vec3 position = glm::vec3(0.0f), glm::vec3 focusPoint = glm::vec3(0.0f), float speed = 0.7);
 
     ~Camera()
     {
     }
 
-    void update();
+    void update(Game *game);
 
     void enable_input(bool enabled = true);
 
@@ -24,11 +25,11 @@ public:
     float pitch() const;
     float yaw() const;
 
-    void LookAt(glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up);
+    void LookAt(Game* game, glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up);
 
 private:
 
-    void calculate_vectors(int mouseX, int mouseY);
+    void calculate_vectors(Game* game, int mouseX, int mouseY);
 
     bool inputEnabled_;
 

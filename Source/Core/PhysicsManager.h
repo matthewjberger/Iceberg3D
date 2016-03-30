@@ -2,6 +2,7 @@
 #define PHYSICS_MANAGER_H
 
 #include "GlobalIncludes.h"
+#include "Game.h"
 
 enum collisionTypes
 {
@@ -26,7 +27,7 @@ public:
     glm::mat4 GetModelMatrixAtIndex(int index) const;
     int GetNumObjects() const;
 
-    void Update() const;
+    void Update(Game *game) const;
 
     void ApplyForceAtIndex(btVector3* force, int index) const;
 
