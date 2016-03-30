@@ -22,6 +22,21 @@ Game::Game()
     previousTime = std::chrono::high_resolution_clock::now();
 }
 
+Game::~Game()
+{
+    // Free any remaining game states
+    while(!GameStates.empty())
+    {
+        if(GameStates.back() != nullptr)
+        {
+            delete GameStates.back();
+            GameStates.back() = nullptr;
+        }
+
+        GameStates.pop_back();
+    }
+}
+
 bool Game::initialize()
 {
     // Set caption

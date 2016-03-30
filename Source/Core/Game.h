@@ -17,7 +17,7 @@ class Game
 public:
 
     Game();
-    ~Game() {};
+    ~Game();
 
     bool initialize();
     bool load_content(GameState* state);
