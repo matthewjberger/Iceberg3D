@@ -6,18 +6,18 @@ using namespace glm;
 Game::Game()
 {
     // Initialize game variables and settings
-    isRunning = true;
-    isFullscreen = false;
+    running_ = true;
+    fullscreen_ = false;
 
-    caption = "Iceberg3D";
+    caption_ = "Iceberg3D";
 
-    window = nullptr;
-    screenSurface = nullptr;
+    window_ = nullptr;
+    screenSurface_ = nullptr;
 
-    screenWidth = 640;
-    screenHeight = 480;
+    screenWidth_ = 640;
+    screenHeight_ = 480;
 
-    maxFPS = 60;
+    fps_ = 60;
 
     previousTime = std::chrono::high_resolution_clock::now();
 }
@@ -40,7 +40,7 @@ Game::~Game()
 bool Game::initialize()
 {
     // Set caption
-    caption = "Matthew Berger's Game Engine";
+    caption_ = "Matthew Berger's Game Engine";
 
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -62,16 +62,16 @@ bool Game::initialize()
 #endif
 
         // Create the window
-        if (isFullscreen == true)
+        if (fullscreen_ == true)
         {
-            window = SDL_CreateWindow(caption.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth, screenHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP);
+            window_ = SDL_CreateWindow(caption_.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth_, screenHeight_, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP);
         }
-        else if (isFullscreen == false)
+        else if (fullscreen_ == false)
         {
-            window = SDL_CreateWindow(caption.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth, screenHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+            window_ = SDL_CreateWindow(caption_.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth_, screenHeight_, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
         }
 
-        if (window == nullptr)
+        if (window_ == nullptr)
         {
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 
@@ -80,9 +80,9 @@ bool Game::initialize()
         else
         {
             // Create OpenGL Context
-            context = SDL_GL_CreateContext(window);
+            context_ = SDL_GL_CreateContext(window_);
 
-            if (context == nullptr)
+            if (context_ == nullptr)
             {
                 printf("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 
@@ -125,7 +125,7 @@ bool Game::initialize()
                 }
 
                 // Initialize screen surface
-                screenSurface = SDL_GetWindowSurface(window);
+                screenSurface_ = SDL_GetWindowSurface(window_);
 
                 // Initialize Sub Systems
                 if (TTF_Init() != 0)
@@ -166,8 +166,8 @@ void Game::unload_content()
     //Mix_CloseAudio();
     // Destroy Window
 
-    SDL_DestroyWindow(window);
-    window = nullptr;
+    SDL_DestroyWindow(window_);
+    window_ = nullptr;
 
     // Quit subsystems
     TTF_Quit();
@@ -224,29 +224,35 @@ void Game::draw()
 {
     // Place Rendering logic here
     GameStates.back()->draw();
+
+    // Update the window
+    SDL_GL_SwapWindow(window_);
+
+    // TODO: implement 2D rendering with SDL as option
+    //SDL_UpdateWindowSurface( game->GetWindow() );
 }
 
-void Game::HandleEvent()
+void Game::handle_events()
 {
-    while (SDL_PollEvent(&event) != 0)
+    while (SDL_PollEvent(&event_) != 0)
     {
         //Place Event Handling Functions here
         GameStates.back()->handle_events();
 
-        if (event.type == SDL_QUIT)
+        if (event_.type == SDL_QUIT)
         {
-            this->StopRunning();
+            this->exit();
         }
-        else if (event.type == SDL_KEYDOWN)
+        else if (event_.type == SDL_KEYDOWN)
         {
-            switch (event.key.keysym.sym)
+            switch (event_.key.keysym.sym)
             {
             case SDLK_F11:
                 this->toggle_fullscreen();
                 break;
 
             case SDLK_ESCAPE:
-                this->StopRunning();
+                this->exit();
                 break;
             }
         }
@@ -255,66 +261,46 @@ void Game::HandleEvent()
 
 void Game::toggle_fullscreen()
 {
-    if (isFullscreen == false)
+    if (fullscreen_ == false)
     {
-        SDL_SetWindowFullscreen(window, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP);
+        SDL_SetWindowFullscreen(window_, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP);
 
-        isFullscreen = true;
+        fullscreen_ = true;
     }
-    else if (isFullscreen == true)
+    else if (fullscreen_ == true)
     {
-        SDL_SetWindowFullscreen(window, 0);
+        SDL_SetWindowFullscreen(window_, 0);
 
-        isFullscreen = false;
+        fullscreen_ = false;
     }
 }
 
-bool Game::IsRunning() const
+bool Game::running() const
 {
-    return isRunning;
+    return running_;
 }
 
-int Game::GetMaxFPS() const
+int Game::fps() const
 {
-    return maxFPS;
+    return fps_;
 }
 
-int Game::GetScreenWidth() const
+SDL_Window* Game::window() const
 {
-    return screenWidth;
+    return window_;
 }
 
-int Game::GetScreenHeight() const
+glm::vec2 Game::screen_dimensions() const
 {
-    return screenHeight;
+    return glm::vec2(screenWidth_, screenHeight_);
 }
 
-SDL_Event Game::GetEvent() const
+void Game::exit()
 {
-    return event;
+    running_ = false;
 }
 
-SDL_Surface* Game::GetSurface() const
-{
-    return screenSurface;
-}
-
-SDL_Window* Game::GetWindow() const
-{
-    return window;
-}
-
-void Game::SetMaxFPS(int newFPS)
-{
-    maxFPS = newFPS;
-}
-
-void Game::StopRunning()
-{
-    isRunning = false;
-}
-
-float Game::GetTimeDelta()
+float Game::time_delta()
 {
     currentTime = std::chrono::high_resolution_clock::now();
     float returnValue = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime - previousTime).count();
@@ -323,11 +309,11 @@ float Game::GetTimeDelta()
     return returnValue;
 }
 
-float Game::GetAspectRatio() const
+float Game::aspect_ratio() const
 {
     // Prevent division by 0
-    float width = float(screenWidth);
-    float height = float(screenHeight);
+    float width = float(screenWidth_);
+    float height = float(screenHeight_);
     return (height == 0) ? (width) : (width / height);
 }
 

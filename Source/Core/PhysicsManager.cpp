@@ -78,7 +78,7 @@ glm::mat4 PhysicsManager::GetModelMatrixAtIndex(int index) const
 
 void PhysicsManager::Update(Game* game) const
 {
-    dynamicsWorld->stepSimulation(game->GetTimeDelta(), 1);
+    dynamicsWorld->stepSimulation(game->time_delta(), 1);
 }
 
 void PhysicsManager::ApplyForceAtIndex(btVector3* force, int index) const

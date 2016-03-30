@@ -18,8 +18,8 @@ Camera::Camera(Game* game, vec3 position_, glm::vec3 focusPoint, float speed_)
     pitchSensitivity_ = 0.005f;
     yawSensitivity_ = 0.005f;
 
-    mouseX_ = game->GetScreenWidth() / 2;
-    mouseY_ = game->GetScreenHeight() / 2;
+    mouseX_ = game->screen_dimensions().x / 2;
+    mouseY_ = game->screen_dimensions().y / 2;
 
     inputEnabled_ = false;
 
@@ -31,8 +31,8 @@ Camera::Camera(Game* game, vec3 position_, glm::vec3 focusPoint, float speed_)
 void Camera::calculate_vectors(Game* game, int mouseX_, int mouseY_)
 {
     // up_date angles
-    horizontalAngle_ += yawSensitivity_ * float((game->GetScreenWidth() / 2) - mouseX_);
-    verticalAngle_ += pitchSensitivity_ * float((game->GetScreenHeight() / 2) - mouseY_);
+    horizontalAngle_ += yawSensitivity_ * float((game->screen_dimensions().x / 2) - mouseX_);
+    verticalAngle_ += pitchSensitivity_ * float((game->screen_dimensions().y / 2) - mouseY_);
 
     // 1.55f radians is 89 degrees, which is a reasonable vertical constraint
     if (verticalAngle_ > 1.55f)
@@ -75,7 +75,7 @@ void Camera::update(Game *game)
     SDL_GetMouseState(&mouseX_, &mouseY_);
 
     // Reset mouse to center of the screen
-    SDL_WarpMouseInWindow(game->GetWindow(), game->GetScreenWidth() / 2, game->GetScreenHeight() / 2);
+    SDL_WarpMouseInWindow(game->window(), game->screen_dimensions().x / 2, game->screen_dimensions().y / 2);
 
     // Calculate up_, right_, and direction_ vectors
     calculate_vectors(game, mouseX_, mouseY_);
@@ -104,7 +104,7 @@ void Camera::update(Game *game)
         position_ -= right_ * speed_;
     }
 
-    projectionMatrix_ = perspective(initialFOV_, game->GetAspectRatio(), 0.1f, 1000.0f);
+    projectionMatrix_ = perspective(initialFOV_, game->aspect_ratio(), 0.1f, 1000.0f);
     viewMatrix_ = lookAt(position_, position_ + direction_, up_);
 }
 
@@ -131,7 +131,7 @@ void Camera::enable_input(bool enabled)
 
 void Camera::LookAt(Game *game, glm::vec3 position_, glm::vec3 focusPoint, glm::vec3 up_)
 {
-    this->projectionMatrix_ = perspective(initialFOV_, game->GetAspectRatio(), 0.1f, 1000.0f);
+    this->projectionMatrix_ = perspective(initialFOV_, game->aspect_ratio(), 0.1f, 1000.0f);
     this->position_ = position_;
     this->viewMatrix_ = glm::lookAt(position_, focusPoint, up_);
 }

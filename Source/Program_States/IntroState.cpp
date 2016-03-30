@@ -7,21 +7,21 @@ void IntroState::resume(){}
 void IntroState::initialize()
 {
     // Initialize resources
-    model = new Model("Assets/house/house.obj");
-    model->LoadTexture("Assets/house/houseTexture.jpg", true);
-    asteroid = new Model("Assets/asteroid/asteroid.obj");
-    asteroid->LoadTexture("Assets/asteroid/asteroid.jpg", false);
+    model_ = new Model("Assets/house/house.obj");
+    model_->LoadTexture("Assets/house/houseTexture.jpg", true);
+    asteroid_ = new Model("Assets/asteroid/asteroid.obj");
+    asteroid_->LoadTexture("Assets/asteroid/asteroid.jpg", false);
 
-    shaderProgram.create_program();
-    shaderProgram.add_shader_from_file("Shaders/modelVert.glsl", GL_VERTEX_SHADER);
-    shaderProgram.add_shader_from_file("Shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
-    shaderProgram.link_program();
+    shaderProgram_.create_program();
+    shaderProgram_.add_shader_from_file("Shaders/modelVert.glsl", GL_VERTEX_SHADER);
+    shaderProgram_.add_shader_from_file("Shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
+    shaderProgram_.link_program();
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    camera = new Camera(game_, glm::vec3(0.0, 8.0, -8.0));
-    camera->enable_input();
+    camera_ = new Camera(game_, glm::vec3(0.0, 8.0, -8.0));
+    camera_->enable_input();
 
-    skybox = new Skybox("Assets/ame_starfield/starfield_rt.tga",
+    skybox_ = new Skybox("Assets/ame_starfield/starfield_rt.tga",
                         "Assets/ame_starfield/starfield_lf.tga",
                         "Assets/ame_starfield/starfield_rt.tga",
                         "Assets/ame_starfield/starfield_dn.tga",
@@ -30,7 +30,7 @@ void IntroState::initialize()
     );
 
     GLuint amount = 1000;
-    modelMatrices = new glm::mat4[amount];
+    modelMatrices_ = new glm::mat4[amount];
     srand(SDL_GetTicks()); // initialize random seed
     GLfloat radius = 50.0;
     GLfloat offset = 2.5f;
@@ -53,20 +53,20 @@ void IntroState::initialize()
         GLfloat rotAngle = (rand() % 360);
         model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
         // 4. Now add to list of matrices
-        modelMatrices[i] = model;
+        modelMatrices_[i] = model;
     }
 }
 
 void IntroState::finalize()
 {
     // Free resources
-    model->Free();
-    asteroid->Free();
-    shaderProgram.delete_program();
-    delete camera;
-    camera = nullptr;
-    delete skybox;
-    skybox = nullptr;
+    model_->Free();
+    asteroid_->Free();
+    shaderProgram_.delete_program();
+    delete camera_;
+    camera_ = nullptr;
+    delete skybox_;
+    skybox_ = nullptr;
 }
 
 void IntroState::handle_events()
@@ -78,13 +78,13 @@ void IntroState::update()
 {
     // Update logic
     static float angle = 0.0f;
-    angle += game_->GetTimeDelta() * M_PI / 2;
-    camera->update(game_);
-    modelMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 1.0f, 1.0f));
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));
-    glm::mat4 mvp = camera->make_mvp(modelMatrix);
-    shaderProgram.set_uniform("mvpMatrix", &mvp);
-    shaderProgram.set_uniform("sampler2D", 0);
+    angle += game_->time_delta() * M_PI / 2;
+    camera_->update(game_);
+    modelMatrix_ = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 1.0f, 1.0f));
+    modelMatrix_ = glm::scale(modelMatrix_, glm::vec3(0.2f, 0.2f, 0.2f));
+    glm::mat4 mvp = camera_->make_mvp(modelMatrix_);
+    shaderProgram_.set_uniform("mvpMatrix", &mvp);
+    shaderProgram_.set_uniform("sampler2D", 0);
 }
 
 void IntroState::draw()
@@ -93,15 +93,15 @@ void IntroState::draw()
     glClearColor(0.392f, 0.584f, 0.93f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    skybox->draw(camera->projection_matrix(), camera->view_matrix());
+    skybox_->draw(camera_->projection_matrix(), camera_->view_matrix());
 
-    shaderProgram.use();
-    model->Draw();
+    shaderProgram_.use();
+    model_->Draw();
 
     for (GLuint i = 0; i < 1000; i++)
     {
-        shaderProgram.set_uniform("mvpMatrix", camera->make_mvp(modelMatrices[i]));
-        asteroid->Draw();
+        shaderProgram_.set_uniform("mvpMatrix", camera_->make_mvp(modelMatrices_[i]));
+        asteroid_->Draw();
     }
 }
 

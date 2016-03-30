@@ -9,6 +9,8 @@ int main(int argc, char* args[])
 
     if (game->initialize() == false)
     {
+        // TODO: Use SDL message boxes to display these errors
+        // TODO: Create trace log
         printf("Failed to Initialize!");
         return 1;
     }
@@ -19,19 +21,14 @@ int main(int argc, char* args[])
         return 1;
     }
 
-    while (game->IsRunning())
+    while (game->running())
     {
-        game->HandleEvent();
+        game->handle_events();
         game->update();
         game->draw();
 
-        //SDL_UpdateWindowSurface( game->GetWindow() );
-
-        // Update window
-        SDL_GL_SwapWindow(game->GetWindow());
-
         // Control frame rate
-        SDL_Delay(1000 / game->GetMaxFPS());
+        SDL_Delay(1000 / game->fps());
     }
 
     game->unload_content();
