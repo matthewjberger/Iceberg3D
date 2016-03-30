@@ -1,60 +1,60 @@
 #include "Model.h"
 using namespace std;
 
-Model::Model(string path, string texturePath, bool genMipMaps)
+Model::Model(const string &path, const string &texturePath, bool genMipMaps)
 {
-    collisionMesh = new btTriangleMesh();
+    collisionMesh_ = new btTriangleMesh();
 
-    textureLoaded = false;
-    LoadModel(path.c_str());
+    textureLoaded_ = false;
+    load_model(path.c_str());
 
     if (texturePath != "")
     {
-        LoadTexture(texturePath, genMipMaps);
+        load_texture(texturePath, genMipMaps);
     }
 
-    modelMatrix = glm::mat4(1.0f);
-    collisionShape = new btBvhTriangleMeshShape(collisionMesh, true);
+    modelMatrix_ = glm::mat4(1.0f);
+    collisionShape_ = new btBvhTriangleMeshShape(collisionMesh_, true);
 }
 
 Model::~Model()
 {
-    Free();
+    free();
 }
 
-void Model::Free()
+void Model::free()
 {
-    for (GLuint i = 0; i < meshes.size(); i++)
+    for (GLuint i = 0; i < meshes_.size(); i++)
     {
-        meshes[i].free();
+        meshes_[i].free();
     }
 
-    if (collisionMesh != nullptr)
+    if (collisionMesh_ != nullptr)
     {
-        delete collisionMesh;
-        collisionMesh = nullptr;
+        delete collisionMesh_;
+        collisionMesh_ = nullptr;
     }
 
-    if (collisionShape != nullptr)
+    if (collisionShape_ != nullptr)
     {
-        delete collisionShape;
-        collisionShape = nullptr;
+        delete collisionShape_;
+        collisionShape_ = nullptr;
     }
 }
 
-void Model::Draw()
+void Model::draw()
 {
-    for (GLuint i = 0; i < meshes.size(); i++)
+    for (GLuint i = 0; i < meshes_.size(); i++)
     {
-        if (textureLoaded)
+        if (textureLoaded_)
         {
-            texture.bind();
+            texture_.bind();
         }
-        meshes[i].draw();
+        meshes_[i].draw();
     }
 }
 
-void Model::LoadModel(std::string path)
+void Model::load_model(const string &path)
 {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
@@ -65,28 +65,28 @@ void Model::LoadModel(std::string path)
         return;
     }
 
-    directory = path.substr(0, path.find_last_of('/'));
-    ProcessNode(scene->mRootNode, scene);
+    directory_ = path.substr(0, path.find_last_of('/'));
+    process_node(scene->mRootNode, scene);
 }
 
-void Model::ProcessNode(aiNode* node, const aiScene* scene)
+void Model::process_node(aiNode* node, const aiScene* scene)
 {
-    // Process all meshes in the node
+    // Process all meshes_ in the node
     for (GLuint i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        meshes.push_back(ProcessMesh(mesh));
-        meshes.back().setup_mesh();
+        meshes_.push_back(process_mesh(mesh));
+        meshes_.back().setup_mesh();
     }
 
     // Process all child nodes
     for (GLuint i = 0; i < node->mNumChildren; i++)
     {
-        ProcessNode(node->mChildren[i], scene);
+        process_node(node->mChildren[i], scene);
     }
 }
 
-Mesh Model::ProcessMesh(aiMesh* mesh) const
+Mesh Model::process_mesh(aiMesh* mesh) const
 {
     vector<Vertex> vertices;
     vector<GLuint> indices;
@@ -101,7 +101,7 @@ Mesh Model::ProcessMesh(aiMesh* mesh) const
             triArray[j] = btVector3(position.x, position.y, position.z);
             indices.push_back(face.mIndices[j]);
         }
-        collisionMesh->addTriangle(triArray[0], triArray[1], triArray[2]);
+        collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
     }
 
     for (unsigned int i = 0; i < indices.size(); i++)
@@ -128,54 +128,53 @@ Mesh Model::ProcessMesh(aiMesh* mesh) const
     return Mesh(vertices);
 }
 
-void Model::LoadTexture(string image, bool genMipMaps)
+void Model::load_texture(const string &imagePath, bool genMipMaps)
 {
-    texture.load(image, genMipMaps);
-    textureLoaded = true;
+    texture_.load(imagePath, genMipMaps);
+    textureLoaded_ = true;
 }
 
-void Model::Rotate(float angle_in_degrees, glm::vec3 rotationAxes)
+void Model::rotate(float angle_in_degrees, glm::vec3 rotationAxes)
 {
-    modelMatrix = glm::rotate(modelMatrix, angle_in_degrees, rotationAxes);
+    modelMatrix_ = glm::rotate(modelMatrix_, angle_in_degrees, rotationAxes);
 }
 
-void Model::Rotate(glm::mat4 base, float angle_in_degrees, glm::vec3 rotationAxes)
+void Model::rotate(glm::mat4 base, float angle_in_degrees, glm::vec3 rotationAxes)
 {
-    modelMatrix = glm::rotate(base, angle_in_degrees, rotationAxes);
+    modelMatrix_ = glm::rotate(base, angle_in_degrees, rotationAxes);
 }
 
-void Model::Scale(glm::vec3 scale)
+void Model::scale(glm::vec3 scale)
 {
-    modelMatrix = glm::scale(modelMatrix, scale);
+    modelMatrix_ = glm::scale(modelMatrix_, scale);
 }
 
-void Model::Scale(glm::mat4 base, glm::vec3 scale)
+void Model::scale(glm::mat4 base, glm::vec3 scale)
 {
-    modelMatrix = glm::scale(base, scale);
+    modelMatrix_ = glm::scale(base, scale);
 }
 
-void Model::Translate(glm::vec3 position)
+void Model::translate(glm::vec3 position)
 {
-    modelMatrix = glm::translate(modelMatrix, position);
+    modelMatrix_ = glm::translate(modelMatrix_, position);
 }
 
-void Model::Translate(glm::mat4 base, glm::vec3 position)
+void Model::translate(glm::mat4 base, glm::vec3 position)
 {
-    modelMatrix = glm::translate(base, position);
+    modelMatrix_ = glm::translate(base, position);
 }
 
-glm::mat4 Model::GetModelMatrix() const
+glm::mat4 Model::model_matrix() const
 {
-    return modelMatrix;
+    return modelMatrix_;
 }
 
-btCollisionShape* Model::GetCollisionShape() const
+btCollisionShape* Model::collision_shape() const
 {
-    return collisionShape; // nullptr
+    return collisionShape_; // nullptr
 }
 
-void Model::SetModelMatrix(glm::mat4 matrix)
+void Model::assign_model(glm::mat4 matrix)
 {
-    modelMatrix = matrix;
+    modelMatrix_ = matrix;
 }
-

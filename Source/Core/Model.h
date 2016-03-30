@@ -8,48 +8,49 @@
 class Model
 {
 public:
-    Model(std::string path,
-          std::string texturePath = "",
+    Model(const std::string &path,
+          const std::string &texturePath = "",
           bool genMipMaps = true);
     ~Model();
 
-    void Draw();
-    void LoadTexture(std::string image, bool genMipMaps);
-    void Free();
+    void draw();
+    void load_texture(const std::string &imagePath, bool genMipMaps);
+    void free();
 
-    void Scale(glm::vec3 scale);
-    void Scale(glm::mat4 base, glm::vec3 scale);
+    // Transformations
+    void scale(glm::vec3 scale);
+    void scale(glm::mat4 base, glm::vec3 scale);
 
-    void Rotate(float angle_in_degrees, glm::vec3 rotationAxes);
-    void Rotate(glm::mat4 base, float angle_in_degrees, glm::vec3 rotationAxes);
+    void rotate(float angle_in_degrees, glm::vec3 rotationAxes);
+    void rotate(glm::mat4 base, float angle_in_degrees, glm::vec3 rotationAxes);
 
-    void Translate(glm::vec3 position);
-    void Translate(glm::mat4 base, glm::vec3 position);
+    void translate(glm::vec3 position);
+    void translate(glm::mat4 base, glm::vec3 position);
 
-    void SetModelMatrix(glm::mat4 matrix);
+    // Useful for moving a model using bullet physics
+    void assign_model(glm::mat4 matrix);
 
-    glm::mat4 GetModelMatrix() const;
-    btCollisionShape* GetCollisionShape() const;
+    glm::mat4 model_matrix() const;
+    btCollisionShape* collision_shape() const;
 
 private:
 
-    glm::mat4 modelMatrix;
+    glm::mat4 modelMatrix_;
 
-    std::string directory;
-    std::vector<Mesh> meshes;
+    std::string directory_;
+    std::vector<Mesh> meshes_;
 
-    void LoadModel(std::string path);
-    void ProcessNode(aiNode* node, const aiScene* scene);
-    Mesh ProcessMesh(aiMesh* mesh) const;
+    void load_model(const std::string &path);
+    void process_node(aiNode* node, const aiScene* scene);
+    Mesh process_mesh(aiMesh* mesh) const;
 
-    Texture texture;
-    bool textureLoaded;
+    Texture texture_;
+    bool textureLoaded_;
 
     // TODO: move this triangle mesh to the mesh class
     // return a vector of triangle meshes corresponding to the loaded model's internal meshes
-    btTriangleMesh* collisionMesh;
-    btCollisionShape* collisionShape;
+    btTriangleMesh* collisionMesh_;
+    btCollisionShape* collisionShape_;
 };
 
 #endif
-

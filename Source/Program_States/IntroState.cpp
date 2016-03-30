@@ -8,9 +8,9 @@ void IntroState::initialize()
 {
     // Initialize resources
     model_ = new Model("Assets/house/house.obj");
-    model_->LoadTexture("Assets/house/houseTexture.jpg", true);
+    model_->load_texture("Assets/house/houseTexture.jpg", true);
     asteroid_ = new Model("Assets/asteroid/asteroid.obj");
-    asteroid_->LoadTexture("Assets/asteroid/asteroid.jpg", false);
+    asteroid_->load_texture("Assets/asteroid/asteroid.jpg", false);
 
     shaderProgram_.create_program();
     shaderProgram_.add_shader_from_file("Shaders/modelVert.glsl", GL_VERTEX_SHADER);
@@ -62,8 +62,8 @@ void IntroState::initialize()
 void IntroState::finalize()
 {
     // Free resources
-    model_->Free();
-    asteroid_->Free();
+    model_->free();
+    asteroid_->free();
     shaderProgram_.delete_program();
     delete camera_;
     camera_ = nullptr;
@@ -98,12 +98,12 @@ void IntroState::draw()
     skybox_->draw(camera_->projection_matrix(), camera_->view_matrix());
 
     shaderProgram_.use();
-    model_->Draw();
+    model_->draw();
 
     for (GLuint i = 0; i < 1000; i++)
     {
         shaderProgram_.set_uniform("mvpMatrix", camera_->make_mvp(modelMatrices_[i]));
-        asteroid_->Draw();
+        asteroid_->draw();
     }
 }
 
