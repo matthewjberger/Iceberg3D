@@ -5,7 +5,7 @@ using namespace glm;
 
 Skybox::Skybox(const SkyboxParameters &skyboxParameters)
 {
-    //TODO: use the Texture class here and throw they can't be loaded properly
+    // TODO: use the Texture class here and throw they can't be loaded properly
     vector<const GLchar*> faces;
     faces.push_back(skyboxParameters.right.c_str());
     faces.push_back(skyboxParameters.left.c_str());
