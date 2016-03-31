@@ -162,6 +162,10 @@ void Game::update()
 
 void Game::draw()
 {
+    // Clear the screen to Cornflower Blue
+    glClearColor(0.392f, 0.584f, 0.93f, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     stateMachine->draw();
 
     // Update the window
