@@ -13,7 +13,7 @@ Then build the Visual Studio 2015 solution:
 
     Iceberg3D\Build\Visual Studio\Iceberg3D.sln
 
-The dependencies are nuget packages (exept for the Bullet physics library) and will be downloaded when you rebuild the solution.
+The dependencies are nuget packages (exept for the Bullet physics library) and will be downloaded when you build the solution.
     
 ### Linux
 Paste this into your linux terminal:
