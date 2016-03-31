@@ -1,7 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "GlobalIncludes.h"
 #include "Game.h"
 
 class Camera
@@ -10,9 +9,7 @@ public:
 
     Camera(Game* game, glm::vec3 position = glm::vec3(0.0f), glm::vec3 focusPoint = glm::vec3(0.0f), float speed = 0.7);
 
-    ~Camera()
-    {
-    }
+    ~Camera(){}
 
     void update(Game *game);
 

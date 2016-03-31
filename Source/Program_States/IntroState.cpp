@@ -51,7 +51,7 @@ void IntroState::update()
 {
     // Update logic
     static float angle = 0.0f;
-    angle += game_->time_delta() * M_PI / 2;
+    angle += game_->time_delta() * float(glm::pi<float>())/2;
     camera->update(game_);
     modelMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 1.0f, 1.0f));
     modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));
