@@ -3,15 +3,15 @@
 using namespace std;
 using namespace glm;
 
-Skybox::Skybox(string right, string left, string top, string bottom, string back, string front)
+Skybox::Skybox(const SkyboxParameters &skyboxParameters)
 {
     vector<const GLchar*> faces;
-    faces.push_back(right.c_str());
-    faces.push_back(left.c_str());
-    faces.push_back(top.c_str());
-    faces.push_back(bottom.c_str());
-    faces.push_back(back.c_str());
-    faces.push_back(front.c_str());
+    faces.push_back(skyboxParameters.right.c_str());
+    faces.push_back(skyboxParameters.left.c_str());
+    faces.push_back(skyboxParameters.top.c_str());
+    faces.push_back(skyboxParameters.bottom.c_str());
+    faces.push_back(skyboxParameters.back.c_str());
+    faces.push_back(skyboxParameters.front.c_str());
 
     skyboxProgram_.create_program();
     skyboxProgram_.add_shader_from_file("Shaders/skyVert.glsl", GL_VERTEX_SHADER);

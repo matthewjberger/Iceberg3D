@@ -26,14 +26,13 @@ private:
     /**************************/
     /* Place State Items here */
     /**************************/
-    Model* model_;
-    Model* asteroid_;
-    ShaderProgram shaderProgram_;
-    glm::mat4 modelMatrix_;
-    Camera* camera_;
-    GLuint textureID_;
+    Model* model;
+    ShaderProgram shaderProgram;
+    glm::mat4 modelMatrix;
+    Camera* camera;
+    GLuint textureID;
 
-    glm::mat4* modelMatrices_;
-    Skybox* skybox_;
+    glm::mat4* modelMatrices;
+    Skybox* skybox;
 };
 
