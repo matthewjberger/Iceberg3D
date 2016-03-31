@@ -34,6 +34,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <memory>
 
 #endif
 

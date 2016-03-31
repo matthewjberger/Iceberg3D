@@ -10,31 +10,31 @@ Game::Game()
     fullscreen_ = false;
 
     caption_ = "Iceberg3D";
-
-    window_ = nullptr;
-    screenSurface_ = nullptr;
-
     screenWidth_ = 640;
     screenHeight_ = 480;
 
     fps_ = 60;
 
+    window_ = nullptr;
+    screenSurface_ = nullptr;
+    context_ = nullptr;
+
+    // Begin the timer for delta time calculation
     previousTime = std::chrono::high_resolution_clock::now();
 }
 
 Game::~Game()
 {
-    // Free any remaining game states
-    while(!GameStates.empty())
-    {
-        if(GameStates.back() != nullptr)
-        {
-            delete GameStates.back();
-            GameStates.back() = nullptr;
-        }
+    stateMachine.unload_all();
+  
+    TTF_Quit();
 
-        GameStates.pop_back();
-    }
+    SDL_DestroyWindow(window_);
+    window_ = nullptr;
+
+    // Quit subsystems
+    TTF_Quit();
+    SDL_Quit();
 }
 
 bool Game::initialize()
@@ -141,89 +141,19 @@ bool Game::initialize()
     return true;
 }
 
-bool Game::load_content(GameState* state)
-{
-    //-- Load game content here
-
-    change_state(state);
-
-    //--
-
-    return true;
-}
-
-void Game::unload_content()
-{
-    // Release game content, Free Surfaces, Close Libraries
-    if (!GameStates.empty())
-    {
-        GameStates.back()->finalize();
-        GameStates.pop_back();
-    }
-
-    /************************************************/
-    TTF_Quit();
-    //Mix_CloseAudio();
-    // Destroy Window
-
-    SDL_DestroyWindow(window_);
-    window_ = nullptr;
-
-    // Quit subsystems
-    TTF_Quit();
-    SDL_Quit();
-}
-
 void Game::change_state(GameState* state)
 {
-    // If there is a state, clean it up and pop it off
-    if (!GameStates.empty())
-    {
-        GameStates.back()->finalize();
-        GameStates.pop_back();
-    }
-
-    // Push on the new one and initialize it
-    GameStates.push_back(state);
-    GameStates.back()->initialize();
-}
-
-void Game::push_state(GameState* state)
-{
-    // Pause state if there is one already on stack
-    if (!GameStates.empty())
-    {
-        GameStates.back()->pause();
-    }
-
-    // Push state onto stack and initialize it
-    GameStates.push_back(state);
-    GameStates.back()->initialize();
-}
-
-void Game::pop_state()
-{
-    if (!GameStates.empty())
-    {
-        // If somethings on the stack and finish up state then pop it off
-        GameStates.back()->finalize();
-        GameStates.pop_back();
-
-        // If there's a state left, it is paused, so resume it
-        GameStates.back()->resume();
-    }
+    stateMachine.change_state(state);
 }
 
 void Game::update()
 {
-    // Place Update logic here
-    GameStates.back()->update();
+    stateMachine.update();
 }
 
 void Game::draw()
 {
-    // Place Rendering logic here
-    GameStates.back()->draw();
+    stateMachine.draw();
 
     // Update the window
     SDL_GL_SwapWindow(window_);
@@ -234,10 +164,11 @@ void Game::draw()
 
 void Game::handle_events()
 {
+    // TODO: Make a component base class
+    // TODO: Make a derived InputComponent class and use it here
     while (SDL_PollEvent(&event_) != 0)
     {
-        //Place Event Handling Functions here
-        GameStates.back()->handle_events();
+        stateMachine.handle_events();
 
         if (event_.type == SDL_QUIT)
         {
@@ -317,3 +248,8 @@ float Game::aspect_ratio() const
     return (height == 0) ? (width) : (width / height);
 }
 
+SDL_Event Game::event() const
+{
+    return event_;
+}
+    

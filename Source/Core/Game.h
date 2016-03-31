@@ -9,6 +9,7 @@
 #define VIRTUAL_MACHINE
 
 #include "GlobalIncludes.h"
+#include "StateMachine.h"
 
 class GameState;
 
@@ -20,29 +21,27 @@ public:
     ~Game();
 
     bool initialize();
-    bool load_content(GameState* state);
-    void unload_content();
 
-    // TODO: Move state machine out to separate class.
     void update();
     void draw();
     void handle_events();
-    void change_state(GameState* state);
-    void push_state(GameState* state);
-    void pop_state();
 
     void toggle_fullscreen();
     bool running() const;
     void exit();
+
     SDL_Window* window() const;
     glm::vec2 screen_dimensions() const;
     int fps() const;
     float aspect_ratio() const;
 
-    std::vector<GameState *> GameStates; //GameState stack
-
     std::chrono::time_point<std::chrono::high_resolution_clock> previousTime, currentTime;
     float time_delta();
+
+    void change_state(GameState* state);
+    SDL_Event event() const;
+
+    StateMachine stateMachine;
 
 private:
 
@@ -62,21 +61,11 @@ private:
     SDL_DisplayMode currentDisplayMode_;
 };
 
-class GameState
+class GameState : public ProgramState
 {
 
 public:
     virtual ~GameState() {};
-
-    virtual void initialize() = 0;
-    virtual void finalize() = 0;
-
-    virtual void pause() = 0;
-    virtual void resume() = 0;
-
-    virtual void handle_events() = 0;
-    virtual void draw() = 0;
-    virtual void update() = 0;
 
     void ChangeState(GameState* state) const
     {
@@ -88,7 +77,6 @@ protected:
     Game* game_;
 
 };
-
 
 #endif
 

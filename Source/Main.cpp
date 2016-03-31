@@ -3,7 +3,7 @@
 
 int main(int argc, char* args[])
 {
-    // Create Game and debug instances
+    // Create Game and States 
     Game* game = new Game();
     IntroState* intro = new IntroState(game);
 
@@ -15,11 +15,7 @@ int main(int argc, char* args[])
         return 1;
     }
 
-    if (game->load_content(intro) == false)
-    {
-        printf("Failed to load content");
-        return 1;
-    }
+    game->change_state(intro);
 
     while (game->running())
     {
@@ -30,8 +26,6 @@ int main(int argc, char* args[])
         // Control frame rate
         SDL_Delay(1000 / game->fps());
     }
-
-    game->unload_content();
 
     delete game;
     game = nullptr;
