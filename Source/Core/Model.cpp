@@ -88,6 +88,7 @@ void Model::process_node(aiNode* node, const aiScene* scene)
 
 Mesh Model::process_mesh(aiMesh* mesh) const
 {
+    //TODO: Use index buffers here for indexed rendering
     vector<Vertex> vertices;
     vector<GLuint> indices;
     btVector3 triArray[3];

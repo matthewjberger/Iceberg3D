@@ -5,6 +5,7 @@ using namespace glm;
 
 Skybox::Skybox(const SkyboxParameters &skyboxParameters)
 {
+    //TODO: use the Texture class here and throw they can't be loaded properly
     vector<const GLchar*> faces;
     faces.push_back(skyboxParameters.right.c_str());
     faces.push_back(skyboxParameters.left.c_str());
@@ -57,6 +58,7 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
+    // TODO: Load in a cube model here instead
     GLfloat skyboxVertices[] =
         {
             // Positions
