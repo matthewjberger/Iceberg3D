@@ -50,16 +50,6 @@ bool Game::initialize()
     }
     else
     {
-#ifdef VIRTUAL_MACHINE
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-#else
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-#endif
-
         // Create the window
         if (fullscreen_ == true)
         {
@@ -78,62 +68,82 @@ bool Game::initialize()
         }
         else
         {
-            // Create OpenGL Context
-            context_ = SDL_GL_CreateContext(window_);
-
-            if (context_ == nullptr)
+            if (!initialize_opengl())
             {
-                printf("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
+                return false;
+            }
+
+            // Initialize screen surface
+            screenSurface_ = SDL_GetWindowSurface(window_);
+
+            // Use VSync
+            if (SDL_GL_SetSwapInterval(1) < 0)
+            {
+                printf("Warning: Unable to set VSync! SDL Error: %s", SDL_GetError());
 
                 return false;
             }
-            else
+
+            // Initialize Sub Systems
+            if (TTF_Init() != 0)
             {
-                // Initialize OpenGL
+                printf("Error initializing SDL_ttf! %s \n", TTF_GetError());
 
-                // Dark blue background
-                glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-
-                // Depth testing
-                glEnable(GL_DEPTH_TEST);
-                glDepthFunc(GL_LESS);
-
-                // Enable culling
-                glEnable(GL_CULL_FACE);
-                //glCullFace(GL_BACK);
-                //glFrontFace(GL_CW);
-
-                // Initialize GLEW
-                glewExperimental = GL_TRUE;
-
-                GLenum glewError = glewInit();
-
-                if (glewError != GLEW_OK)
-                {
-                    printf("Error initializing GLEW! %p \n", glewGetErrorString(glewError));
-
-                    return false;
-                }
-
-                // Use Vsync
-                if (SDL_GL_SetSwapInterval(1) < 0)
-                {
-                    printf("Warning: Unable to set VSync! SDL Error: %s", SDL_GetError());
-
-                    return false;
-                }
-
-                // Initialize screen surface
-                screenSurface_ = SDL_GetWindowSurface(window_);
-
-                // Initialize Sub Systems
-                if (TTF_Init() != 0)
-                {
-                    printf("Error initializing SDL_ttf! %s \n", TTF_GetError());
-
-                    return false;
-                }
+                return false;
             }
+        }
+    }
+
+    return true;
+}
+
+bool Game::initialize_opengl()
+{
+#ifdef VIRTUAL_MACHINE
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+#else
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+#endif
+
+    // Create OpenGL Context
+    context_ = SDL_GL_CreateContext(window_);
+
+    if (context_ == nullptr)
+    {
+        printf("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
+
+        return false;
+    }
+    else
+    {
+        // Initialize OpenGL
+
+        // Dark blue background
+        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+
+        // Depth testing
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
+
+        // Enable culling
+        glEnable(GL_CULL_FACE);
+        //glCullFace(GL_BACK);
+        //glFrontFace(GL_CW);
+
+        // Initialize GLEW
+        glewExperimental = GL_TRUE;
+
+        GLenum glewError = glewInit();
+
+        if (glewError != GLEW_OK)
+        {
+            printf("Error initializing GLEW! %p \n", glewGetErrorString(glewError));
+
+            return false;
         }
     }
 

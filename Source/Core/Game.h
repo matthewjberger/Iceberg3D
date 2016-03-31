@@ -22,6 +22,7 @@ public:
     ~Game();
 
     bool initialize();
+    bool initialize_opengl();
 
     void update();
     void draw();
