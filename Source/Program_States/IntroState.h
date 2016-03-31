@@ -26,13 +26,13 @@ private:
     /**************************/
     /* Place State Items here */
     /**************************/
-    Model* model;
-    ShaderProgram shaderProgram;
+    std::unique_ptr<Model> model;
+    std::unique_ptr<ShaderProgram> shaderProgram;
     glm::mat4 modelMatrix;
-    Camera* camera;
+    std::unique_ptr<Camera> camera;
     GLuint textureID;
 
-    glm::mat4* modelMatrices;
-    Skybox* skybox;
+    std::unique_ptr<glm::mat4> modelMatrices;
+    std::unique_ptr<Skybox> skybox;
 };
 

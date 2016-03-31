@@ -7,16 +7,17 @@ void IntroState::resume(){}
 void IntroState::initialize()
 {
     // Initialize resources
-    model = new Model("Assets/house/house.obj");
+    model = std::make_unique<Model>("Assets/house/house.obj");
     model->load_texture("Assets/house/houseTexture.jpg", true);
 
-    shaderProgram.create_program();
-    shaderProgram.add_shader_from_file("Shaders/modelVert.glsl", GL_VERTEX_SHADER);
-    shaderProgram.add_shader_from_file("Shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
-    shaderProgram.link_program();
+    shaderProgram = std::make_unique<ShaderProgram>();
+    shaderProgram->create_program();
+    shaderProgram->add_shader_from_file("Shaders/modelVert.glsl", GL_VERTEX_SHADER);
+    shaderProgram->add_shader_from_file("Shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
+    shaderProgram->link_program();
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    camera = new Camera(game_, glm::vec3(0.0, 8.0, -8.0));
+    camera = std::make_unique<Camera>(game_, glm::vec3(0.0, 8.0, -8.0));
     camera->enable_input();
 
     SkyboxParameters skyboxParameters;
@@ -28,24 +29,12 @@ void IntroState::initialize()
     skyboxParameters.front  = "Assets/skybox/front.jpg";
     skyboxParameters.back   = "Assets/skybox/back.jpg";
 
-    skybox = new Skybox(skyboxParameters);
+    skybox = std::make_unique<Skybox>(skyboxParameters);
 }
 
-void IntroState::finalize()
-{
-    // Free resources
-    model->free();
-    shaderProgram.delete_program();
-    delete camera;
-    camera = nullptr;
-    delete skybox;
-    skybox = nullptr;
-}
+void IntroState::finalize(){}
 
-void IntroState::handle_events()
-{
-    // Handle input logic
-}
+void IntroState::handle_events(){}
 
 void IntroState::update()
 {
@@ -56,8 +45,8 @@ void IntroState::update()
     modelMatrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(1.0f, 1.0f, 1.0f));
     modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));
     glm::mat4 mvp = camera->make_mvp(modelMatrix);
-    shaderProgram.set_uniform("mvpMatrix", &mvp);
-    shaderProgram.set_uniform("sampler2D", 0);
+    shaderProgram->set_uniform("mvpMatrix", &mvp);
+    shaderProgram->set_uniform("sampler2D", 0);
 }
 
 void IntroState::draw()
@@ -69,7 +58,7 @@ void IntroState::draw()
     // TODO: Allow skyboxes to be drawn last
     skybox->draw(camera->projection_matrix(), camera->view_matrix());
 
-    shaderProgram.use();
+    shaderProgram->use();
     model->draw();
 }
 

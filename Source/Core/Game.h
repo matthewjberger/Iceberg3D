@@ -18,6 +18,7 @@ class Game
 public:
 
     Game();
+
     ~Game();
 
     bool initialize();
@@ -41,9 +42,10 @@ public:
     void change_state(GameState* state);
     SDL_Event event() const;
 
-    StateMachine stateMachine;
 
 private:
+
+    std::unique_ptr<StateMachine> stateMachine;
 
     bool running_;
     bool fullscreen_;

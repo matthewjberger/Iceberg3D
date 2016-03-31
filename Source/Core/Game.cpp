@@ -4,6 +4,7 @@ using namespace std;
 using namespace glm;
 
 Game::Game()
+    :stateMachine(make_unique<StateMachine>())
 {
     // Initialize game variables and settings
     running_ = true;
@@ -25,8 +26,6 @@ Game::Game()
 
 Game::~Game()
 {
-    stateMachine.unload_all();
-  
     TTF_Quit();
 
     SDL_DestroyWindow(window_);
@@ -143,17 +142,17 @@ bool Game::initialize()
 
 void Game::change_state(GameState* state)
 {
-    stateMachine.change_state(state);
+    stateMachine->change_state(state);
 }
 
 void Game::update()
 {
-    stateMachine.update();
+    stateMachine->update();
 }
 
 void Game::draw()
 {
-    stateMachine.draw();
+    stateMachine->draw();
 
     // Update the window
     SDL_GL_SwapWindow(window_);
@@ -168,7 +167,7 @@ void Game::handle_events()
     // TODO: Make a derived InputComponent class and use it here
     while (SDL_PollEvent(&event_) != 0)
     {
-        stateMachine.handle_events();
+        stateMachine->handle_events();
 
         if (event_.type == SDL_QUIT)
         {
