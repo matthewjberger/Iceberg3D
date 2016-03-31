@@ -58,7 +58,7 @@ void Texture::bind(int textureUnit) const
 
 bool Texture::create_from_surface(SDL_Surface* surface, bool genMipMaps)
 {
-    // TODO: add failure conditions for this
+    // TODO: Add failure conditions for this
 
     // Generate the texture and bind it
     glGenTextures(1, &textureID_);

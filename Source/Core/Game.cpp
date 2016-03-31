@@ -167,7 +167,7 @@ void Game::draw()
     // Update the window
     SDL_GL_SwapWindow(window_);
 
-    // TODO: implement 2D rendering with SDL as option
+    // TODO: Implement 2D rendering with SDL as option
     //SDL_UpdateWindowSurface( game->GetWindow() );
 }
 

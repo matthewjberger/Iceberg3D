@@ -47,7 +47,7 @@ private:
     Texture texture_;
     bool textureLoaded_;
 
-    // TODO: move this triangle mesh to the mesh class
+    // TODO: Move this triangle mesh to the mesh class
     // return a vector of triangle meshes corresponding to the loaded model's internal meshes
     btTriangleMesh* collisionMesh_;
     btCollisionShape* collisionShape_;
