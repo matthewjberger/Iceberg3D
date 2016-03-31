@@ -4,7 +4,7 @@ Iceberg3D is a game engine that uses SDL2 and OpenGL.
 ## Downloading
 Paste this into git bash on windows (use the 'insert' key to paste), or your terminal on linux:
 
->git clone https://github.com/matthewjberger/Iceberg3D --recursive && cd Iceberg3D && git submodule foreach git pull origin master
+    git clone https://github.com/matthewjberger/Iceberg3D --recursive && cd Iceberg3D && git submodule foreach git pull origin master
 
 ## Building
 ### Output
