@@ -88,50 +88,57 @@ void Model::process_node(aiNode* node, const aiScene* scene)
 
 Mesh Model::process_mesh(aiMesh* mesh) const
 {
-    // TODO: Use index buffers here for indexed rendering
-    vector<Vertex> vertices;
-    vector<GLuint> indices;
+    vector<Vertex> vertices_;
+    vector<GLuint> indices_;
     btVector3 triArray[3];
 
-    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+    // Cycle through the faces in the mesh (each is a triangle)
+    for (GLuint i = 0; i < mesh->mNumFaces; i++)
     {
         const aiFace& face = mesh->mFaces[i];
-        for (unsigned int j = 0; j < face.mNumIndices; j++)
+
+        // Use the indices of the face to grab vertex data
+        for (GLuint j = 0; j < face.mNumIndices; j++)
         {
+            // Build the triangle for the collision mesh
             aiVector3D position = mesh->mVertices[face.mIndices[j]];
             triArray[j] = btVector3(position.x, position.y, position.z);
-            indices.push_back(face.mIndices[j]);
+
+            // Store the index
+            indices_.push_back(face.mIndices[j]);
         }
+
         collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
     }
 
-    for (unsigned int i = 0; i < indices.size(); i++)
+    for (GLuint i = 0; i < mesh->mNumVertices; i++)
     {
-        const aiVector3D* vertex = &(mesh->mVertices[indices[i]]);
         Vertex v;
-        v.Position.x = vertex->x;
-        v.Position.y = vertex->y;
-        v.Position.z = vertex->z;
 
-        const aiVector3D* normal = &(mesh->mNormals[indices[i]]);
-        v.Normal.x = normal->x;
-        v.Normal.y = normal->y;
-        v.Normal.z = normal->z;
+        auto vertex = make_unique<const aiVector3D>(mesh->mVertices[i]);
+        v.position.x = vertex->x;
+        v.position.y = vertex->y;
+        v.position.z = vertex->z;
+
+        auto normal = make_unique<const aiVector3D>(mesh->mNormals[i]);
+        v.normal.x = normal->x;
+        v.normal.y = normal->y;
+        v.normal.z = normal->z;
 
         // Texture Coordinates
         if (mesh->HasTextureCoords(0))
         {
-            v.TexCoords = glm::vec2(mesh->mTextureCoords[0][indices[i]].x, mesh->mTextureCoords[0][indices[i]].y);
+            v.tex_coords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
         }
         else
         {
-            v.TexCoords = glm::vec2(0.0f, 0.0f);
+            v.tex_coords = glm::vec2(0.0f, 0.0f);
         }
 
-        vertices.push_back(v);
+        vertices_.push_back(v);
     }
 
-    return Mesh(vertices);
+    return Mesh(vertices_, indices_);
 }
 
 void Model::load_texture(const string &imagePath, bool genMipMaps)
@@ -177,7 +184,7 @@ glm::mat4 Model::model_matrix() const
 
 btCollisionShape* Model::collision_shape() const
 {
-    return collisionShape_; // nullptr
+    return collisionShape_; 
 }
 
 void Model::assign_model(glm::mat4 matrix)

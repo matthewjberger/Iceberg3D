@@ -1,9 +1,10 @@
 #include "Mesh.h"
 using namespace std;
 
-Mesh::Mesh(vector<Vertex> _vertices)
+Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices)
 {
-    vertices = _vertices;
+    vertices_ = vertices;
+    indices_ = indices;
 }
 
 Mesh::~Mesh()
@@ -13,41 +14,48 @@ Mesh::~Mesh()
 
 void Mesh::draw() const
 {
-    // Render the mesh
-    meshVAO.bind();
-    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-    meshVAO.unbind();
+    meshVAO_.bind();
+    glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
+    meshVAO_.unbind();
 }
 
 void Mesh::setup_mesh()
 {
-    meshVAO.create();
-    meshVBO.create();
+    meshVAO_.create();
+    meshVBO_.create();
+    meshIBO_.create();
 
-    meshVAO.bind();
+    meshVAO_.bind();
 
-    meshVBO.bind();
-    meshVBO.add_data(&vertices.front(), sizeof(Vertex) * vertices.size());
-    meshVBO.upload_data();
+    // Add vertices
+    meshVBO_.bind();
+    meshVBO_.add_data(&vertices_.front(), sizeof(Vertex) * vertices_.size());
+    meshVBO_.upload_data();
+
+    // Add indices 
+    meshIBO_.bind(GL_ELEMENT_ARRAY_BUFFER);
+    meshIBO_.add_data(&indices_.front(), sizeof(GLuint) * indices_.size());
+    meshIBO_.upload_data();
 
     // Vertex Positions
-    meshVAO.enable_attribute(0);
-    meshVAO.configure_attribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
+    meshVAO_.enable_attribute(0);
+    meshVAO_.configure_attribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
 
     // Vertex Normal Coordinates
-    meshVAO.enable_attribute(1);
-    meshVAO.configure_attribute(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal));
+    meshVAO_.enable_attribute(1);
+    meshVAO_.configure_attribute(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
 
     // Vertex Texture Coordinates
-    meshVAO.enable_attribute(2);
-    meshVAO.configure_attribute(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
+    meshVAO_.enable_attribute(2);
+    meshVAO_.configure_attribute(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, tex_coords));
 
-    meshVAO.unbind();
+    meshVAO_.unbind();
 }
 
 void Mesh::free()
 {
-    meshVAO.free();
-    meshVBO.free();
+    meshVAO_.free();
+    meshVBO_.free();
+    meshIBO_.free();
 }
 
