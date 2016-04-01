@@ -34,9 +34,13 @@ void Mesh::setup_mesh()
     meshVAO.enable_attribute(0);
     meshVAO.configure_attribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
 
-    // Vertex Texture Coordinates
+    // Vertex Normal Coordinates
     meshVAO.enable_attribute(1);
-    meshVAO.configure_attribute(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
+    meshVAO.configure_attribute(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal));
+
+    // Vertex Texture Coordinates
+    meshVAO.enable_attribute(2);
+    meshVAO.configure_attribute(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
 
     meshVAO.unbind();
 }

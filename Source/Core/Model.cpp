@@ -107,11 +107,16 @@ Mesh Model::process_mesh(aiMesh* mesh) const
 
     for (unsigned int i = 0; i < indices.size(); i++)
     {
-        const aiVector3D* temp = &(mesh->mVertices[indices[i]]);
+        const aiVector3D* vertex = &(mesh->mVertices[indices[i]]);
         Vertex v;
-        v.Position.x = temp->x;
-        v.Position.y = temp->y;
-        v.Position.z = temp->z;
+        v.Position.x = vertex->x;
+        v.Position.y = vertex->y;
+        v.Position.z = vertex->z;
+
+        const aiVector3D* normal = &(mesh->mNormals[indices[i]]);
+        v.Normal.x = normal->x;
+        v.Normal.y = normal->y;
+        v.Normal.z = normal->z;
 
         // Texture Coordinates
         if (mesh->HasTextureCoords(0))
