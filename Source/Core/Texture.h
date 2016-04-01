@@ -8,11 +8,11 @@ class Texture
 {
 public:
 
-    Texture();
+    Texture( GLenum type = GL_TEXTURE_2D);
     ~Texture();
 
-    bool load(const std::string& path, bool genMipMaps = false);
-    bool create_from_surface(SDL_Surface* surface, bool genMipMaps = false);
+    bool load(const std::string& path, bool genMipMaps = false, GLenum target = GL_TEXTURE_2D);
+    bool create_from_surface(SDL_Surface* surface, bool genMipMaps = false, GLenum target = GL_TEXTURE_2D);
     void bind(int textureUnit = 0) const;
     void free() const;
 
@@ -25,8 +25,6 @@ public:
     std::string path() const;
 
 private:
-
-    std::string type_;
     int width_, height_, bpp_;
     GLuint textureID_;
     GLuint sampler_;
@@ -36,6 +34,8 @@ private:
     int minification_, magnification_;
 
     std::string path_;
+
+    GLenum type_;
 };
 #endif
 

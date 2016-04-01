@@ -19,98 +19,70 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
     skyboxProgram_.add_shader_from_file("Shaders/skyFrag.glsl", GL_FRAGMENT_SHADER);
     skyboxProgram_.link_program();
 
-    glGenTextures(1, &textureID_);
-    glActiveTexture(GL_TEXTURE0);
+    cubemap_ = make_unique<Texture>(GL_TEXTURE_CUBE_MAP);
 
-    SDL_Surface* image = nullptr;
-
-    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID_);
     for (GLuint i = 0; i < faces.size(); i++)
     {
-        image = IMG_Load(faces[i]);
-
-        // Check for errors
-        if (image == nullptr)
+        if(!cubemap_->load(faces[i], false, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i))
         {
-            printf("Couldn't load image %s./nIMG_Error: %s", faces[i], IMG_GetError());
-            break;
+            // TODO: throw here, use sdl messagebox
         }
-
-        // Set pixel mode
-        int pixelMode = GL_RGB;
-
-        // Check for alpha component and set pixel mode appropriately
-        if (image->format->BytesPerPixel == 4)
-        {
-            pixelMode = GL_RGBA;
-        }
-
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, pixelMode, image->w, image->h, 0, pixelMode, GL_UNSIGNED_BYTE, image->pixels);
-
-        SDL_FreeSurface(image);
-        image = nullptr;
     }
 
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    cubemap_->set_wrap();
 
-    // TODO: Load in a cube model here instead
     GLfloat skyboxVertices[] =
-        {
-            // Positions
-            -1.0f, 1.0f, -1.0f,
-            -1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, -1.0f,
+    {
+        // Positions
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
 
-            -1.0f, -1.0f, 1.0f,
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, -1.0f,
-            -1.0f, 1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
 
-            1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
 
-            -1.0f, -1.0f, 1.0f,
-            -1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f, 1.0f,
 
-            -1.0f, 1.0f, -1.0f,
-            1.0f, 1.0f, -1.0f,
-            1.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, 1.0f,
-            -1.0f, 1.0f, -1.0f,
+        -1.0f, 1.0f, -1.0f,
+        1.0f, 1.0f, -1.0f,
+        1.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, 1.0f,
+        -1.0f, 1.0f, -1.0f,
 
-            -1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f
-        };
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f, 1.0f,
+        1.0f, -1.0f, 1.0f
+    };
 
     skyboxVAO_.create();
     skyboxVBO_.create();
 
     skyboxVAO_.bind();
-    skyboxVBO_.bind();
 
+    skyboxVBO_.bind();
     skyboxVBO_.add_data(&skyboxVertices, sizeof(skyboxVertices));
     skyboxVBO_.upload_data();
 
@@ -121,6 +93,8 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
 
 Skybox::~Skybox()
 {
+    skyboxVAO_.free();
+    skyboxVBO_.free();
 }
 
 void Skybox::draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) const
@@ -135,9 +109,9 @@ void Skybox::draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) const
 
     skyboxVAO_.bind();
 
-    glActiveTexture(GL_TEXTURE0);
+    cubemap_->bind();
     skyboxProgram_.set_uniform("skybox", 0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID_);
+
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
     skyboxVAO_.unbind();

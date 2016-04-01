@@ -2,7 +2,7 @@
 #include "Texture.h"
 using namespace std;
 
-Texture::Texture()
+Texture::Texture(GLenum type)
 {
     // Initialize variables
     width_ = 0;
@@ -16,6 +16,10 @@ Texture::Texture()
 
     minification_ = 0;
     magnification_ = 0;
+
+    type_ = type;
+
+    glGenTextures(1, &textureID_);
 }
 
 Texture::~Texture()
@@ -52,17 +56,14 @@ void Texture::bind(int textureUnit) const
 {
     // Bind as current texture for rendering
     glActiveTexture(GL_TEXTURE0 + textureUnit);
-    glBindTexture(GL_TEXTURE_2D, textureID_);
+    glBindTexture(type_, textureID_);
     glBindSampler(textureUnit, sampler_);
 }
 
-bool Texture::create_from_surface(SDL_Surface* surface, bool genMipMaps)
+bool Texture::create_from_surface(SDL_Surface* surface, bool genMipMaps, GLenum target)
 {
     // TODO: Add failure conditions for this
-
-    // Generate the texture and bind it
-    glGenTextures(1, &textureID_);
-    glBindTexture(GL_TEXTURE_2D, textureID_);
+    bind();
 
     // Set pixel mode
     int pixelMode = GL_RGB;
@@ -74,12 +75,12 @@ bool Texture::create_from_surface(SDL_Surface* surface, bool genMipMaps)
     }
 
     // Send data to gpu
-    glTexImage2D(GL_TEXTURE_2D, 0, pixelMode, surface->w, surface->h, 0, pixelMode, GL_UNSIGNED_BYTE, surface->pixels);
+    glTexImage2D(target, 0, pixelMode, surface->w, surface->h, 0, pixelMode, GL_UNSIGNED_BYTE, surface->pixels);
 
     // Generate mipmaps if requested
     if (genMipMaps)
     {
-        glGenerateMipmap(GL_TEXTURE_2D);
+        glGenerateMipmap(type_);
 
         // Set mipmap generation flag
         mipMapsGenerated_ = true;
@@ -101,7 +102,7 @@ bool Texture::create_from_surface(SDL_Surface* surface, bool genMipMaps)
     return true;
 }
 
-bool Texture::load(const string& path, bool genMipMaps)
+bool Texture::load(const string& path, bool genMipMaps, GLenum target)
 {
     // Set path
     path_ = path;
@@ -120,7 +121,7 @@ bool Texture::load(const string& path, bool genMipMaps)
     }
 
     // Create the texture from an SDL Surface
-    if (!create_from_surface(textureSurface, genMipMaps))
+    if (!create_from_surface(textureSurface, genMipMaps, target))
     {
         return false;
     }
@@ -156,5 +157,6 @@ void Texture::set_wrap() const
     glBindSampler(0, sampler_);
     glSamplerParameteri(sampler_, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glSamplerParameteri(sampler_, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glSamplerParameteri(sampler_, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 

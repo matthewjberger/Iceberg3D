@@ -5,6 +5,7 @@
 #include "VAO.h"
 #include "VBO.h"
 #include "ShaderProgram.h"
+#include "Texture.h"
 
 struct SkyboxParameters
 {
@@ -27,8 +28,9 @@ public:
 private:
     VAO skyboxVAO_;
     VBO skyboxVBO_;
+
     ShaderProgram skyboxProgram_;
-    GLuint textureID_;
+    std::unique_ptr<Texture> cubemap_;
 };
 
 #endif
