@@ -24,11 +24,6 @@ Model::~Model()
 
 void Model::free()
 {
-    for (GLuint i = 0; i < meshes_.size(); i++)
-    {
-        meshes_[i].free();
-    }
-
     if (collisionMesh_ != nullptr)
     {
         delete collisionMesh_;
@@ -88,8 +83,9 @@ void Model::process_node(aiNode* node, const aiScene* scene)
 
 Mesh Model::process_mesh(aiMesh* mesh) const
 {
-    vector<Vertex> vertices_;
-    vector<GLuint> indices_;
+    vector<Vertex> vertices;
+    vector<GLuint> indices;
+    vector<Texture> textures;
     btVector3 triArray[3];
 
     // Cycle through the faces in the mesh (each is a triangle)
@@ -105,7 +101,7 @@ Mesh Model::process_mesh(aiMesh* mesh) const
             triArray[j] = btVector3(position.x, position.y, position.z);
 
             // Store the index
-            indices_.push_back(face.mIndices[j]);
+            indices.push_back(face.mIndices[j]);
         }
 
         collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
@@ -135,10 +131,10 @@ Mesh Model::process_mesh(aiMesh* mesh) const
             v.tex_coords = glm::vec2(0.0f, 0.0f);
         }
 
-        vertices_.push_back(v);
+        vertices.push_back(v);
     }
 
-    return Mesh(vertices_, indices_);
+    return Mesh(vertices, indices, textures);
 }
 
 void Model::load_texture(const string &imagePath, bool genMipMaps)

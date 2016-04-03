@@ -1,10 +1,11 @@
 #include "Mesh.h"
 using namespace std;
 
-Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices)
+Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures)
 {
     vertices_ = vertices;
     indices_ = indices;
+    textures_ = textures;
 }
 
 Mesh::~Mesh()
@@ -12,9 +13,34 @@ Mesh::~Mesh()
     free();
 }
 
-void Mesh::draw() const
+void Mesh::draw(const ShaderProgram* shaderProgram) const
 {
+    //shaderProgram->use();
     meshVAO_.bind();
+    /*
+    int diffuseCount = 1;
+    int specularCount = 1;
+    int textureCount = 0;
+    string name;
+    for (auto texture : textures_)
+    {
+        if (texture.type() == aiTextureType_DIFFUSE)
+        {
+            name = "texture_diffuse" + to_string(diffuseCount++);
+        }
+        else if (texture.type() == aiTextureType_SPECULAR)
+        {
+            name = "texture_specular" + to_string(specularCount++);
+        }
+        else
+        {
+            // Other kinds of texture maps are not handled yet
+            continue;
+        }
+        shaderProgram->set_uniform(name, textureCount);
+        texture.bind(textureCount++);
+    }
+    */
     glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
     meshVAO_.unbind();
 }
