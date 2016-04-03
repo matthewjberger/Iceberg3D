@@ -23,11 +23,8 @@ public:
 
 private:
 
-    /**************************/
-    /* Place State Items here */
-    /**************************/
     std::unique_ptr<Model> model;
-    std::unique_ptr<ShaderProgram> shaderProgram;
+    std::shared_ptr<ShaderProgram> shaderProgram;
     glm::mat4 modelMatrix;
     std::unique_ptr<Camera> camera;
     GLuint textureID;

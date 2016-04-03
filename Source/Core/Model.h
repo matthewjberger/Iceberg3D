@@ -8,13 +8,10 @@
 class Model
 {
 public:
-    Model(const std::string &path,
-          const std::string &texturePath = "",
-          bool genMipMaps = true);
+    Model(const std::string &path);
     ~Model();
 
-    void draw();
-    void load_texture(const std::string &imagePath, bool genMipMaps);
+    void draw(const ShaderProgram* shaderProgram);
     void free();
 
     // Transformations
@@ -42,7 +39,8 @@ private:
 
     void load_model(const std::string &path);
     void process_node(aiNode* node, const aiScene* scene);
-    Mesh process_mesh(aiMesh* mesh) const;
+    Mesh process_mesh(aiMesh* mesh, const aiScene* scene) const;
+    static std::vector<Texture> load_textures(aiMaterial* material, aiTextureType type);
 
     Texture texture_;
     bool textureLoaded_;

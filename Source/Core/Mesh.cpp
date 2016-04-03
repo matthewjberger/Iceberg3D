@@ -15,13 +15,14 @@ Mesh::~Mesh()
 
 void Mesh::draw(const ShaderProgram* shaderProgram) const
 {
-    //shaderProgram->use();
+    shaderProgram->use();
     meshVAO_.bind();
-    /*
+
     int diffuseCount = 1;
     int specularCount = 1;
     int textureCount = 0;
     string name;
+    /*
     for (auto texture : textures_)
     {
         if (texture.type() == aiTextureType_DIFFUSE)

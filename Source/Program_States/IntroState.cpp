@@ -13,9 +13,8 @@ void IntroState::initialize()
 {
     // Initialize resources
     model = make_unique<Model>("Assets/house/house.obj");
-    model->load_texture("Assets/house/houseTexture.jpg", true);
 
-    shaderProgram = make_unique<ShaderProgram>();
+    shaderProgram = make_shared<ShaderProgram>();
     shaderProgram->create_program();
     shaderProgram->add_shader_from_file("Shaders/modelVert.glsl", GL_VERTEX_SHADER);
     shaderProgram->add_shader_from_file("Shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
@@ -49,7 +48,6 @@ void IntroState::update()
 void IntroState::draw()
 {
     skybox->draw(camera->projection_matrix(), camera->view_matrix());
-    shaderProgram->use();
-    model->draw();
+    model->draw(shaderProgram.get());
 }
 

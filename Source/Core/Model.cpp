@@ -1,17 +1,11 @@
 #include "Model.h"
 using namespace std;
 
-Model::Model(const string &path, const string &texturePath, bool genMipMaps)
+Model::Model(const string &path)
 {
     collisionMesh_ = new btTriangleMesh();
 
-    textureLoaded_ = false;
     load_model(path.c_str());
-
-    if (texturePath != "")
-    {
-        load_texture(texturePath, genMipMaps);
-    }
 
     modelMatrix_ = glm::mat4(1.0f);
     collisionShape_ = new btBvhTriangleMeshShape(collisionMesh_, true);
@@ -24,6 +18,7 @@ Model::~Model()
 
 void Model::free()
 {
+    // TODO: change these to unique_ptrs
     if (collisionMesh_ != nullptr)
     {
         delete collisionMesh_;
@@ -37,15 +32,11 @@ void Model::free()
     }
 }
 
-void Model::draw()
+void Model::draw(const ShaderProgram* shaderProgram)
 {
     for (GLuint i = 0; i < meshes_.size(); i++)
     {
-        if (textureLoaded_)
-        {
-            texture_.bind();
-        }
-        meshes_[i].draw();
+        meshes_[i].draw(shaderProgram);
     }
 }
 
@@ -70,7 +61,7 @@ void Model::process_node(aiNode* node, const aiScene* scene)
     for (GLuint i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        meshes_.push_back(process_mesh(mesh));
+        meshes_.push_back(process_mesh(mesh, scene));
         meshes_.back().setup_mesh();
     }
 
@@ -81,7 +72,7 @@ void Model::process_node(aiNode* node, const aiScene* scene)
     }
 }
 
-Mesh Model::process_mesh(aiMesh* mesh) const
+Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
 {
     vector<Vertex> vertices;
     vector<GLuint> indices;
@@ -107,42 +98,66 @@ Mesh Model::process_mesh(aiMesh* mesh) const
         collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
     }
 
+    // Cycle through the vertices and store their data
     for (GLuint i = 0; i < mesh->mNumVertices; i++)
     {
-        Vertex v;
+        Vertex tempVertex;
 
         auto vertex = make_unique<const aiVector3D>(mesh->mVertices[i]);
-        v.position.x = vertex->x;
-        v.position.y = vertex->y;
-        v.position.z = vertex->z;
+        tempVertex.position.x = vertex->x;
+        tempVertex.position.y = vertex->y;
+        tempVertex.position.z = vertex->z;
 
         auto normal = make_unique<const aiVector3D>(mesh->mNormals[i]);
-        v.normal.x = normal->x;
-        v.normal.y = normal->y;
-        v.normal.z = normal->z;
+        tempVertex.normal.x = normal->x;
+        tempVertex.normal.y = normal->y;
+        tempVertex.normal.z = normal->z;
 
         // Texture Coordinates
         if (mesh->HasTextureCoords(0))
         {
-            v.tex_coords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+            tempVertex.tex_coords = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
         }
         else
         {
-            v.tex_coords = glm::vec2(0.0f, 0.0f);
+            tempVertex.tex_coords = glm::vec2(0.0f, 0.0f);
         }
 
-        vertices.push_back(v);
+        vertices.push_back(tempVertex);
+    }
+
+    // Process materials
+    if (mesh->mMaterialIndex >= 0)
+    {
+        aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+
+        vector<Texture> diffuseMaps = load_textures(material, aiTextureType_DIFFUSE);
+        vector<Texture> specularMaps = load_textures(material, aiTextureType_SPECULAR);
+
+        textures.reserve(diffuseMaps.size() + specularMaps.size());
+        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+        textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     }
 
     return Mesh(vertices, indices, textures);
 }
 
-void Model::load_texture(const string &imagePath, bool genMipMaps)
+std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType type)
 {
-    texture_.load(imagePath, genMipMaps);
-    textureLoaded_ = true;
+    // TODO: optimize this to use a texture cache
+    vector<Texture> textures;
+    for (size_t i = 0; i < material->GetTextureCount(type); i++)
+    {
+        aiString filename;
+        material->GetTexture(type, i, &filename);
+        Texture texture(type);
+        texture.load(filename.C_Str());
+        textures.push_back(texture);
+    }
+    return textures;
 }
 
+// Transformations
 void Model::rotate(float angle_in_degrees, glm::vec3 rotationAxes)
 {
     modelMatrix_ = glm::rotate(modelMatrix_, angle_in_degrees, rotationAxes);
@@ -180,7 +195,7 @@ glm::mat4 Model::model_matrix() const
 
 btCollisionShape* Model::collision_shape() const
 {
-    return collisionShape_; 
+    return collisionShape_;
 }
 
 void Model::assign_model(glm::mat4 matrix)
