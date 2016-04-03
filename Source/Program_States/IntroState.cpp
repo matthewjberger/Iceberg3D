@@ -31,6 +31,10 @@ void IntroState::initialize()
     skyboxParameters.back   = "Assets/skybox/back.jpg";
 
     skybox = make_unique<Skybox>(skyboxParameters);
+
+    // Temporary, until multitexture model loading is implemented
+    houseTexture.load("Assets/house/housetexture.jpg");
+    houseTexture.bind();
 }
 
 void IntroState::update()

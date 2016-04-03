@@ -31,5 +31,7 @@ private:
 
     std::unique_ptr<glm::mat4> modelMatrices;
     std::unique_ptr<Skybox> skybox;
+
+    Texture houseTexture;
 };
 
