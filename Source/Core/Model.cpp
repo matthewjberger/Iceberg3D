@@ -7,7 +7,7 @@ Model::Model(const string &path)
 
     load_model(path.c_str());
 
-    modelMatrix_ = glm::mat4(1.0f);
+    transformManager_ = make_shared<TransformManager>();
     collisionShape_ = new btBvhTriangleMeshShape(collisionMesh_, true);
 }
 
@@ -157,48 +157,12 @@ std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType ty
     return textures;
 }
 
-// Transformations
-void Model::rotate(float angle_in_degrees, glm::vec3 rotationAxes)
-{
-    modelMatrix_ = glm::rotate(modelMatrix_, angle_in_degrees, rotationAxes);
-}
-
-void Model::rotate(glm::mat4 base, float angle_in_degrees, glm::vec3 rotationAxes)
-{
-    modelMatrix_ = glm::rotate(base, angle_in_degrees, rotationAxes);
-}
-
-void Model::scale(glm::vec3 scale)
-{
-    modelMatrix_ = glm::scale(modelMatrix_, scale);
-}
-
-void Model::scale(glm::mat4 base, glm::vec3 scale)
-{
-    modelMatrix_ = glm::scale(base, scale);
-}
-
-void Model::translate(glm::vec3 position)
-{
-    modelMatrix_ = glm::translate(modelMatrix_, position);
-}
-
-void Model::translate(glm::mat4 base, glm::vec3 position)
-{
-    modelMatrix_ = glm::translate(base, position);
-}
-
-glm::mat4 Model::model_matrix() const
-{
-    return modelMatrix_;
-}
-
 btCollisionShape* Model::collision_shape() const
 {
     return collisionShape_;
 }
 
-void Model::assign_model(glm::mat4 matrix)
+TransformManager* Model::transform_manager() const
 {
-    modelMatrix_ = matrix;
+    return transformManager_.get();
 }

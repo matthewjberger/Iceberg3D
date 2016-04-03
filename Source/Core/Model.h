@@ -4,6 +4,7 @@
 #include "../Core/GlobalIncludes.h"
 #include "Texture.h"
 #include "Mesh.h"
+#include "TransformManager.h"
 
 class Model
 {
@@ -14,28 +15,15 @@ public:
     void draw(const ShaderProgram* shaderProgram);
     void free();
 
-    // Transformations
-    void scale(glm::vec3 scale);
-    void scale(glm::mat4 base, glm::vec3 scale);
-
-    void rotate(float angle_in_degrees, glm::vec3 rotationAxes);
-    void rotate(glm::mat4 base, float angle_in_degrees, glm::vec3 rotationAxes);
-
-    void translate(glm::vec3 position);
-    void translate(glm::mat4 base, glm::vec3 position);
-
-    // Useful for moving a model using bullet physics
-    void assign_model(glm::mat4 matrix);
-
-    glm::mat4 model_matrix() const;
     btCollisionShape* collision_shape() const;
+
+    TransformManager* transform_manager() const;
 
 private:
 
-    glm::mat4 modelMatrix_;
-
     std::string directory_;
     std::vector<Mesh> meshes_;
+    std::shared_ptr<TransformManager> transformManager_;
 
     void load_model(const std::string &path);
     void process_node(aiNode* node, const aiScene* scene);

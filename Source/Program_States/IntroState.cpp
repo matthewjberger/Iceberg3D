@@ -39,9 +39,9 @@ void IntroState::update()
     static float angle = 0.0f;
     angle += game_->time_delta() * float(pi<float>())/2;
 
-    model->rotate(mat4(1.0f), angle, vec3(0.0f, 1.0f, 0.0f));
+    model->transform_manager()->rotate(mat4(1.0f), angle, vec3(0.0f, 1.0f, 0.0f));
 
-    mat4 mvp = camera->make_mvp(model->model_matrix());
+    mat4 mvp = camera->make_mvp(model->transform_manager()->model_matrix());
     shaderProgram->set_uniform("mvpMatrix", &mvp);
 }
 
