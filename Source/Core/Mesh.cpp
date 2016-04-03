@@ -6,6 +6,8 @@ Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> text
     vertices_ = vertices;
     indices_ = indices;
     textures_ = textures;
+
+    build_collision_shape();
 }
 
 Mesh::~Mesh()
@@ -22,7 +24,6 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
     int specularCount = 1;
     int textureCount = 0;
     string name;
-    /*
     for (auto texture : textures_)
     {
         if (texture.type() == aiTextureType_DIFFUSE)
@@ -41,7 +42,6 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
         shaderProgram->set_uniform(name, textureCount);
         texture.bind(textureCount++);
     }
-    */
     glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
     meshVAO_.unbind();
 }
@@ -77,6 +77,29 @@ void Mesh::setup_mesh()
     meshVAO_.configure_attribute(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, tex_coords));
 
     meshVAO_.unbind();
+}
+
+void Mesh::build_collision_shape()
+{
+    collisionMesh_ = make_shared<btTriangleMesh>();
+    btVector3 triArray[3];
+    for(int i = 2; i < indices_.size(); i += 3)
+    {
+        triArray[0] = btVector3(vertices_[i - 2].position.x,
+                                vertices_[i - 2].position.y,
+                                vertices_[i - 2].position.z);
+
+        triArray[1] = btVector3(vertices_[i - 1].position.x,
+                                vertices_[i - 1].position.y,
+                                vertices_[i - 1].position.z);
+
+        triArray[2] = btVector3(vertices_[i].position.x,
+                                vertices_[i].position.y,
+                                vertices_[i].position.z);
+
+        collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
+    }
+    collisionShape_ = make_shared<btBvhTriangleMeshShape>(collisionMesh_.get(), true);
 }
 
 void Mesh::free()

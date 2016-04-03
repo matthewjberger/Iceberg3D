@@ -13,9 +13,6 @@ public:
     ~Model();
 
     void draw(const ShaderProgram* shaderProgram);
-    void free();
-
-    btCollisionShape* collision_shape() const;
 
     TransformManager* transform_manager() const;
 
@@ -32,11 +29,6 @@ private:
 
     Texture texture_;
     bool textureLoaded_;
-
-    // TODO: Move this triangle mesh to the mesh class
-    // return a vector of triangle meshes corresponding to the loaded model's internal meshes
-    btTriangleMesh* collisionMesh_;
-    btCollisionShape* collisionShape_;
 };
 
 #endif

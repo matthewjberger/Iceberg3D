@@ -25,6 +25,7 @@ public:
 
 private:
 
+    void build_collision_shape();
     void free();
 
     VAO meshVAO_;
@@ -34,6 +35,9 @@ private:
     std::vector<Vertex> vertices_;
     std::vector<GLuint> indices_;
     std::vector<Texture> textures_;
+
+    std::shared_ptr<btTriangleMesh> collisionMesh_;
+    std::shared_ptr<btCollisionShape> collisionShape_;
 };
 
 #endif

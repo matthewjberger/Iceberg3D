@@ -3,33 +3,13 @@ using namespace std;
 
 Model::Model(const string &path)
 {
-    collisionMesh_ = new btTriangleMesh();
-
     load_model(path.c_str());
 
     transformManager_ = make_shared<TransformManager>();
-    collisionShape_ = new btBvhTriangleMeshShape(collisionMesh_, true);
 }
 
 Model::~Model()
 {
-    free();
-}
-
-void Model::free()
-{
-    // TODO: change these to unique_ptrs
-    if (collisionMesh_ != nullptr)
-    {
-        delete collisionMesh_;
-        collisionMesh_ = nullptr;
-    }
-
-    if (collisionShape_ != nullptr)
-    {
-        delete collisionShape_;
-        collisionShape_ = nullptr;
-    }
 }
 
 void Model::draw(const ShaderProgram* shaderProgram)
@@ -77,26 +57,6 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
     vector<Vertex> vertices;
     vector<GLuint> indices;
     vector<Texture> textures;
-    btVector3 triArray[3];
-
-    // Cycle through the faces in the mesh (each is a triangle)
-    for (GLuint i = 0; i < mesh->mNumFaces; i++)
-    {
-        const aiFace& face = mesh->mFaces[i];
-
-        // Use the indices of the face to grab vertex data
-        for (GLuint j = 0; j < face.mNumIndices; j++)
-        {
-            // Build the triangle for the collision mesh
-            aiVector3D position = mesh->mVertices[face.mIndices[j]];
-            triArray[j] = btVector3(position.x, position.y, position.z);
-
-            // Store the index
-            indices.push_back(face.mIndices[j]);
-        }
-
-        collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
-    }
 
     // Cycle through the vertices and store their data
     for (GLuint i = 0; i < mesh->mNumVertices; i++)
@@ -125,6 +85,17 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
 
         vertices.push_back(tempVertex);
     }
+
+    // Get the indices of the corresponding vertices of each face 
+    for (GLuint i = 0; i < mesh->mNumFaces; i++)
+    {
+        const aiFace& face = mesh->mFaces[i];
+        for (GLuint j = 0; j < face.mNumIndices; j++)
+        {
+            indices.push_back(face.mIndices[j]);
+        }
+    }
+
 
     // Process materials
     if (mesh->mMaterialIndex >= 0)
@@ -155,11 +126,6 @@ std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType ty
         textures.push_back(texture);
     }
     return textures;
-}
-
-btCollisionShape* Model::collision_shape() const
-{
-    return collisionShape_;
 }
 
 TransformManager* Model::transform_manager() const
