@@ -121,7 +121,7 @@ bool Texture::load(const string& path, bool genMipMaps, GLenum target)
     // Check for errors
     if (textureSurface == nullptr)
     {
-        printf("Couldn't load image %s./nIMG_Error: %s", path.c_str(), IMG_GetError());
+        printf("Couldn't load image %s.\nIMG_Error: %s", path.c_str(), IMG_GetError());
         return false;
     }
 

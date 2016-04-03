@@ -121,7 +121,7 @@ std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType ty
         material->GetTexture(type, i, &filename);
         Texture texture(type);
         string filepath = directory_ + "/" + filename.C_Str();
-        texture.load(filename.C_Str());
+        texture.load(filepath);
         textures.push_back(texture);
     }
     return textures;
