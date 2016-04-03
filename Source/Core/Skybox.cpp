@@ -19,7 +19,7 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
     skyboxProgram_.add_shader_from_file("Shaders/skyFrag.glsl", GL_FRAGMENT_SHADER);
     skyboxProgram_.link_program();
 
-    cubemap_ = make_unique<Texture>(GL_TEXTURE_CUBE_MAP);
+    cubemap_ = make_unique<Texture>(aiTextureType_DIFFUSE, GL_TEXTURE_CUBE_MAP);
 
     for (GLuint i = 0; i < faces.size(); i++)
     {

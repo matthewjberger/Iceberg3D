@@ -2,7 +2,7 @@
 #include "Texture.h"
 using namespace std;
 
-Texture::Texture(GLenum type)
+Texture::Texture(aiTextureType type, GLenum bindTarget)
 {
     // Initialize variables
     width_ = 0;
@@ -16,6 +16,8 @@ Texture::Texture(GLenum type)
 
     minification_ = 0;
     magnification_ = 0;
+
+    bindTarget_ = bindTarget;
 
     type_ = type;
 
@@ -56,7 +58,7 @@ void Texture::bind(int textureUnit) const
 {
     // Bind as current texture for rendering
     glActiveTexture(GL_TEXTURE0 + textureUnit);
-    glBindTexture(type_, textureID_);
+    glBindTexture(bindTarget_, textureID_);
     glBindSampler(textureUnit, sampler_);
 }
 
@@ -80,7 +82,7 @@ bool Texture::create_from_surface(SDL_Surface* surface, bool genMipMaps, GLenum 
     // Generate mipmaps if requested
     if (genMipMaps)
     {
-        glGenerateMipmap(type_);
+        glGenerateMipmap(bindTarget_);
 
         // Set mipmap generation flag
         mipMapsGenerated_ = true;
@@ -135,6 +137,11 @@ bool Texture::load(const string& path, bool genMipMaps, GLenum target)
 string Texture::path() const
 {
     return path_;
+}
+
+aiTextureType Texture::type() const
+{
+    return type_;
 }
 
 int Texture::minification() const
