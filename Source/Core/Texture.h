@@ -27,7 +27,7 @@ private:
 
     void free() const;
 
-    int width_, height_, bpp_;
+    int width_, height_;
     GLuint textureID_;
     GLuint sampler_;
 

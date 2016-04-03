@@ -7,18 +7,22 @@ Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> text
     indices_ = indices;
     textures_ = textures;
 
+    meshVAO_ = make_shared<VAO>();
+    meshVBO_ = make_shared<VBO>();
+    meshIBO_ = make_shared<VBO>();
+
+    setup_mesh();
     build_collision_shape();
 }
 
 Mesh::~Mesh()
 {
-    free();
 }
 
 void Mesh::draw(const ShaderProgram* shaderProgram) const
 {
     shaderProgram->use();
-    meshVAO_.bind();
+    meshVAO_->bind();
 
     int diffuseCount = 1;
     int specularCount = 1;
@@ -43,47 +47,47 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
         texture.bind(textureCount++);
     }
     glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
-    meshVAO_.unbind();
+    meshVAO_->unbind();
 }
 
 void Mesh::setup_mesh()
 {
-    meshVAO_.create();
-    meshVBO_.create();
-    meshIBO_.create();
+    meshVAO_->create();
+    meshVBO_->create();
+    meshIBO_->create();
 
-    meshVAO_.bind();
+    meshVAO_->bind();
 
     // Add vertices
-    meshVBO_.bind();
-    meshVBO_.add_data(&vertices_.front(), sizeof(Vertex) * vertices_.size());
-    meshVBO_.upload_data();
+    meshVBO_->bind();
+    meshVBO_->add_data(&vertices_.front(), sizeof(Vertex) * vertices_.size());
+    meshVBO_->upload_data();
 
     // Add indices 
-    meshIBO_.bind(GL_ELEMENT_ARRAY_BUFFER);
-    meshIBO_.add_data(&indices_.front(), sizeof(GLuint) * indices_.size());
-    meshIBO_.upload_data();
+    meshIBO_->bind(GL_ELEMENT_ARRAY_BUFFER);
+    meshIBO_->add_data(&indices_.front(), sizeof(GLuint) * indices_.size());
+    meshIBO_->upload_data();
 
     // Vertex Positions
-    meshVAO_.enable_attribute(0);
-    meshVAO_.configure_attribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
+    meshVAO_->enable_attribute(0);
+    meshVAO_->configure_attribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
 
     // Vertex Normal Coordinates
-    meshVAO_.enable_attribute(1);
-    meshVAO_.configure_attribute(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
+    meshVAO_->enable_attribute(1);
+    meshVAO_->configure_attribute(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
 
     // Vertex Texture Coordinates
-    meshVAO_.enable_attribute(2);
-    meshVAO_.configure_attribute(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, tex_coords));
+    meshVAO_->enable_attribute(2);
+    meshVAO_->configure_attribute(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, tex_coords));
 
-    meshVAO_.unbind();
+    meshVAO_->unbind();
 }
 
 void Mesh::build_collision_shape()
 {
     collisionMesh_ = make_shared<btTriangleMesh>();
     btVector3 triArray[3];
-    for(int i = 2; i < indices_.size(); i += 3)
+    for(size_t i = 2; i < indices_.size(); i += 3)
     {
         triArray[0] = btVector3(vertices_[i - 2].position.x,
                                 vertices_[i - 2].position.y,
@@ -101,11 +105,3 @@ void Mesh::build_collision_shape()
     }
     collisionShape_ = make_shared<btBvhTriangleMeshShape>(collisionMesh_.get(), true);
 }
-
-void Mesh::free()
-{
-    meshVAO_.free();
-    meshVBO_.free();
-    meshIBO_.free();
-}
-

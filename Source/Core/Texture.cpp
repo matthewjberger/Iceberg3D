@@ -7,7 +7,6 @@ Texture::Texture(aiTextureType type, GLenum bindTarget)
     // Initialize variables
     width_ = 0;
     height_ = 0;
-    bpp_ = 0;
 
     textureID_ = 0;
     sampler_ = 0;
@@ -64,6 +63,10 @@ void Texture::bind(int textureUnit) const
 
 bool Texture::create_from_surface(SDL_Surface* surface, bool genMipMaps, GLenum target)
 {
+    // Assign parameters
+    width_ = surface->w;
+    height_ = surface->h;
+
     // TODO: Add failure conditions for this
     bind();
 

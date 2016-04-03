@@ -26,11 +26,10 @@ public:
 private:
 
     void build_collision_shape();
-    void free();
 
-    VAO meshVAO_;
-    VBO meshVBO_;
-    VBO meshIBO_;
+    std::shared_ptr<VAO> meshVAO_;
+    std::shared_ptr<VBO> meshVBO_;
+    std::shared_ptr<VBO> meshIBO_;
 
     std::vector<Vertex> vertices_;
     std::vector<GLuint> indices_;

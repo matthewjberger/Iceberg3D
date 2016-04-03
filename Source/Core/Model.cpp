@@ -42,7 +42,6 @@ void Model::process_node(aiNode* node, const aiScene* scene)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         meshes_.push_back(process_mesh(mesh, scene));
-        meshes_.back().setup_mesh();
     }
 
     // Process all child nodes
@@ -96,7 +95,6 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
         }
     }
 
-
     // Process materials
     if (mesh->mMaterialIndex >= 0)
     {
@@ -113,7 +111,7 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType type)
+std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType type) const
 {
     // TODO: optimize this to use a texture cache
     vector<Texture> textures;
@@ -122,6 +120,7 @@ std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType ty
         aiString filename;
         material->GetTexture(type, i, &filename);
         Texture texture(type);
+        string filepath = directory_ + "/" + filename.C_Str();
         texture.load(filename.C_Str());
         textures.push_back(texture);
     }
