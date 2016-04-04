@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "Mesh.h"
 #include "TransformManager.h"
+#include "Camera.h"
 
 class Model
 {
@@ -12,7 +13,7 @@ public:
     Model(const std::string &path);
     ~Model();
 
-    void draw(const ShaderProgram* shaderProgram);
+    void draw(const ShaderProgram* shaderProgram, const Camera* camera);
 
     TransformManager* transform_manager() const;
 

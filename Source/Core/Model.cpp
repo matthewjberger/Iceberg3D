@@ -12,11 +12,11 @@ Model::~Model()
 {
 }
 
-void Model::draw(const ShaderProgram* shaderProgram)
+void Model::draw(const ShaderProgram* shaderProgram, const Camera* camera)
 {
     for (GLuint i = 0; i < meshes_.size(); i++)
     {
-        meshes_[i].draw(shaderProgram);
+       meshes_[i].draw(shaderProgram);
     }
 }
 
@@ -121,7 +121,7 @@ std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType ty
         material->GetTexture(type, i, &filename);
         Texture texture(type);
         string filepath = directory_ + "/" + filename.C_Str();
-        texture.load(filepath);
+        texture.load(filepath, true);
         textures.push_back(texture);
     }
     return textures;

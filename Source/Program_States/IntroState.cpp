@@ -12,7 +12,7 @@ void IntroState::handle_events(){}
 void IntroState::initialize()
 {
     // Initialize resources
-    model = make_unique<Model>("Assets/house/house.obj");
+    model = make_unique<Model>("Assets/nanosuit/nanosuit.obj");
 
     shaderProgram = make_shared<ShaderProgram>();
     shaderProgram->create_program();
@@ -21,6 +21,7 @@ void IntroState::initialize()
     shaderProgram->link_program();
 
     camera = make_unique<Camera>(game_, vec3(0.0, 25.0, -70.0));
+    camera->enable_input();
 
     SkyboxParameters skyboxParameters;
     skyboxParameters.right  = "Assets/skybox/right.jpg";
@@ -31,10 +32,6 @@ void IntroState::initialize()
     skyboxParameters.back   = "Assets/skybox/back.jpg";
 
     skybox = make_unique<Skybox>(skyboxParameters);
-
-    // Temporary, until multitexture model loading is implemented
-    houseTexture.load("Assets/house/housetexture.jpg");
-    houseTexture.bind();
 }
 
 void IntroState::update()
@@ -42,6 +39,8 @@ void IntroState::update()
     // Update logic
     static float angle = 0.0f;
     angle += game_->time_delta() * float(pi<float>())/2;
+
+    camera->update(game_);
 
     model->transform_manager()->rotate(mat4(1.0f), angle, vec3(0.0f, 1.0f, 0.0f));
 
@@ -51,7 +50,7 @@ void IntroState::update()
 
 void IntroState::draw()
 {
-    skybox->draw(camera->projection_matrix(), camera->view_matrix());
-    model->draw(shaderProgram.get());
+    skybox->draw(camera.get());
+    model->draw(shaderProgram.get(), camera.get());
 }
 

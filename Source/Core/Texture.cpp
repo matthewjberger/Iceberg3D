@@ -61,6 +61,12 @@ void Texture::bind(int textureUnit) const
     glBindSampler(textureUnit, sampler_);
 }
 
+void Texture::unbind(int textureUnit) const
+{
+    glActiveTexture(GL_TEXTURE0 + textureUnit);
+    glBindTexture(bindTarget_, 0);
+}
+
 bool Texture::create_from_surface(SDL_Surface* surface, bool genMipMaps, GLenum target)
 {
     // Assign parameters
@@ -103,6 +109,8 @@ bool Texture::create_from_surface(SDL_Surface* surface, bool genMipMaps, GLenum 
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    unbind();
 
     return true;
 }
@@ -170,3 +178,7 @@ void Texture::set_wrap() const
     glSamplerParameteri(sampler_, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 
+GLuint Texture::sampler() const
+{
+    return sampler_;
+}

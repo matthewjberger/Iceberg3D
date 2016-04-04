@@ -48,6 +48,12 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
     }
     glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
     meshVAO_->unbind();
+
+    for(int i = 0; i < textures_.size(); i++)
+    {
+        textures_[i].unbind(i);
+    }
+
 }
 
 void Mesh::setup_mesh()

@@ -13,6 +13,7 @@ public:
     bool load(const std::string& path, bool genMipMaps = false, GLenum target = GL_TEXTURE_2D);
     bool create_from_surface(SDL_Surface* surface, bool genMipMaps = false, GLenum target = GL_TEXTURE_2D);
     void bind(int textureUnit = 0) const;
+    void unbind(int textureUnit = 0) const;
 
     void set_sampler_parameter(GLenum parameter, GLenum value) const;
     void set_filtering(int magnification, int minification);
@@ -22,6 +23,7 @@ public:
     int magnification() const;
     std::string path() const;
     aiTextureType type() const;
+    GLuint sampler() const;
 
 private:
 

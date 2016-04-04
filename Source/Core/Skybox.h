@@ -6,6 +6,7 @@
 #include "VBO.h"
 #include "ShaderProgram.h"
 #include "Texture.h"
+#include "Camera.h"
 
 struct SkyboxParameters
 {
@@ -23,7 +24,7 @@ public:
     Skybox(const SkyboxParameters &skyboxParameters);
     ~Skybox();
 
-    void draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) const;
+    void draw(const Camera* camera) const;
 
 private:
     VAO skyboxVAO_;
