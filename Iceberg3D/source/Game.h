@@ -32,7 +32,7 @@ public:
     bool running() const;
     void exit();
 
-    SDL_Window* window() const;
+    GLFWwindow* window() const;
     glm::vec2 screen_dimensions() const;
     int fps() const;
     float aspect_ratio() const;
@@ -41,26 +41,21 @@ public:
     float time_delta();
 
     void change_state(GameState* state);
-    SDL_Event event() const;
 
 private:
 
     std::unique_ptr<StateMachine> stateMachine;
+    static GLFWwindow* create_window(int width, int height, std::string title, GLFWmonitor* monitor = nullptr, GLFWwindow *share = nullptr);
 
     bool running_;
     bool fullscreen_;
     std::string caption_;
-    SDL_Window* window_;
-    SDL_Surface* screenSurface_;
-    SDL_Event event_;
-    SDL_GLContext context_;
+    GLFWwindow* window_;
 
     int screenWidth_;
     int screenHeight_;
 
     int fps_;
-
-    SDL_DisplayMode currentDisplayMode_;
 };
 
 class GameState : public ProgramState

@@ -17,8 +17,6 @@ Game::Game()
     fps_ = 60;
 
     window_ = nullptr;
-    screenSurface_ = nullptr;
-    context_ = nullptr;
 
     // Begin the timer for delta time calculation
     previousTime = std::chrono::high_resolution_clock::now();
@@ -26,14 +24,7 @@ Game::Game()
 
 Game::~Game()
 {
-    TTF_Quit();
-
-    SDL_DestroyWindow(window_);
     window_ = nullptr;
-
-    // Quit subsystems
-    TTF_Quit();
-    SDL_Quit();
 }
 
 bool Game::initialize()
@@ -42,56 +33,21 @@ bool Game::initialize()
     caption_ = "Matthew Berger's Game Engine";
 
     // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    if (glfwInit() == GL_FALSE)
     {
-        printf("SDL could not be initialized! SDL_Error: %s", SDL_GetError());
-
+        printf("GLFW could not be initialized!");
         return false;
     }
     else
     {
-        // Create the window
-        if (fullscreen_ == true)
+        window_ = create_window(screenWidth_, screenHeight_, caption_);
+        if(window_ == nullptr)
         {
-            window_ = SDL_CreateWindow(caption_.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth_, screenHeight_, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN_DESKTOP);
-        }
-        else if (fullscreen_ == false)
-        {
-            window_ = SDL_CreateWindow(caption_.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth_, screenHeight_, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-        }
-
-        if (window_ == nullptr)
-        {
-            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-
+            printf("Failed to create OpenGL context");
             return false;
         }
-        else
-        {
-            if (!initialize_opengl())
-            {
-                return false;
-            }
 
-            // Initialize screen surface
-            screenSurface_ = SDL_GetWindowSurface(window_);
-
-            // Use VSync
-            if (SDL_GL_SetSwapInterval(1) < 0)
-            {
-                printf("Warning: Unable to set VSync! SDL Error: %s", SDL_GetError());
-
-                return false;
-            }
-
-            // Initialize Sub Systems
-            if (TTF_Init() != 0)
-            {
-                printf("Error initializing SDL_ttf! %s \n", TTF_GetError());
-
-                return false;
-            }
-        }
+        // Create context and load OpenGL functions
     }
 
     return true;
@@ -207,13 +163,13 @@ void Game::toggle_fullscreen()
 {
     if (fullscreen_ == false)
     {
-        SDL_SetWindowFullscreen(window_, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP);
+        // Set fullscreen
 
         fullscreen_ = true;
     }
     else if (fullscreen_ == true)
     {
-        SDL_SetWindowFullscreen(window_, 0);
+        // Set windowed
 
         fullscreen_ = false;
     }
@@ -229,7 +185,7 @@ int Game::fps() const
     return fps_;
 }
 
-SDL_Window* Game::window() const
+GLFWwindow* Game::window() const
 {
     return window_;
 }
@@ -261,8 +217,23 @@ float Game::aspect_ratio() const
     return (height == 0) ? (width) : (width / height);
 }
 
-SDL_Event Game::event() const
+GLFWwindow* create_window(int width, int height, std::string title, GLFWmonitor* monitor, GLFWwindow *share)
 {
-    return event_;
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+    // Detect the version and create the window
+    for (int majorVersion = 3; majorVersion < 4; majorVersion++)
+    {
+        for (int minorVersion = 0; minorVersion < 5; minorVersion++)
+        {
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minorVersion);
+            auto window = glfwCreateWindow(width, height, "OpenGL", monitor, share);
+            if (window != nullptr) return window;
+        }
+    }
+
+    return nullptr;
 }
-    
