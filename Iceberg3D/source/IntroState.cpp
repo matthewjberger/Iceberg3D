@@ -1,5 +1,5 @@
 #include "IntroState.h"
-#include "../Core/GlobalIncludes.h"
+#include "GlobalIncludes.h"
 
 using namespace std;
 using namespace glm;

@@ -43,7 +43,6 @@ public:
     void change_state(GameState* state);
     SDL_Event event() const;
 
-
 private:
 
     std::unique_ptr<StateMachine> stateMachine;

@@ -1,0 +1,20 @@
+[submodule "Iceberg3D/dependencies/assimp"]
+	path = Iceberg3D/dependencies/assimp
+	url = https://github.com/assimp/assimp
+    branch = master
+[submodule "Iceberg3D/dependencies/glfw"]
+	path = Iceberg3D/dependencies/glfw
+	url = https://github.com/glfw/glfw
+    branch = master
+[submodule "Iceberg3D/dependencies/glm"]
+	path = Iceberg3D/dependencies/glm
+	url = https://github.com/g-truc/glm
+    branch = master
+[submodule "Iceberg3D/dependencies/stb"]
+	path = Iceberg3D/dependencies/stb
+	url = https://github.com/nothings/stb
+    branch = master
+[submodule "Iceberg3D/dependencies/bullet"]
+	path = Iceberg3D/dependencies/bullet
+	url = https://github.com/bulletphysics/bullet3
+    branch = master

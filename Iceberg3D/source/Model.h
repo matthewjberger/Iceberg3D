@@ -1,7 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "../Core/GlobalIncludes.h"
+#include "GlobalIncludes.h"
 #include "Texture.h"
 #include "Mesh.h"
 #include "TransformManager.h"

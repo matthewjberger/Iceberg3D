@@ -4,13 +4,9 @@
 // Array size macro
 #define SIZE(x) ((sizeof(x)/sizeof(*x)))
 
-// SDL, OpenGL, and GLEW
-#include "SDL.h"
-#include "GL/glew.h"
-#include "SDL_opengl.h"
-#include "SDL_image.h"
-#include "SDL_ttf.h"
-#include "GL/glu.h"
+// GLAD and GLFW
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 // GLM
 #define GLM_FORCE_RADIANS

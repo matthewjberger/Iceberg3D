@@ -1,5 +1,5 @@
-#include "Core/Game.h"
-#include "Program_States/IntroState.h"
+#include "Game.h"
+#include "IntroState.h"
 
 int main(int argc, char* args[])
 {
