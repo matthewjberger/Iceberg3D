@@ -18,3 +18,7 @@
 	path = Iceberg3D/dependencies/bullet
 	url = https://github.com/bulletphysics/bullet3
     branch = master
+[submodule "Iceberg3D/dependencies/glad"]
+	path = Iceberg3D/dependencies/glad
+	url = https://github.com/Dav1dde/glad
+	branch = c
