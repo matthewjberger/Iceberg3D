@@ -20,6 +20,9 @@ add_subdirectory(Iceberg3D/dependencies/bullet)
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+	# Hide the console in visual studio projects in debug and release
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} 	-g -O -Wall -Weffc++ -pedantic  \
 						-pedantic-errors -Wextra -Waggregate-return -Wcast-align \
