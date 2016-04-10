@@ -13,8 +13,6 @@ void StateMachine::change_state(ProgramState* state)
     if (!programStates_.empty())
     {
         programStates_.back()->finalize();
-        delete programStates_.back();
-        programStates_.back() = nullptr;
         programStates_.pop_back();
     }
 
@@ -30,7 +28,6 @@ void StateMachine::unload_all()
     {
         if (programStates_.back() != nullptr)
         {
-            delete programStates_.back();
             programStates_.back() = nullptr;
         }
 

@@ -1,13 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-// Define this symbol (VIRTUAL_MACHINE) if using a virtual machine
-// Currently, vmware doesn't support OpenGL 3
-// If unsure, install the mesa-utils package and then type
-// glxinfo | grep "OpenGL" to get the OpenGL version information
-// for your machine
-#define VIRTUAL_MACHINE
-
 #include "GlobalIncludes.h"
 #include "StateMachine.h"
 
@@ -18,19 +11,17 @@ class Game
 public:
 
     Game();
-
     ~Game();
 
     bool initialize();
-    bool initialize_opengl();
 
-    void update();
-    void draw();
-    void handle_events();
+    void update() const;
+    void draw() const;
+    void handle_events() const;
 
     void toggle_fullscreen();
     bool running() const;
-    void exit();
+    void exit() const;
 
     GLFWwindow* window() const;
     glm::vec2 screen_dimensions() const;
@@ -40,17 +31,17 @@ public:
     std::chrono::time_point<std::chrono::high_resolution_clock> previousTime, currentTime;
     float time_delta();
 
-    void change_state(GameState* state);
+    void change_state(GameState* state) const;
 
 private:
 
     std::unique_ptr<StateMachine> stateMachine;
-    static GLFWwindow* create_window(int width, int height, std::string title, GLFWmonitor* monitor = nullptr, GLFWwindow *share = nullptr);
 
-    bool running_;
     bool fullscreen_;
     std::string caption_;
     GLFWwindow* window_;
+    int majorVersion_;
+    int minorVersion_;
 
     int screenWidth_;
     int screenHeight_;

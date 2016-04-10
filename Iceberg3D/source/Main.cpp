@@ -4,8 +4,8 @@
 int main(int argc, char* args[])
 {
     // Create Game and States 
-    Game* game = new Game();
-    IntroState* intro = new IntroState(game);
+    std::unique_ptr<Game> game = std::make_unique<Game>();
+    std::unique_ptr<IntroState> intro = std::make_unique<IntroState>(game.get());
 
     if (game->initialize() == false)
     {
@@ -15,7 +15,7 @@ int main(int argc, char* args[])
         return 1;
     }
 
-    game->change_state(intro);
+    game->change_state(intro.get());
 
     while (game->running())
     {
@@ -23,12 +23,8 @@ int main(int argc, char* args[])
         game->update();
         game->draw();
 
-        // Control frame rate
-        SDL_Delay(1000 / game->fps());
+        // TODO: Control frame rate
     }
-
-    delete game;
-    game = nullptr;
 
     return 0;
 }

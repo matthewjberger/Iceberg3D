@@ -7,12 +7,14 @@ Game::Game()
     :stateMachine(make_unique<StateMachine>())
 {
     // Initialize game variables and settings
-    running_ = true;
     fullscreen_ = false;
 
     caption_ = "Iceberg3D";
     screenWidth_ = 640;
     screenHeight_ = 480;
+
+    majorVersion_ = 4;
+    minorVersion_ = 3;
 
     fps_ = 60;
 
@@ -24,14 +26,11 @@ Game::Game()
 
 Game::~Game()
 {
-    window_ = nullptr;
+    glfwTerminate();
 }
 
 bool Game::initialize()
 {
-    // Set caption
-    caption_ = "Matthew Berger's Game Engine";
-
     // Initialize SDL
     if (glfwInit() == GL_FALSE)
     {
@@ -40,83 +39,41 @@ bool Game::initialize()
     }
     else
     {
-        window_ = create_window(screenWidth_, screenHeight_, caption_);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion_);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minorVersion_);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+        window_ = glfwCreateWindow(screenWidth_, screenHeight_, caption_.c_str(), nullptr, nullptr);
         if(window_ == nullptr)
         {
-            printf("Failed to create OpenGL context");
+            printf("Error: Failed to create OpenGL context!\n");
             return false;
         }
 
-        // Create context and load OpenGL functions
-    }
+        glfwMakeContextCurrent(window_);
+        gladLoadGL();
+        printf("OpenGL version: %p\n", glGetString(GL_VERSION));
 
-    return true;
-}
-
-bool Game::initialize_opengl()
-{
-#ifdef VIRTUAL_MACHINE
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-#else
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-#endif
-
-    // Create OpenGL Context
-    context_ = SDL_GL_CreateContext(window_);
-
-    if (context_ == nullptr)
-    {
-        printf("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
-
-        return false;
-    }
-    else
-    {
-        // Initialize OpenGL
-
-        // Dark blue background
-        glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-
-        // Depth testing
+        // Additional settings
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
-
-        // Enable culling
-        glEnable(GL_CULL_FACE);
-        //glCullFace(GL_BACK);
-        //glFrontFace(GL_CW);
-
-        // Initialize GLEW
-        glewExperimental = GL_TRUE;
-
-        GLenum glewError = glewInit();
-
-        if (glewError != GLEW_OK)
-        {
-            printf("Error initializing GLEW! %p \n", glewGetErrorString(glewError));
-
-            return false;
-        }
     }
 
     return true;
 }
 
-void Game::change_state(GameState* state)
+void Game::change_state(GameState* state) const
 {
     stateMachine->change_state(state);
 }
 
-void Game::update()
+void Game::update() const
 {
     stateMachine->update();
 }
 
-void Game::draw()
+void Game::draw() const
 {
     // Clear the screen to Cornflower Blue
     glClearColor(0.392f, 0.584f, 0.93f, 1.0);
@@ -125,38 +82,21 @@ void Game::draw()
     stateMachine->draw();
 
     // Update the window
-    SDL_GL_SwapWindow(window_);
-
-    // TODO: Implement 2D rendering with SDL as option
-    //SDL_UpdateWindowSurface( game->GetWindow() );
+    glfwSwapBuffers(window_);
 }
 
-void Game::handle_events()
+void Game::handle_events() const
 {
     // TODO: Make a component base class
     // TODO: Make a derived InputComponent class and use it here
-    while (SDL_PollEvent(&event_) != 0)
+    glfwPollEvents();
+
+    if(glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
-        stateMachine->handle_events();
-
-        if (event_.type == SDL_QUIT)
-        {
-            this->exit();
-        }
-        else if (event_.type == SDL_KEYDOWN)
-        {
-            switch (event_.key.keysym.sym)
-            {
-            case SDLK_F11:
-                this->toggle_fullscreen();
-                break;
-
-            case SDLK_ESCAPE:
-                this->exit();
-                break;
-            }
-        }
+        exit();
     }
+
+    stateMachine->handle_events();
 }
 
 void Game::toggle_fullscreen()
@@ -177,7 +117,7 @@ void Game::toggle_fullscreen()
 
 bool Game::running() const
 {
-    return running_;
+    return !glfwWindowShouldClose(window_);
 }
 
 int Game::fps() const
@@ -195,9 +135,9 @@ glm::vec2 Game::screen_dimensions() const
     return glm::vec2(screenWidth_, screenHeight_);
 }
 
-void Game::exit()
+void Game::exit() const
 {
-    running_ = false;
+    glfwSetWindowShouldClose(window_, true);
 }
 
 float Game::time_delta()
@@ -215,25 +155,4 @@ float Game::aspect_ratio() const
     float width = float(screenWidth_);
     float height = float(screenHeight_);
     return (height == 0) ? (width) : (width / height);
-}
-
-GLFWwindow* create_window(int width, int height, std::string title, GLFWmonitor* monitor, GLFWwindow *share)
-{
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-    // Detect the version and create the window
-    for (int majorVersion = 3; majorVersion < 4; majorVersion++)
-    {
-        for (int minorVersion = 0; minorVersion < 5; minorVersion++)
-        {
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minorVersion);
-            auto window = glfwCreateWindow(width, height, "OpenGL", monitor, share);
-            if (window != nullptr) return window;
-        }
-    }
-
-    return nullptr;
 }

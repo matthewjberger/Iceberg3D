@@ -1,4 +1,5 @@
 #include "Skybox.h"
+#include <stb_image.h>
 
 using namespace std;
 using namespace glm;
@@ -23,7 +24,7 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
 
     for (GLuint i = 0; i < faces.size(); i++)
     {
-        if(!cubemap_->load(faces[i], false, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i))
+        if(!cubemap_->load(faces[i], GL_TEXTURE_CUBE_MAP_POSITIVE_X + i))
         {
             // TODO: throw here, use sdl messagebox
         }
@@ -93,8 +94,6 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
 
 Skybox::~Skybox()
 {
-    skyboxVAO_.free();
-    skyboxVBO_.free();
 }
 
 void Skybox::draw(const Camera* camera) const

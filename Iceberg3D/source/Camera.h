@@ -48,8 +48,8 @@ private:
     float pitchSensitivity_;
     float yawSensitivity_;
 
-    int mouseX_;
-    int mouseY_;
+    double mouseX_;
+    double mouseY_;
 };
 
 #endif

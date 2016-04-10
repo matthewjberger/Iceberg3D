@@ -60,46 +60,40 @@ void Camera::calculate_vectors(Game* game, int mouseX_, int mouseY_)
 
 void Camera::update(Game *game)
 {
-    if (!inputEnabled_)
-    {
-        return;
-    }
-
-    // Get keyboard state
-    const Uint8* keystates = SDL_GetKeyboardState(nullptr);
+    if (!inputEnabled_) return;
 
     // Hide the mouse
-    SDL_ShowCursor(SDL_DISABLE);
+    glfwSetInputMode(game->window(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
     // If the mouse moved
-    SDL_GetMouseState(&mouseX_, &mouseY_);
+    glfwGetCursorPos(game->window(), &mouseX_, &mouseY_);
 
     // Reset mouse to center of the screen
-    SDL_WarpMouseInWindow(game->window(), game->screen_dimensions().x / 2, game->screen_dimensions().y / 2);
+    glfwSetCursorPos(game->window(), game->screen_dimensions().x/2, game->screen_dimensions().y/2);
 
     // Calculate up_, right_, and direction_ vectors
     calculate_vectors(game, mouseX_, mouseY_);
 
     // Move forward if 'W' is pressed
-    if (keystates[SDL_SCANCODE_W])
+    if (glfwGetKey(game->window(), GLFW_KEY_W))
     {
         position_ += direction_ * speed_;
     }
 
     // Move backward if 'S' is pressed
-    if (keystates[SDL_SCANCODE_S])
+    if (glfwGetKey(game->window(), GLFW_KEY_S))
     {
         position_ -= direction_ * speed_;
     }
 
     // Strafe left if 'D' is pressed
-    if (keystates[SDL_SCANCODE_D])
+    if (glfwGetKey(game->window(), GLFW_KEY_D))
     {
         position_ += right_ * speed_;
     }
 
     // Strafe right_ if 'A' is pressed
-    if (keystates[SDL_SCANCODE_A])
+    if (glfwGetKey(game->window(), GLFW_KEY_A))
     {
         position_ -= right_ * speed_;
     }
