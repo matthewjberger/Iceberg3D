@@ -91,23 +91,23 @@ void Mesh::setup_mesh()
 
 void Mesh::build_collision_shape()
 {
-    collisionMesh_ = make_shared<btTriangleMesh>();
-    btVector3 triArray[3];
-    for(size_t i = 2; i < indices_.size(); i += 3)
-    {
-        triArray[0] = btVector3(vertices_[i - 2].position.x,
-                                vertices_[i - 2].position.y,
-                                vertices_[i - 2].position.z);
+    //collisionMesh_ = make_shared<btTriangleMesh>();
+    //btVector3 triArray[3];
+    //for(size_t i = 2; i < indices_.size(); i += 3)
+    //{
+    //    triArray[0] = btVector3(vertices_[i - 2].position.x,
+    //                            vertices_[i - 2].position.y,
+    //                            vertices_[i - 2].position.z);
 
-        triArray[1] = btVector3(vertices_[i - 1].position.x,
-                                vertices_[i - 1].position.y,
-                                vertices_[i - 1].position.z);
+    //    triArray[1] = btVector3(vertices_[i - 1].position.x,
+    //                            vertices_[i - 1].position.y,
+    //                            vertices_[i - 1].position.z);
 
-        triArray[2] = btVector3(vertices_[i].position.x,
-                                vertices_[i].position.y,
-                                vertices_[i].position.z);
+    //    triArray[2] = btVector3(vertices_[i].position.x,
+    //                            vertices_[i].position.y,
+    //                            vertices_[i].position.z);
 
-        collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
-    }
-    collisionShape_ = make_shared<btBvhTriangleMeshShape>(collisionMesh_.get(), true);
+    //    collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
+    //}
+    //collisionShape_ = make_shared<btBvhTriangleMeshShape>(collisionMesh_.get(), true);
 }

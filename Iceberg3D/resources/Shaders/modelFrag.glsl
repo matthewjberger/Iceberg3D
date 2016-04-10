@@ -1,12 +1,11 @@
-#version 330 core
+// Example Model fragment shader
 
-in vec3 normal;
-in vec2 texCoords;
-out vec4 color;
+varying vec2 texCoords;
 
 uniform sampler2D texture_diffuse1;
 
 void main(void)
 {
-   color = vec4(texture(texture_diffuse1, texCoords));
+    gl_FragColor = texture2D(texture_diffuse1, texCoords);
 }
+

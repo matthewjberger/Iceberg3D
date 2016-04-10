@@ -25,13 +25,13 @@ private:
 
     std::unique_ptr<Model> model;
     std::shared_ptr<ShaderProgram> shaderProgram;
-    glm::mat4 modelMatrix;
     std::unique_ptr<Camera> camera;
-    GLuint textureID;
-
-    std::unique_ptr<glm::mat4> modelMatrices;
     std::unique_ptr<Skybox> skybox;
 
-    Texture houseTexture;
+    VAO triVAO;
+    VBO triVBO;
+    VBO triIBO;
+
+    std::unique_ptr<Texture> texture;
 };
 
