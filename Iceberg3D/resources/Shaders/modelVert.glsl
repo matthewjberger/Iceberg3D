@@ -1,11 +1,11 @@
 // Example Model vertex shader
 
-attribute vec3 v_position;
-attribute vec3 v_normal;
-attribute vec2 v_texCoords;
+layout (location = 0) in vec3 v_position;
+layout (location = 1) in vec3 v_normal;
+layout (location = 2) in vec2 v_texCoords;
 
-varying vec3 normal;
-varying vec2 texCoords;
+out vec3 normal;
+out vec2 texCoords;
 
 uniform mat4 mvpMatrix;
 
