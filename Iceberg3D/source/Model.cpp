@@ -108,6 +108,7 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     }
 
+    textures.back().bind();
     return Mesh(vertices, indices, textures);
 }
 
@@ -121,7 +122,7 @@ std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType ty
         material->GetTexture(type, i, &filename);
         Texture texture(type);
         string filepath = directory_ + "/" + filename.C_Str();
-        texture.load(filepath, true);
+        texture.load(filepath);
         textures.push_back(texture);
     }
     return textures;
