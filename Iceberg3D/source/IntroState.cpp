@@ -12,24 +12,21 @@ void IntroState::handle_events(){}
 void IntroState::initialize()
 {
     // Initialize resources
-    model = make_unique<Model>("Assets/Deadpool/dead 123456.obj");
-
-    texture = make_unique<Texture>();
-    texture->load("Assets/house/houseTexture.jpg");
+    model = make_unique<Model>("assets/deadpool/dead 123456.obj");
 
     hudTexture = make_unique<Texture>();
-    hudTexture->load("Assets/skybox/front.jpg");
+    hudTexture->load("assets/iceberg.png");
 
     modelProgram = make_shared<ShaderProgram>();
     modelProgram->create_program();
-    modelProgram->add_shader_from_file("Shaders/modelVert.glsl", GL_VERTEX_SHADER);
-    modelProgram->add_shader_from_file("Shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
+    modelProgram->add_shader_from_file("shaders/modelVert.glsl", GL_VERTEX_SHADER);
+    modelProgram->add_shader_from_file("shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
     modelProgram->link_program();
 
     triProgram = make_shared<ShaderProgram>();
     triProgram->create_program();
-    triProgram->add_shader_from_file("Shaders/triVert.glsl", GL_VERTEX_SHADER);
-    triProgram->add_shader_from_file("Shaders/triFrag.glsl", GL_FRAGMENT_SHADER);
+    triProgram->add_shader_from_file("shaders/triVert.glsl", GL_VERTEX_SHADER);
+    triProgram->add_shader_from_file("shaders/triFrag.glsl", GL_FRAGMENT_SHADER);
     triProgram->link_program();
 
     GLfloat vertices[] = {
@@ -99,8 +96,9 @@ void IntroState::update()
 
 void IntroState::draw()
 {
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     modelProgram->use();
-    texture->bind();
     for(int i = 0; i < 4; i++)
     {
         for(int j = 0; j < 4; j++)
@@ -113,6 +111,7 @@ void IntroState::draw()
             model->draw(modelProgram.get(), camera.get());
         }
     }
+    glDisable(GL_CULL_FACE);
 
     triProgram->use();
     triVAO.bind();

@@ -33,7 +33,6 @@ private:
     VBO triVBO;
     VBO triIBO;
 
-    std::unique_ptr<Texture> texture;
     std::unique_ptr<Texture> hudTexture;
 
     float angle;
