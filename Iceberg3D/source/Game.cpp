@@ -7,11 +7,11 @@ Game::Game()
     :stateMachine(make_unique<StateMachine>())
 {
     // Initialize game variables and settings
-    fullscreen_ = false;
+    fullscreen_ = true;
 
     caption_ = "Iceberg3D";
-    screenWidth_ = 640;
-    screenHeight_ = 480;
+    screenWidth_ = 1376;
+    screenHeight_ = 768;
 
     majorVersion_ = 4;
     minorVersion_ = 3;

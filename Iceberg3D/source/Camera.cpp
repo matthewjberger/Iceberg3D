@@ -98,7 +98,7 @@ void Camera::update(Game *game)
         position_ -= right_ * speed_;
     }
 
-    projectionMatrix_ = perspective(initialFOV_, game->aspect_ratio(), 0.1f, 1000.0f);
+    projectionMatrix_ = perspective(initialFOV_, game->aspect_ratio(), 0.1f, 100000.0f);
     viewMatrix_ = lookAt(position_, position_ + direction_, up_);
 }
 

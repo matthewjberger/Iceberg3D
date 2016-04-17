@@ -1,0 +1,29 @@
+newmtl Material2
+Ka 0.8 0.8 0.8
+Kd 0.8 0.8 0.8
+Ks 0 0 0
+Ns 127
+map_Kd CHR_Deadpool_Body_TEXTSET_Color_NormX.jpg
+newmtl Material3
+Ka 0.8 0.8 0.8
+Kd 0.8 0.8 0.8
+Ks 0 0 0
+Ns 127
+map_Kd CHR_Deadpool_Misc_TEXTSET_Color_NormX.jpg
+newmtl Material1
+Ka 0.8 0.8 0.8
+Kd 0.8 0.8 0.8
+Ks 0 0 0
+Ns 127
+map_Kd DPROP_DeadpoolSword_TEXSET_Color_NormX.jpg
+newmtl WEP_SubmachineGun_MATINST
+Ka 0.588 0.588 0.588
+Kd 0.588 0.588 0.588
+Ks 0 0 0
+Ns 10
+newmtl Material4
+Ka 0.8 0.8 0.8
+Kd 0.8 0.8 0.8
+Ks 0 0 0
+Ns 127
+map_Kd WEP_MP7_TEXTSET_Color_NormX.jpg

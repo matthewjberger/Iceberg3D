@@ -52,7 +52,7 @@ void Model::process_node(aiNode* node, const aiScene* scene)
     }
 }
 
-Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
+Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 {
     vector<Vertex> vertices;
     vector<GLuint> indices;
@@ -112,20 +112,37 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Tex> Model::load_textures(aiMaterial* material, aiTextureType type) const
+std::vector<Tex> Model::load_textures(aiMaterial* material, aiTextureType type)
 {
-    // TODO: optimize this to use a texture cache
+    // TODO: Improve texture cache lookup time with a hash table
     vector<Tex> textures;
     for (size_t i = 0; i < material->GetTextureCount(type); i++)
     {
         aiString filename;
         material->GetTexture(type, i, &filename);
-        Tex texture;
-        texture.type = type;
         string filepath = directory_ + "/" + filename.C_Str();
-        texture.path = filepath;
-        texture.id = load_texture(filepath);
-        textures.push_back(texture);
+ 
+        bool found = false;
+        for(auto t : textureCache_)
+        {
+            if(t.path.C_Str() == filepath)
+            {
+                textures.push_back(t);
+                found = true;
+                break;
+            }
+
+        }
+
+        if(!found)
+        {
+            Tex texture;
+            texture.type = type;
+            texture.path = filepath;
+            texture.id = load_texture(filepath);
+            textureCache_.push_back(texture);
+            textures.push_back(texture);
+        }
     }
     return textures;
 }

@@ -12,7 +12,7 @@ void IntroState::handle_events(){}
 void IntroState::initialize()
 {
     // Initialize resources
-    model = make_unique<Model>("Assets/nanosuit/nanosuit.obj");
+    model = make_unique<Model>("Assets/Deadpool/dead 123456.obj");
 
     texture = make_unique<Texture>();
     texture->load("Assets/house/houseTexture.jpg");
@@ -34,10 +34,10 @@ void IntroState::initialize()
 
     GLfloat vertices[] = {
         // Positions          // Colors           // Texture Coords
-        0.25f - 0.5f,  0.25f - 0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // Top Right
-        0.25f - 0.5f, -0.25f - 0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // Bottom Right
-        -0.25f - 0.5f, -0.25f - 0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // Bottom Left
-        -0.25f - 0.5f,  0.25f - 0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // Top Left 
+        0.25f - 0.65f,  0.25f - 0.65f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // Top Right
+        0.25f - 0.65f, -0.25f - 0.65f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // Bottom Right
+        -0.25f - 0.65f, -0.25f - 0.65f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // Bottom Left
+        -0.25f - 0.65f,  0.25f - 0.65f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // Top Left 
     };
     GLuint indices[] = {  // Note that we start from 0!
         0, 1, 3,   // First Triangle
@@ -67,18 +67,26 @@ void IntroState::initialize()
 
     triVAO.unbind();
 
-    camera = make_unique<Camera>(game_, vec3(0.0, 25.0, -70.0), glm::vec3(0), 5.0);
+    camera = make_unique<Camera>(game_, vec3(0.0, 25.0, -70.0), glm::vec3(0), 50.0);
     camera->enable_input();
 
-    SkyboxParameters skyboxParameters;
-    skyboxParameters.right = "Assets/skybox/right.jpg";
-    skyboxParameters.left = "Assets/skybox/left.jpg";
-    skyboxParameters.top = "Assets/skybox/top.jpg";
-    skyboxParameters.bottom = "Assets/skybox/bottom.jpg";
-    skyboxParameters.front = "Assets/skybox/front.jpg";
-    skyboxParameters.back = "Assets/skybox/back.jpg";
+    SkyboxParameters grassySkybox;
+    grassySkybox.right = "Assets/mp_crimelem/criminal-element_rt.tga";
+    grassySkybox.left = "Assets/mp_crimelem/criminal-element_lf.tga";
+    grassySkybox.top = "Assets/mp_crimelem/criminal-element_up.tga";
+    grassySkybox.bottom = "Assets/mp_crimelem/criminal-element_dn.tga";
+    grassySkybox.front = "Assets/mp_crimelem/criminal-element_ft.tga";
+    grassySkybox.back = "Assets/mp_crimelem/criminal-element_bk.tga";
 
-    skybox = make_unique<Skybox>(skyboxParameters);
+    SkyboxParameters snowySkybox;
+    snowySkybox.right = "Assets/ame_powder/powderpeak_rt.tga";
+    snowySkybox.left = "Assets/ame_powder/powderpeak_lf.tga";
+    snowySkybox.top = "Assets/ame_powder/powderpeak_up.tga";
+    snowySkybox.bottom = "Assets/ame_powder/powderpeak_dn.tga";
+    snowySkybox.front = "Assets/ame_powder/powderpeak_ft.tga";
+    snowySkybox.back = "Assets/ame_powder/powderpeak_bk.tga";
+
+    skybox = make_unique<Skybox>(snowySkybox);
 
     angle = 0.0f;
 }
@@ -93,11 +101,12 @@ void IntroState::draw()
 {
     modelProgram->use();
     texture->bind();
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 4; i++)
     {
-        for(int j = 0; j < 10; j++)
+        for(int j = 0; j < 4; j++)
         {
-            model->transform_manager()->translate(glm::mat4(1.0f), vec3(50.0f * i, 50.0f * j, 0.0f));
+            // TODO: Instanced Rendering
+            model->transform_manager()->translate(glm::mat4(1.0f), vec3(200.0f * i, 200.0f * j, 0.0f));
             model->transform_manager()->rotate(model->transform_manager()->model_matrix(), angle, vec3(0.0f, 1.0f, 0.0f));
             mat4 mvp = camera->make_mvp(model->transform_manager()->model_matrix());
             modelProgram->set_uniform("mvpMatrix", &mvp);
