@@ -1,4 +1,5 @@
-# Iceberg3D
+# Iceberg3D ![Screenshot](http://imgur.com/BKjpnp1.png)
+
 Iceberg3D is an OpenGL-based 3D Game Engine.
 
 ![Screenshot](http://imgur.com/fGLzSfE.jpg)
@@ -8,10 +9,7 @@ Iceberg3D is an OpenGL-based 3D Game Engine.
 First, clone the repo and its submodules:
 
     git clone --recursive https://github.com/matthewjberger/Iceberg3D
-    cd Iceberg3D
-    git submodule init && git submodule update
     
-### CMake
 Then to build, use [CMake](https://cmake.org/):
 
     cd Iceberg3D
