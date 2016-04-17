@@ -1,5 +1,6 @@
 #include "Model.h"
 using namespace std;
+#include <stb_image.h>
 
 Model::Model(const string &path)
 {
@@ -55,7 +56,7 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
 {
     vector<Vertex> vertices;
     vector<GLuint> indices;
-    vector<Texture> textures;
+    vector<Tex> textures;
 
     // Cycle through the vertices and store their data
     for (GLuint i = 0; i < mesh->mNumVertices; i++)
@@ -100,8 +101,8 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        vector<Texture> diffuseMaps = load_textures(material, aiTextureType_DIFFUSE);
-        vector<Texture> specularMaps = load_textures(material, aiTextureType_SPECULAR);
+        vector<Tex> diffuseMaps = load_textures(material, aiTextureType_DIFFUSE);
+        vector<Tex> specularMaps = load_textures(material, aiTextureType_SPECULAR);
 
         textures.reserve(diffuseMaps.size() + specularMaps.size());
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -111,17 +112,19 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType type) const
+std::vector<Tex> Model::load_textures(aiMaterial* material, aiTextureType type) const
 {
     // TODO: optimize this to use a texture cache
-    vector<Texture> textures;
+    vector<Tex> textures;
     for (size_t i = 0; i < material->GetTextureCount(type); i++)
     {
         aiString filename;
         material->GetTexture(type, i, &filename);
-        Texture texture(type);
+        Tex texture;
+        texture.type = type;
         string filepath = directory_ + "/" + filename.C_Str();
-        texture.load(filepath);
+        texture.path = filepath;
+        texture.id = load_texture(filepath);
         textures.push_back(texture);
     }
     return textures;
@@ -130,4 +133,43 @@ std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType ty
 TransformManager* Model::transform_manager() const
 {
     return transformManager_.get();
+}
+
+int Model::load_texture(const string &path) const
+{
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    int width, height, channels;
+    unsigned char* image = stbi_load(path.c_str(), &width, &height, &channels, 0);
+    if (!image)
+    {
+        printf("Error: Couldn't load image \"%s\"!\n", path.c_str());
+        return false;
+    }
+
+    GLenum pixelFormat = GL_RGB;
+    switch (channels)
+    {
+        case 1: pixelFormat = GL_ALPHA;     break;
+        case 2: pixelFormat = GL_LUMINANCE; break;
+        case 3: pixelFormat = GL_RGB;       break;
+        case 4: pixelFormat = GL_RGBA;      break;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, width, height, 0, pixelFormat, GL_UNSIGNED_BYTE, image);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    // Get rid of the temporary surface
+    stbi_image_free(image);
+
+    return textureID;
 }

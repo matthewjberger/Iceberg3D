@@ -12,7 +12,7 @@ void IntroState::handle_events(){}
 void IntroState::initialize()
 {
     // Initialize resources
-    model = make_unique<Model>("Assets/house/house.obj");
+    model = make_unique<Model>("Assets/nanosuit/nanosuit.obj");
 
     texture = make_unique<Texture>();
     texture->load("Assets/house/houseTexture.jpg");

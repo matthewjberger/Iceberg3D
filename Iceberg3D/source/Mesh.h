@@ -14,10 +14,17 @@ struct Vertex
     glm::vec3 normal;
 };
 
+struct Tex
+{
+    GLuint id;
+    aiTextureType type;
+    aiString path;
+};
+
 class Mesh
 {
 public:
-    Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures);
+    Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Tex> textures);
     ~Mesh();
 
     void draw(const ShaderProgram *shaderProgram = nullptr) const;
@@ -33,7 +40,7 @@ private:
 
     std::vector<Vertex> vertices_;
     std::vector<GLuint> indices_;
-    std::vector<Texture> textures_;
+    std::vector<Tex> textures_;
 
     std::shared_ptr<btTriangleMesh> collisionMesh_;
     std::shared_ptr<btCollisionShape> collisionShape_;
