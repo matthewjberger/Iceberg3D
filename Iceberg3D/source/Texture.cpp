@@ -110,3 +110,8 @@ void Texture::set_wrap() const
     glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     unbind();
 }
+
+GLuint Texture::id() const
+{
+    return textureID_;
+}

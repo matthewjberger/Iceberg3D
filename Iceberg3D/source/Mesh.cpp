@@ -21,9 +21,6 @@ Mesh::~Mesh()
 
 void Mesh::draw(const ShaderProgram* shaderProgram) const
 {
-    shaderProgram->use();
-    meshVAO_->bind();
-
     int diffuseCount = 1;
     int specularCount = 1;
     int textureCount = 0;
@@ -46,6 +43,9 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
         shaderProgram->set_uniform(name, textureCount);
         texture.bind(textureCount++);
     }
+
+    shaderProgram->use();
+    meshVAO_->bind();
     glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
     meshVAO_->unbind();
 
@@ -53,7 +53,6 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
     {
         textures_[i].unbind(i);
     }
-
 }
 
 void Mesh::setup_mesh()
@@ -91,23 +90,24 @@ void Mesh::setup_mesh()
 
 void Mesh::build_collision_shape()
 {
-    //collisionMesh_ = make_shared<btTriangleMesh>();
-    //btVector3 triArray[3];
-    //for(size_t i = 2; i < indices_.size(); i += 3)
-    //{
-    //    triArray[0] = btVector3(vertices_[i - 2].position.x,
-    //                            vertices_[i - 2].position.y,
-    //                            vertices_[i - 2].position.z);
+    collisionMesh_ = make_shared<btTriangleMesh>();
+    btVector3 triArray[3];
+    for(size_t i = 2; i < indices_.size(); i += 3)
+    {
+        int currentIndex = indices_[i];
+        triArray[0] = btVector3(vertices_[currentIndex - 2].position.x,
+                                vertices_[currentIndex - 2].position.y,
+                                vertices_[currentIndex - 2].position.z);
 
-    //    triArray[1] = btVector3(vertices_[i - 1].position.x,
-    //                            vertices_[i - 1].position.y,
-    //                            vertices_[i - 1].position.z);
+        triArray[1] = btVector3(vertices_[currentIndex - 1].position.x,
+                                vertices_[currentIndex - 1].position.y,
+                                vertices_[currentIndex - 1].position.z);
 
-    //    triArray[2] = btVector3(vertices_[i].position.x,
-    //                            vertices_[i].position.y,
-    //                            vertices_[i].position.z);
+        triArray[2] = btVector3(vertices_[currentIndex].position.x,
+                                vertices_[currentIndex].position.y,
+                                vertices_[currentIndex].position.z);
 
-    //    collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
-    //}
-    //collisionShape_ = make_shared<btBvhTriangleMeshShape>(collisionMesh_.get(), true);
+        collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
+    }
+    collisionShape_ = make_shared<btBvhTriangleMeshShape>(collisionMesh_.get(), true);
 }

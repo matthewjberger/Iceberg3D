@@ -15,6 +15,7 @@ public:
     void unbind(int textureUnit = 0) const;
 
     void set_wrap() const;
+    GLuint id() const;
 
     std::string path() const;
     aiTextureType type() const;

@@ -24,7 +24,8 @@ public:
 private:
 
     std::unique_ptr<Model> model;
-    std::shared_ptr<ShaderProgram> shaderProgram;
+    std::shared_ptr<ShaderProgram> triProgram;
+    std::shared_ptr<ShaderProgram> modelProgram;
     std::unique_ptr<Camera> camera;
     std::unique_ptr<Skybox> skybox;
 
@@ -33,5 +34,8 @@ private:
     VBO triIBO;
 
     std::unique_ptr<Texture> texture;
+    std::unique_ptr<Texture> hudTexture;
+
+    float angle;
 };
 
