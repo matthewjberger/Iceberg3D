@@ -1,32 +1,18 @@
 # Iceberg3D
-Iceberg3D is a game engine that uses SDL2 and OpenGL.
+Iceberg3D is an OpenGL-based 3D Game Engine.
 
 ## Downloading and Building
-### Windows
-Paste this into git bash on windows (use the 'insert' key to paste):
+
+First, clone the repo and its submodules:
 
     git clone --recursive https://github.com/matthewjberger/Iceberg3D
     cd Iceberg3D
-    git submodule foreach git pull origin master
+    git submodule init && git submodule update
     
-Then build the Visual Studio 2015 solution:
-
-    Iceberg3D\Build\Visual Studio\Iceberg3D.sln
-
-The dependencies are nuget packages (exept for the Bullet physics library) and will be downloaded when you build the solution.
-    
-### Linux
-Paste this into your linux terminal:
-
-    git clone https://github.com/matthewjberger/Iceberg3D
-
-Then to build (assuming you're using ubuntu):
+### CMake
+Then to build, use [CMake](https://cmake.org/):
 
     cd Iceberg3D
-    ./install_linux_dependencies.sh
-    make -C Build
-    
-### Output
-The output directory for both linux and windows builds is:
-
-    Iceberg3D\Bin
+    mkdir Build
+    cd Build
+    cmake ..
