@@ -108,7 +108,6 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene) const
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     }
 
-    textures.back().bind();
     return Mesh(vertices, indices, textures);
 }
 
