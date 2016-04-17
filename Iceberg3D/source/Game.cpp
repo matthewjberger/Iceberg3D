@@ -3,6 +3,8 @@
 using namespace std;
 using namespace glm;
 
+#include <stb_image.h>
+
 Game::Game()
     :stateMachine(make_unique<StateMachine>())
 {
@@ -10,6 +12,8 @@ Game::Game()
     fullscreen_ = true;
 
     caption_ = "Iceberg3D";
+    iconPath_ = "assets/icebergIcon.png";
+
     screenWidth_ = 1376;
     screenHeight_ = 768;
 
@@ -54,6 +58,20 @@ bool Game::initialize()
         glfwMakeContextCurrent(window_);
         gladLoadGL();
         printf("OpenGL version: %p\n", glGetString(GL_VERSION));
+
+        int x, y, c;
+        GLFWimage image; 
+        image.pixels = stbi_load(iconPath_.c_str(), &x, &y, &c, 0);
+        image.width = x;
+        image.height = y;
+        if(image.pixels != NULL)
+        {
+            glfwSetWindowIcon(window_, 1, &image);
+        }
+        else
+        {
+            printf("Failed to load icon: %s", iconPath_.c_str());
+        }
 
         // Additional settings
         glEnable(GL_DEPTH_TEST);

@@ -39,6 +39,7 @@ private:
 
     bool fullscreen_;
     std::string caption_;
+    std::string iconPath_;
     GLFWwindow* window_;
     int majorVersion_;
     int minorVersion_;
