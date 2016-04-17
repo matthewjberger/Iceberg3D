@@ -18,6 +18,8 @@ option(BUILD_OPENGL3_DEMOS OFF)
 option(BUILD_UNIT_TESTS OFF)
 add_subdirectory(Iceberg3D/dependencies/bullet)
 
+add_subdirectory("Iceberg3D/dependencies/boxer")
+
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     # Hide the console in visual studio projects in debug and release
@@ -32,6 +34,7 @@ endif()
 
 include_directories(Iceberg3D/source/
                     Iceberg3D/dependencies/assimp/include/
+					Iceberg3D/dependencies/boxer/include/
                     Iceberg3D/dependencies/bullet/src/
                     Iceberg3D/dependencies/glad/include/
                     Iceberg3D/dependencies/glfw/include/
@@ -59,7 +62,7 @@ add_executable(${PROJECT_NAME} ${PROJECT_FILES}
                                ${PROJECT_CONFIGS}
                                ${DEPENDENCY_SOURCES})
 
-target_link_libraries(${PROJECT_NAME} assimp glfw
+target_link_libraries(${PROJECT_NAME} assimp glfw Boxer
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
                       BulletDynamics BulletCollision LinearMath)
 

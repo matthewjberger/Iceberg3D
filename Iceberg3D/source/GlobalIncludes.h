@@ -20,6 +20,9 @@
 #include <assimp/postprocess.h>
 #include <assimp/color4.h>
 
+// Boxer
+#include <boxer/boxer.h>
+
 // Bullet
 #include <btBulletDynamicsCommon.h>
 
