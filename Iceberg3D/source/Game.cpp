@@ -5,6 +5,8 @@ using namespace glm;
 
 #include <stb_image.h>
 
+GLFWwindow* Game::window_;
+
 Game::Game()
     :stateMachine(make_unique<StateMachine>())
 {
@@ -17,8 +19,12 @@ Game::Game()
     screenWidth_ = 1376;
     screenHeight_ = 768;
 
-    majorVersion_ = 4;
-    minorVersion_ = 3;
+    glMajorVersion_ = 4;
+    glMinorVersion_ = 3;
+
+    majorVersion_ = 0;
+    minorVersion_ = 1;
+    patchVersion_ = 0;
 
     fps_ = 60;
 
@@ -38,40 +44,27 @@ bool Game::initialize()
     // Initialize SDL
     if (glfwInit() == GL_FALSE)
     {
-        printf("GLFW could not be initialized!");
+        handle_error("GLFW could not be initialized!");
         return false;
     }
     else
     {
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion_);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minorVersion_);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glMajorVersion_);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glMinorVersion_);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
         window_ = glfwCreateWindow(screenWidth_, screenHeight_, caption_.c_str(), nullptr, nullptr);
         if(window_ == nullptr)
         {
-            printf("Error: Failed to create OpenGL context!\n");
+            handle_error("Error: Failed to create OpenGL context!");
             return false;
         }
 
         glfwMakeContextCurrent(window_);
         gladLoadGL();
-        printf("OpenGL version: %p\n", glGetString(GL_VERSION));
 
-        int x, y, c;
-        GLFWimage image; 
-        image.pixels = stbi_load(iconPath_.c_str(), &x, &y, &c, 0);
-        image.width = x;
-        image.height = y;
-        if(image.pixels != NULL)
-        {
-            glfwSetWindowIcon(window_, 1, &image);
-        }
-        else
-        {
-            printf("Failed to load icon: %s", iconPath_.c_str());
-        }
+        build_caption();
 
         // Additional settings
         glEnable(GL_DEPTH_TEST);
@@ -79,6 +72,37 @@ bool Game::initialize()
     }
 
     return true;
+}
+
+void Game::build_caption() const
+{
+    // Program Version
+    string programVersion =  to_string(majorVersion_) + "."
+                           + to_string(minorVersion_) + "."
+                           + to_string(patchVersion_);
+
+    // OpenGL Version
+    string glVersion = (const char*)glGetString(GL_VERSION);
+    string fullCaption = caption_ + " - Version: " + programVersion 
+                                  + " - OpenGL Version: " + glVersion;
+
+    glfwSetWindowTitle(window_, fullCaption.c_str());
+
+    // Caption
+    int x, y, c;
+    GLFWimage image;
+    image.pixels = stbi_load(iconPath_.c_str(), &x, &y, &c, 0);
+    image.width = x;
+    image.height = y;
+    if (image.pixels != NULL)
+    {
+        glfwSetWindowIcon(window_, 1, &image);
+    }
+    else
+    {
+        string errorMessage = "Failed to load icon: " + iconPath_;
+        handle_error(errorMessage.c_str());
+    }
 }
 
 void Game::change_state(GameState* state) const
@@ -133,7 +157,7 @@ void Game::toggle_fullscreen()
     }
 }
 
-bool Game::running() const
+bool Game::running()
 {
     return !glfwWindowShouldClose(window_);
 }
@@ -143,7 +167,7 @@ int Game::fps() const
     return fps_;
 }
 
-GLFWwindow* Game::window() const
+GLFWwindow* Game::window()
 {
     return window_;
 }
@@ -153,8 +177,9 @@ glm::vec2 Game::screen_dimensions() const
     return glm::vec2(screenWidth_, screenHeight_);
 }
 
-void Game::exit() const
+void Game::exit()
 {
+    if (window_ == NULL) return;
     glfwSetWindowShouldClose(window_, true);
 }
 
@@ -172,5 +197,12 @@ float Game::aspect_ratio() const
     // Prevent division by 0
     float width = float(screenWidth_);
     float height = float(screenHeight_);
-    return (height == 0) ? (width) : (width / height);
+    glfwSetWindowAspectRatio(window_, width, height);
+    return(height == 0) ? (width) : (width / height);
+}
+
+void Game::handle_error(std::string errorMessage)
+{
+    boxer::show(errorMessage.c_str(), "Error", boxer::Style::Warning);
+    exit();
 }

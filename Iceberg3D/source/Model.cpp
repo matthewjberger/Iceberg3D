@@ -21,19 +21,23 @@ void Model::draw(const ShaderProgram* shaderProgram, const Camera* camera)
     }
 }
 
-void Model::load_model(const string &path)
+bool Model::load_model(const string &path)
 {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenNormals);
 
     if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
-        printf("ERROR: Assimp - %s", importer.GetErrorString());
-        return;
+        string errorMessage = "Assimp - ";
+        errorMessage += importer.GetErrorString();
+        Game::handle_error(errorMessage.c_str());
+        return false;
     }
 
     directory_ = path.substr(0, path.find_last_of('/'));
     process_node(scene->mRootNode, scene);
+
+    return true;
 }
 
 void Model::process_node(aiNode* node, const aiScene* scene)
@@ -163,7 +167,8 @@ int Model::load_texture(const string &path) const
     unsigned char* image = stbi_load(path.c_str(), &width, &height, &channels, 0);
     if (!image)
     {
-        printf("Error: Couldn't load image \"%s\"!\n", path.c_str());
+        string errorMessage = "Error: Couldn't load image: " + path;
+        Game::handle_error(errorMessage);
         return false;
     }
 

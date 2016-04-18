@@ -1,5 +1,6 @@
 #include "GlobalIncludes.h"
 #include "Texture.h"
+#include "Game.h"
 using namespace std;
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -61,7 +62,8 @@ bool Texture::load(const string& path, GLenum target)
     unsigned char* image = stbi_load(path.c_str(), &width_, &height_, &channels_, 0);
     if (!image)
     {
-        printf("Error: Couldn't load image \"%s\"!\n", path.c_str());
+        string errorMessage = "Couldn't load image " + path;
+        Game::handle_error(errorMessage);
         return false;
     }
 

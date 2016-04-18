@@ -9,9 +9,8 @@ int main(int argc, char* args[])
 
     if (game->initialize() == false)
     {
-        // TODO: Use SDL message boxes to display these errors
         // TODO: Create trace log
-        printf("Failed to Initialize!");
+        game->handle_error("Failed to Initialize!");
         return 1;
     }
 

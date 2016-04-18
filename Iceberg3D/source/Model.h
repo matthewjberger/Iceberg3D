@@ -25,7 +25,7 @@ private:
 
     std::vector<Tex> textureCache_;
 
-    void load_model(const std::string &path);
+    bool load_model(const std::string &path);
     void process_node(aiNode* node, const aiScene* scene);
     Mesh process_mesh(aiMesh* mesh, const aiScene* scene);
     std::vector<Tex> load_textures(aiMaterial* material, aiTextureType type);

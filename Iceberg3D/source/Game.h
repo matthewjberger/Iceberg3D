@@ -20,10 +20,10 @@ public:
     void handle_events() const;
 
     void toggle_fullscreen();
-    bool running() const;
-    void exit() const;
+    static bool running();
+    static void exit();
+    static void handle_error(std::string errorMessage);
 
-    GLFWwindow* window() const;
     glm::vec2 screen_dimensions() const;
     int fps() const;
     float aspect_ratio() const;
@@ -32,17 +32,20 @@ public:
     float time_delta();
 
     void change_state(GameState* state) const;
+    static GLFWwindow* window();
 
 private:
+    static GLFWwindow* window_;
+    void build_caption() const;
 
     std::unique_ptr<StateMachine> stateMachine;
 
     bool fullscreen_;
     std::string caption_;
     std::string iconPath_;
-    GLFWwindow* window_;
-    int majorVersion_;
-    int minorVersion_;
+
+    int majorVersion_, minorVersion_, patchVersion_;
+    int glMajorVersion_, glMinorVersion_;
 
     int screenWidth_;
     int screenHeight_;
@@ -66,6 +69,7 @@ protected:
     Game* game_;
 
 };
+
 
 #endif
 

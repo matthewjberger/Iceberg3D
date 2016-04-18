@@ -1,4 +1,5 @@
 #include "ShaderProgram.h"
+#include "Game.h"
 using namespace std;
 using namespace glm;
 
@@ -53,7 +54,7 @@ bool ShaderProgram::add_shader(Shader* shader) const
     if (!shader->loaded())
     {
         // Print error message
-        printf("Error: Tried to attach shader that wasn't loaded!\n");
+        Game::handle_error("Tried to attach shader that wasn't loaded!");
 
         // Return status
         return false;
@@ -80,7 +81,8 @@ bool ShaderProgram::link_program()
     if (success != GL_TRUE)
     {
         // Print an error message
-        printf("Couldn't link program %d\n", programID_);
+        string errorMessage = "Couldn't link program " + to_string(programID_) + "\n";
+        Game::handle_error(errorMessage.c_str());
 
         // Print log
         print_log();
@@ -102,11 +104,12 @@ bool ShaderProgram::link_program()
     return true;
 }
 
-void ShaderProgram::print_log() const
+string ShaderProgram::print_log() const
 {
     // Shader program log length
     int infoLogLength = 0;
     int maxLength = infoLogLength;
+    string log = "No program log information was available.";
 
     //Get info string length
     glGetProgramiv(programID_, GL_INFO_LOG_LENGTH, &maxLength);
@@ -119,11 +122,14 @@ void ShaderProgram::print_log() const
     if (infoLogLength > 0)
     {
         //Print Log
-        printf("%s\n", infoLog);
+        log = infoLog;
+        log += "\n";
     }
 
     //Deallocate string
     delete[] infoLog;
+
+    return log;
 }
 
 void ShaderProgram::use() const

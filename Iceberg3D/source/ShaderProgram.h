@@ -17,7 +17,7 @@ public:
 
     bool link_program();
 
-    void print_log() const;
+    std::string print_log() const;
 
     void use() const;
     void disuse() const;

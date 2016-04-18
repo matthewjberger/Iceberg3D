@@ -12,7 +12,7 @@ public:
 
     bool load(std::string path, GLuint shaderType);
     void delete_shader();
-    void print_log() const;
+    std::string print_log() const;
     bool loaded() const;
     GLuint id() const;
 
