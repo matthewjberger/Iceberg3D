@@ -60,7 +60,7 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 {
     vector<Vertex> vertices;
     vector<GLuint> indices;
-    vector<Tex> textures;
+    vector<Texture> textures;
 
     // Cycle through the vertices and store their data
     for (GLuint i = 0; i < mesh->mNumVertices; i++)
@@ -105,8 +105,8 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        vector<Tex> diffuseMaps = load_textures(material, aiTextureType_DIFFUSE);
-        vector<Tex> specularMaps = load_textures(material, aiTextureType_SPECULAR);
+        vector<Texture> diffuseMaps = load_textures(material, aiTextureType_DIFFUSE);
+        vector<Texture> specularMaps = load_textures(material, aiTextureType_SPECULAR);
 
         textures.reserve(diffuseMaps.size() + specularMaps.size());
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -116,10 +116,10 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Tex> Model::load_textures(aiMaterial* material, aiTextureType type)
+std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType type)
 {
     // TODO: Improve texture cache lookup time with a hash table
-    vector<Tex> textures;
+    vector<Texture> textures;
     for (size_t i = 0; i < material->GetTextureCount(type); i++)
     {
         aiString filename;
@@ -129,7 +129,7 @@ std::vector<Tex> Model::load_textures(aiMaterial* material, aiTextureType type)
         bool found = false;
         for(auto t : textureCache_)
         {
-            if(t.path.C_Str() == filepath)
+            if(t.path() == filepath)
             {
                 textures.push_back(t);
                 found = true;
@@ -140,10 +140,8 @@ std::vector<Tex> Model::load_textures(aiMaterial* material, aiTextureType type)
 
         if(!found)
         {
-            Tex texture;
-            texture.type = type;
-            texture.path = filepath;
-            texture.id = load_texture(filepath);
+            Texture texture(type);
+            texture.load(filepath);
             textureCache_.push_back(texture);
             textures.push_back(texture);
         }
@@ -154,44 +152,4 @@ std::vector<Tex> Model::load_textures(aiMaterial* material, aiTextureType type)
 TransformManager* Model::transform_manager() const
 {
     return transformManager_.get();
-}
-
-int Model::load_texture(const string &path) const
-{
-    GLuint textureID;
-    glGenTextures(1, &textureID);
-
-    stbi_set_flip_vertically_on_load(true);
-
-    int width, height, channels;
-    unsigned char* image = stbi_load(path.c_str(), &width, &height, &channels, 0);
-    if (!image)
-    {
-        string errorMessage = "Error: Couldn't load image: " + path;
-        Game::handle_error(errorMessage);
-        return false;
-    }
-
-    GLenum pixelFormat = GL_RGB;
-    switch (channels)
-    {
-        case 1: pixelFormat = GL_ALPHA;     break;
-        case 2: pixelFormat = GL_LUMINANCE; break;
-        case 3: pixelFormat = GL_RGB;       break;
-        case 4: pixelFormat = GL_RGBA;      break;
-    }
-
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, pixelFormat, width, height, 0, pixelFormat, GL_UNSIGNED_BYTE, image);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    // Get rid of the temporary surface
-    stbi_image_free(image);
-
-    return textureID;
 }

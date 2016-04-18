@@ -11,6 +11,7 @@ Texture::Texture(aiTextureType type, GLenum bindTarget)
     // Initialize variables
     width_ = 0;
     height_ = 0;
+    channels_ = 0;
 
     textureID_ = 0;
     bindTarget_ = bindTarget;
@@ -24,7 +25,7 @@ Texture::Texture(aiTextureType type, GLenum bindTarget)
 Texture::~Texture()
 {
     // Free the texture
-    free();
+    //free();
 }
 
 void Texture::free() const

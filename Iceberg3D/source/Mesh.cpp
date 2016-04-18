@@ -1,7 +1,7 @@
 #include "Mesh.h"
 using namespace std;
 
-Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Tex> textures)
+Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures)
 {
     vertices_ = vertices;
     indices_ = indices;
@@ -25,14 +25,13 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
     int specularCount = 1;
     int textureCount = 0;
     string name;
-    for (int i = 0; i < textures_.size(); i++)
+    for (auto const& texture : textures_)
     {
-        glActiveTexture(GL_TEXTURE0 + i);
-        if (textures_[i].type == aiTextureType_DIFFUSE)
+        if (texture.type() == aiTextureType_DIFFUSE)
         {
             name = "texture_diffuse" + to_string(diffuseCount++);
         }
-        else if (textures_[i].type == aiTextureType_SPECULAR)
+        else if (texture.type() == aiTextureType_SPECULAR)
         {
             name = "texture_specular" + to_string(specularCount++);
         }
@@ -42,7 +41,7 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
             continue;
         }
         shaderProgram->set_uniform(name, textureCount);
-        glBindTexture(GL_TEXTURE_2D, textures_[i].id);
+        texture.bind(textureCount++);
     }
 
     shaderProgram->use();
@@ -50,10 +49,9 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
     glDrawElements(GL_TRIANGLES, indices_.size(), GL_UNSIGNED_INT, 0);
     meshVAO_->unbind();
 
-    for(int i = 0; i < textures_.size(); i++)
+    for(auto const& texture : textures_)
     {
-        glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        texture.unbind();
     }
 }
 
