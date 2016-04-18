@@ -16,7 +16,7 @@ Game::Game()
     caption_ = "Iceberg3D";
     iconPath_ = "assets/icebergIcon.png";
 
-    screenWidth_ = 1376;
+    screenWidth_ = 1024;
     screenHeight_ = 768;
 
     glMajorVersion_ = 4;
