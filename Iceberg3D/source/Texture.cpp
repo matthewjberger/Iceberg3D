@@ -25,7 +25,7 @@ Texture::Texture(aiTextureType type, GLenum bindTarget)
 Texture::~Texture()
 {
     // Free the texture
-    //free();
+    free();
 }
 
 void Texture::free() const

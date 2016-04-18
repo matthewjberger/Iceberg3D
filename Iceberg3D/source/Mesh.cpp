@@ -1,7 +1,7 @@
 #include "Mesh.h"
 using namespace std;
 
-Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures)
+Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, const vector<Texture*>& textures)
 {
     vertices_ = vertices;
     indices_ = indices;
@@ -27,11 +27,11 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
     string name;
     for (auto const& texture : textures_)
     {
-        if (texture.type() == aiTextureType_DIFFUSE)
+        if (texture->type() == aiTextureType_DIFFUSE)
         {
             name = "texture_diffuse" + to_string(diffuseCount++);
         }
-        else if (texture.type() == aiTextureType_SPECULAR)
+        else if (texture->type() == aiTextureType_SPECULAR)
         {
             name = "texture_specular" + to_string(specularCount++);
         }
@@ -41,7 +41,7 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
             continue;
         }
         shaderProgram->set_uniform(name, textureCount);
-        texture.bind(textureCount++);
+        texture->bind(textureCount++);
     }
 
     shaderProgram->use();
@@ -51,7 +51,7 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
 
     for(auto const& texture : textures_)
     {
-        texture.unbind();
+        texture->unbind();
     }
 }
 

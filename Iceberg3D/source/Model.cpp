@@ -1,6 +1,5 @@
 #include "Model.h"
 using namespace std;
-#include <stb_image.h>
 
 Model::Model(const string &path)
 {
@@ -60,7 +59,7 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 {
     vector<Vertex> vertices;
     vector<GLuint> indices;
-    vector<Texture> textures;
+    vector<Texture*> textures;
 
     // Cycle through the vertices and store their data
     for (GLuint i = 0; i < mesh->mNumVertices; i++)
@@ -105,8 +104,8 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        vector<Texture> diffuseMaps = load_textures(material, aiTextureType_DIFFUSE);
-        vector<Texture> specularMaps = load_textures(material, aiTextureType_SPECULAR);
+        vector<Texture*> diffuseMaps = load_textures(material, aiTextureType_DIFFUSE);
+        vector<Texture*> specularMaps = load_textures(material, aiTextureType_SPECULAR);
 
         textures.reserve(diffuseMaps.size() + specularMaps.size());
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -116,10 +115,10 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType type)
+std::vector<Texture*> Model::load_textures(aiMaterial* material, aiTextureType type)
 {
     // TODO: Improve texture cache lookup time with a hash table
-    vector<Texture> textures;
+    vector<Texture*> textures;
     for (size_t i = 0; i < material->GetTextureCount(type); i++)
     {
         aiString filename;
@@ -129,7 +128,7 @@ std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType ty
         bool found = false;
         for(auto t : textureCache_)
         {
-            if(t.path() == filepath)
+            if(t->path() == filepath)
             {
                 textures.push_back(t);
                 found = true;
@@ -140,8 +139,8 @@ std::vector<Texture> Model::load_textures(aiMaterial* material, aiTextureType ty
 
         if(!found)
         {
-            Texture texture(type);
-            texture.load(filepath);
+            Texture *texture = new Texture(type);
+            texture->load(filepath);
             textureCache_.push_back(texture);
             textures.push_back(texture);
         }

@@ -23,12 +23,12 @@ private:
     std::vector<Mesh> meshes_;
     std::shared_ptr<TransformManager> transformManager_;
 
-    std::vector<Texture> textureCache_;
+    std::vector<Texture*> textureCache_;
 
     bool load_model(const std::string &path);
     void process_node(aiNode* node, const aiScene* scene);
     Mesh process_mesh(aiMesh* mesh, const aiScene* scene);
-    std::vector<Texture> load_textures(aiMaterial* material, aiTextureType type);
+    std::vector<Texture*> load_textures(aiMaterial* material, aiTextureType type);
     int load_texture(const std::string &path) const;
 };
 
