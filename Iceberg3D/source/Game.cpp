@@ -20,7 +20,7 @@ Game::Game()
     screenHeight_ = 768;
 
     glMajorVersion_ = 4;
-    glMinorVersion_ = 3;
+    glMinorVersion_ = 5;
 
     majorVersion_ = 0;
     minorVersion_ = 1;
