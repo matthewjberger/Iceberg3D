@@ -52,8 +52,9 @@ void IntroState::draw()
         for(int j = 0; j < 4; j++)
         {
             // TODO: Instanced Rendering
-            model->transform_manager()->translate(glm::mat4(1.0f), vec3(200.0f * i, 200.0f * j, 0.0f));
-            model->transform_manager()->rotate(model->transform_manager()->model_matrix(), angle, vec3(0.0f, 1.0f, 0.0f));
+            model->transform_manager()->translate(glm::mat4(1.0f), vec3(2.0f * i, 2.0f * j, 0.0f));
+            model->transform_manager()->rotate(angle, vec3(0.0f, 1.0f, 0.0f));
+            model->transform_manager()->scale(vec3(0.02f, 0.02f, 0.02f));
             mat4 mvp = camera->make_mvp(model->transform_manager()->model_matrix());
             modelProgram->set_uniform("mvpMatrix", &mvp);
             model->draw(modelProgram.get(), camera.get());
