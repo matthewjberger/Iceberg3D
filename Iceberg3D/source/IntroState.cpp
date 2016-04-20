@@ -20,7 +20,7 @@ void IntroState::initialize()
     modelProgram->add_shader_from_file("shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
     modelProgram->link_program();
 
-    camera = make_unique<Camera>(game_, vec3(0.0, 25.0, -70.0), glm::vec3(0), 100.0);
+    camera = make_unique<Camera>(game_, vec3(10.0, 12.0, 30.0), glm::vec3(0), 100.0);
     camera->enable_input();
 
     SkyboxParameters snowySkybox;
@@ -52,7 +52,7 @@ void IntroState::draw()
         for(int j = 0; j < 4; j++)
         {
             // TODO: Instanced Rendering
-            model->transform_manager()->translate(glm::mat4(1.0f), vec3(2.0f * i, 2.0f * j, 0.0f));
+            model->transform_manager()->translate(glm::mat4(1.0f), vec3(8.0f * i, 8.0f * j, 0.0f));
             model->transform_manager()->rotate(angle, vec3(0.0f, 1.0f, 0.0f));
             model->transform_manager()->scale(vec3(0.02f, 0.02f, 0.02f));
             mat4 mvp = camera->make_mvp(model->transform_manager()->model_matrix());
