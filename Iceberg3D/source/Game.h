@@ -37,6 +37,7 @@ public:
 private:
     static GLFWwindow* window_;
     void build_caption() const;
+    bool create_window();
 
     std::unique_ptr<StateMachine> stateMachine;
 

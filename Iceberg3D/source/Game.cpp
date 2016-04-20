@@ -39,6 +39,46 @@ Game::~Game()
     glfwTerminate();
 }
 
+bool Game::create_window()
+{
+    // TODO: Possibly store this in a configuration file
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+    auto SetVersion = [this](int major, int minor)
+    {
+        glMajorVersion_ = major;
+        glMinorVersion_ = minor;
+
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glMajorVersion_);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glMinorVersion_);
+    };
+ 
+    // Version detection
+    const int MAX_GL_VERSION = 4;
+    const int MIN_GL_VERSION = 3;
+    const int MAX_GL_SUBVERSION = 5;
+    const int MIN_GL_SUBVERSION = 0;
+    for (int majorVersion = MAX_GL_VERSION; majorVersion >= MIN_GL_VERSION; majorVersion--)
+    {
+        for (int minorVersion = MAX_GL_SUBVERSION; minorVersion >= MIN_GL_SUBVERSION; minorVersion--)
+        {
+            // 3.3 is the highest OpenGL 3 version
+            if ((majorVersion == 3) && (minorVersion > 3) ) continue;
+
+            SetVersion(majorVersion, minorVersion);
+
+            window_ = glfwCreateWindow(screenWidth_, screenHeight_, caption_.c_str(), nullptr, nullptr);
+            if (window_ != nullptr) return true;
+        }
+    }
+
+    // Failed to create an OpenGL context
+    return false;
+
+}
+
 bool Game::initialize()
 {
     // Initialize SDL
@@ -54,8 +94,7 @@ bool Game::initialize()
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-        window_ = glfwCreateWindow(screenWidth_, screenHeight_, caption_.c_str(), nullptr, nullptr);
-        if(window_ == nullptr)
+        if(!create_window())
         {
             handle_error("Error: Failed to create OpenGL context!");
             return false;
