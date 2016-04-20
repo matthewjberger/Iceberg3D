@@ -90,7 +90,7 @@ void IntroState::initialize()
 
 void IntroState::update()
 {
-    angle += game_->time_delta() * float(pi<float>()) / 2;
+    angle += game_->delta_time() * float(pi<float>()) / 2;
     camera->update(game_);
 }
 
