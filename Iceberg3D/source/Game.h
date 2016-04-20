@@ -29,7 +29,7 @@ public:
     float aspect_ratio() const;
 
     std::chrono::time_point<std::chrono::high_resolution_clock> previousTime, currentTime;
-    float time_delta();
+    float delta_time() const;
 
     void change_state(GameState* state) const;
     static GLFWwindow* window();
@@ -52,6 +52,8 @@ private:
     int screenHeight_;
 
     int fps_;
+
+    float deltaTime;
 };
 
 class GameState : public ProgramState

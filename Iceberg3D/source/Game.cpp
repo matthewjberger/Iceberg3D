@@ -219,13 +219,9 @@ void Game::exit()
     glfwSetWindowShouldClose(window_, true);
 }
 
-float Game::time_delta()
+float Game::delta_time() const
 {
-    currentTime = std::chrono::high_resolution_clock::now();
-    float returnValue = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime - previousTime).count();
-    previousTime = std::chrono::high_resolution_clock::now();
-
-    return returnValue;
+   return deltaTime;
 }
 
 float Game::aspect_ratio() const
