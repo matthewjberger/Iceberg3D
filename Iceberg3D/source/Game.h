@@ -15,7 +15,7 @@ public:
 
     bool initialize();
 
-    void update() const;
+    void update();
     void draw() const;
     void handle_events() const;
 
@@ -28,7 +28,6 @@ public:
     int fps() const;
     float aspect_ratio() const;
 
-    std::chrono::time_point<std::chrono::high_resolution_clock> previousTime, currentTime;
     float delta_time() const;
 
     void change_state(GameState* state) const;
@@ -39,7 +38,8 @@ private:
     void build_caption() const;
     bool create_window();
 
-    std::unique_ptr<StateMachine> stateMachine;
+    std::unique_ptr<StateMachine> stateMachine_;
+    std::chrono::time_point<std::chrono::high_resolution_clock> previousTime_, currentTime_;
 
     bool fullscreen_;
     std::string caption_;
@@ -53,7 +53,7 @@ private:
 
     int fps_;
 
-    float deltaTime;
+    float deltaTime_;
 };
 
 class GameState : public ProgramState

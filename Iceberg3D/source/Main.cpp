@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "IntroState.h"
 
-int main(int argc, char* args[])
+int main()
 {
     // Create Game and States 
     std::unique_ptr<Game> game = std::make_unique<Game>();

@@ -8,7 +8,7 @@ using namespace glm;
 GLFWwindow* Game::window_;
 
 Game::Game()
-    :stateMachine(make_unique<StateMachine>())
+    :stateMachine_(make_unique<StateMachine>())
 {
     // Initialize game variables and settings
     fullscreen_ = true;
@@ -31,7 +31,7 @@ Game::Game()
     window_ = nullptr;
 
     // Begin the timer for delta time calculation
-    previousTime = std::chrono::high_resolution_clock::now();
+    previousTime_ = std::chrono::high_resolution_clock::now();
 }
 
 Game::~Game()
@@ -143,12 +143,16 @@ void Game::build_caption() const
 
 void Game::change_state(GameState* state) const
 {
-    stateMachine->change_state(state);
+    stateMachine_->change_state(state);
 }
 
-void Game::update() const
+void Game::update()
 {
-    stateMachine->update();
+    currentTime_ = std::chrono::high_resolution_clock::now();
+    deltaTime_ = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime_ - previousTime_).count();
+    previousTime_ = std::chrono::high_resolution_clock::now();
+
+    stateMachine_->update();
 }
 
 void Game::draw() const
@@ -157,7 +161,7 @@ void Game::draw() const
     glClearColor(0.392f, 0.584f, 0.93f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    stateMachine->draw();
+    stateMachine_->draw();
 
     // Update the window
     glfwSwapBuffers(window_);
@@ -174,7 +178,7 @@ void Game::handle_events() const
         exit();
     }
 
-    stateMachine->handle_events();
+    stateMachine_->handle_events();
 }
 
 void Game::toggle_fullscreen()
@@ -221,7 +225,7 @@ void Game::exit()
 
 float Game::delta_time() const
 {
-   return deltaTime;
+   return deltaTime_;
 }
 
 float Game::aspect_ratio() const

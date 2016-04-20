@@ -14,66 +14,14 @@ void IntroState::initialize()
     // Initialize resources
     model = make_unique<Model>("assets/deadpool/dead 123456.obj");
 
-    hudTexture = make_unique<Texture>();
-    hudTexture->load("assets/iceberg.png");
-
     modelProgram = make_shared<ShaderProgram>();
     modelProgram->create_program();
     modelProgram->add_shader_from_file("shaders/modelVert.glsl", GL_VERTEX_SHADER);
     modelProgram->add_shader_from_file("shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
     modelProgram->link_program();
 
-    triProgram = make_shared<ShaderProgram>();
-    triProgram->create_program();
-    triProgram->add_shader_from_file("shaders/triVert.glsl", GL_VERTEX_SHADER);
-    triProgram->add_shader_from_file("shaders/triFrag.glsl", GL_FRAGMENT_SHADER);
-    triProgram->link_program();
-
-    GLfloat vertices[] = {
-        // Positions          // Colors           // Texture Coords
-        0.25f - 0.65f,  0.25f - 0.65f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // Top Right
-        0.25f - 0.65f, -0.25f - 0.65f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // Bottom Right
-        -0.25f - 0.65f, -0.25f - 0.65f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // Bottom Left
-        -0.25f - 0.65f,  0.25f - 0.65f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // Top Left 
-    };
-    GLuint indices[] = {  // Note that we start from 0!
-        0, 1, 3,   // First Triangle
-        1, 2, 3    // Second Triangle
-    };
-
-    triVAO.create();
-    triVBO.create();
-    triIBO.create();
-
-    triVAO.bind();
-
-    triVBO.bind();
-    triVBO.add_data(&vertices, sizeof(vertices));
-    triVBO.upload_data();
-
-    triIBO.bind(GL_ELEMENT_ARRAY_BUFFER);
-    triIBO.add_data(&indices, sizeof(indices));
-    triIBO.upload_data();
-
-    triVAO.enable_attribute(0);
-    triVAO.configure_attribute(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
-    triVAO.enable_attribute(1);
-    triVAO.configure_attribute(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-    triVAO.enable_attribute(2);
-    triVAO.configure_attribute(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-
-    triVAO.unbind();
-
-    camera = make_unique<Camera>(game_, vec3(0.0, 25.0, -70.0), glm::vec3(0), 50.0);
+    camera = make_unique<Camera>(game_, vec3(0.0, 25.0, -70.0), glm::vec3(0), 100.0);
     camera->enable_input();
-
-    SkyboxParameters grassySkybox;
-    grassySkybox.right = "Assets/mp_crimelem/criminal-element_rt.tga";
-    grassySkybox.left = "Assets/mp_crimelem/criminal-element_lf.tga";
-    grassySkybox.top = "Assets/mp_crimelem/criminal-element_up.tga";
-    grassySkybox.bottom = "Assets/mp_crimelem/criminal-element_dn.tga";
-    grassySkybox.front = "Assets/mp_crimelem/criminal-element_ft.tga";
-    grassySkybox.back = "Assets/mp_crimelem/criminal-element_bk.tga";
 
     SkyboxParameters snowySkybox;
     snowySkybox.right = "Assets/ame_powder/powderpeak_rt.tga";
@@ -90,7 +38,7 @@ void IntroState::initialize()
 
 void IntroState::update()
 {
-    angle += game_->delta_time() * float(pi<float>()) / 2;
+    angle += game_->delta_time() * float(pi<float>());
     camera->update(game_);
 }
 
@@ -112,12 +60,6 @@ void IntroState::draw()
         }
     }
     glDisable(GL_CULL_FACE);
-
-    triProgram->use();
-    triVAO.bind();
-    hudTexture->bind();
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    triVAO.unbind();
 
     skybox->draw(camera.get());
 }

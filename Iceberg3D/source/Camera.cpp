@@ -74,25 +74,25 @@ void Camera::update(Game *game)
     // Move forward
     if (glfwGetKey(game->window(), GLFW_KEY_W))
     {
-        position_ += direction_ * speed_;
+        position_ += direction_ * speed_ * game->delta_time();
     }
 
     // Move backward
     if (glfwGetKey(game->window(), GLFW_KEY_S))
     {
-        position_ -= direction_ * speed_;
+        position_ -= direction_ * speed_ * game->delta_time();
     }
 
     // Strafe left
     if (glfwGetKey(game->window(), GLFW_KEY_D))
     {
-        position_ += right_ * speed_;
+        position_ += right_ * speed_ * game->delta_time();
     }
 
     // Strafe right
     if (glfwGetKey(game->window(), GLFW_KEY_A))
     {
-        position_ -= right_ * speed_;
+        position_ -= right_ * speed_ * game->delta_time();
     }
 
     LookAt(game, position_, position_ + direction_, up_);
@@ -109,7 +109,7 @@ void Camera::enable_input(bool enabled)
     inputEnabled_ = enabled;
 }
 
-void Camera::LookAt(Game *game, glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up_)
+void Camera::LookAt(Game *game, glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up)
 {
     projectionMatrix_ = perspective(fieldOfView_, game->aspect_ratio(), nearClippingPlane_, farClippingPlane_);
     position_ = position;
