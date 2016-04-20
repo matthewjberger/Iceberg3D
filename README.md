@@ -16,3 +16,8 @@ Then to build, use [CMake](https://cmake.org/):
     mkdir Build
     cd Build
     cmake ..
+
+###Note:
+When building with Visual Studio, the **Visual C++ Redistributable for Visual Studio 2015**  must be installed. This can be found in the vcpp-redist folder of this repository:
+
+    Iceberg3D/dependencies/vcpp-redist/vc_redist.x86.exe
