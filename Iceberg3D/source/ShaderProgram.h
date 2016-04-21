@@ -14,6 +14,7 @@ public:
 
     bool add_shader(Shader* shader) const;
     bool add_shader_from_file(const std::string& path, GLuint shaderType) const;
+    bool add_shader_from_source(const std::string& shaderSource, GLuint shaderType) const;
 
     bool link_program();
 

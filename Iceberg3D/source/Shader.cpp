@@ -24,10 +24,8 @@ void Shader::delete_shader()
     }
 }
 
-bool Shader::load(const std::string &path, GLuint shadertype_)
+bool Shader::load(const std::string &path, GLuint shaderType)
 {
-    GLint compiled = GL_FALSE;
-    id_ = glCreateShader(shadertype_);
     ifstream file(path.c_str());
     string shaderSource;
 
@@ -41,10 +39,19 @@ bool Shader::load(const std::string &path, GLuint shadertype_)
         string errorMessage = "Couldn't open file: " + path;
         Game::handle_error(errorMessage);
         shaderSource = "";
+        if(file.is_open()) file.close();
         return false;
     }
 
     file.close();
+
+    return create_from_string(shaderSource, shaderType);
+}
+
+bool Shader::create_from_string(const std::string& shaderSource, GLuint shaderType)
+{
+    GLint compiled = GL_FALSE;
+    id_ = glCreateShader(shaderType);
 
     // Create the shader
     const char* source = shaderSource.c_str();
@@ -66,7 +73,7 @@ bool Shader::load(const std::string &path, GLuint shadertype_)
         return false;
     }
 
-    type_ = shadertype_;
+    type_ = shaderType;
     loaded_ = true;
 
     return true;
@@ -88,8 +95,7 @@ string Shader::print_log() const
 
         if (infoLogLength > 0)
         {
-            log += infoLog;
-            log += "\n";
+            log = log + infoLog + "\n";
         }
 
         delete[] infoLog;

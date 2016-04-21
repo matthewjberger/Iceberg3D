@@ -34,17 +34,18 @@ void ShaderProgram::create_program()
 
 bool ShaderProgram::add_shader_from_file(const string& path, GLuint shaderType) const
 {
-    Shader* newShader = new Shader();
-
+    unique_ptr<Shader> newShader = make_unique<Shader>();
     newShader->load(path, shaderType);
+    add_shader(newShader.get());
 
-    add_shader(newShader);
+    return true;
+}
 
-    newShader->delete_shader();
-
-    delete newShader;
-
-    newShader = nullptr;
+bool ShaderProgram::add_shader_from_source(const string& shaderSource, GLuint shaderType) const
+{
+    unique_ptr<Shader> newShader = make_unique<Shader>();
+    newShader->create_from_string(shaderSource, shaderType);
+    add_shader(newShader.get());
 
     return true;
 }
