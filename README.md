@@ -1,6 +1,6 @@
 # Iceberg3D ![Screenshot](http://imgur.com/BKjpnp1.png)
 
-Iceberg3D is an OpenGL-based 3D Game Engine.
+Iceberg3D is an OpenGL based 3D Game Engine.
 
 ![Screenshot](http://imgur.com/fGLzSfE.jpg)
 
