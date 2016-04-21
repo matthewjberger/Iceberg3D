@@ -87,7 +87,6 @@ bool Texture::load(const string& path, GLenum target)
     glGenerateMipmap(GL_TEXTURE_2D);
     unbind();
 
-    // Get rid of the temporary surface
     stbi_image_free(image);
 
     stbi_set_flip_vertically_on_load(false);

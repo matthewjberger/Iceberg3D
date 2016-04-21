@@ -6,7 +6,6 @@ using namespace glm;
 
 Skybox::Skybox(const SkyboxParameters &skyboxParameters)
 {
-    // TODO: Use the Texture class here and throw they can't be loaded properly
     vector<const GLchar*> faces;
     faces.push_back(skyboxParameters.right.c_str());
     faces.push_back(skyboxParameters.left.c_str());
@@ -24,10 +23,7 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
 
     for (GLuint i = 0; i < faces.size(); i++)
     {
-        if(!cubemap_->load(faces[i], GL_TEXTURE_CUBE_MAP_POSITIVE_X + i))
-        {
-            // TODO: throw here, use sdl messagebox
-        }
+        cubemap_->load(faces[i], GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
     }
 
     cubemap_->set_wrap();
