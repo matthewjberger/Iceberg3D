@@ -5,7 +5,6 @@ using namespace glm;
 
 ShaderProgram::ShaderProgram()
 {
-    // Initialize variables
     programID_ = 0;
     linked_ = false;
 }
@@ -19,10 +18,7 @@ void ShaderProgram::delete_program()
 {
     if (linked_)
     {
-        // Update status
         linked_ = false;
-
-        // Delete the program if linked
         glDeleteProgram(programID_);
     }
 }
@@ -54,80 +50,54 @@ bool ShaderProgram::add_shader(Shader* shader) const
 {
     if (!shader->loaded())
     {
-        // Print error message
         Game::handle_error("Tried to attach shader that wasn't loaded!");
-
-        // Return status
         return false;
     }
 
     glAttachShader(programID_, shader->id());
 
-    // Return status
     return true;
 }
 
 bool ShaderProgram::link_program()
 {
-    // Success flag
     GLint success = GL_TRUE;
 
-    // Make the shader Program
     glLinkProgram(programID_);
-
-    // Check if program was created successfully
     glGetProgramiv(programID_, GL_COMPILE_STATUS, &success);
 
-    // If program creation failed
     if (success != GL_TRUE)
     {
-        // Print an error message
         string errorMessage = "Couldn't link program " + to_string(programID_) + "\n";
         Game::handle_error(errorMessage.c_str());
-
-        // Print log
         print_log();
-
-        // Delete the program
         glDeleteProgram(programID_);
-
-        // Set program ID to 0
         programID_ = 0;
-
-        // Return status
         return false;
     }
 
-    // Update status
     linked_ = true;
 
-    // Return status
     return true;
 }
 
 string ShaderProgram::print_log() const
 {
-    // Shader program log length
     int infoLogLength = 0;
     int maxLength = infoLogLength;
     string log = "No program log information was available.";
 
-    //Get info string length
     glGetProgramiv(programID_, GL_INFO_LOG_LENGTH, &maxLength);
 
-    //Allocate string
     char* infoLog = new char[maxLength];
 
-    //Get info log
     glGetProgramInfoLog(programID_, maxLength, &infoLogLength, infoLog);
     if (infoLogLength > 0)
     {
-        //Print Log
         log = infoLog;
         log += "\n";
     }
 
-    //Deallocate string
     delete[] infoLog;
 
     return log;
@@ -137,7 +107,6 @@ void ShaderProgram::use() const
 {
     if (linked_)
     {
-        // If linked, use program
         glUseProgram(programID_);
     }
 }
@@ -146,7 +115,6 @@ void ShaderProgram::disuse() const
 {
     if (linked_)
     {
-        // If linked, use program
         glUseProgram(0);
     }
 }

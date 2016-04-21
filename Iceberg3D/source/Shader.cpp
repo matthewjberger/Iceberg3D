@@ -53,7 +53,6 @@ bool Shader::create_from_string(const std::string& shaderSource, GLuint shaderTy
     GLint compiled = GL_FALSE;
     id_ = glCreateShader(shaderType);
 
-    // Create the shader
     const char* source = shaderSource.c_str();
     glShaderSource(id_, 1, &source, nullptr);
     glCompileShader(id_);
