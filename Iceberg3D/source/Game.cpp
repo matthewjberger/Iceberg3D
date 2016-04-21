@@ -237,7 +237,7 @@ float Game::aspect_ratio() const
     return(height == 0) ? (width) : (width / height);
 }
 
-void Game::handle_error(std::string errorMessage)
+void Game::handle_error(const std::string &errorMessage)
 {
     boxer::show(errorMessage.c_str(), "Error", boxer::Style::Warning);
     exit();

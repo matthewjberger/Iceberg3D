@@ -10,7 +10,7 @@ public:
     Shader();
     ~Shader();
 
-    bool load(std::string path, GLuint shaderType);
+    bool load(const std::string &path, GLuint shaderType);
     void delete_shader();
     std::string print_log() const;
     bool loaded() const;

@@ -24,7 +24,7 @@ void Shader::delete_shader()
     }
 }
 
-bool Shader::load(std::string path, GLuint shadertype_)
+bool Shader::load(const std::string &path, GLuint shadertype_)
 {
     GLint compiled = GL_FALSE;
     id_ = glCreateShader(shadertype_);

@@ -22,7 +22,7 @@ public:
     void toggle_fullscreen();
     static bool running();
     static void exit();
-    static void handle_error(std::string errorMessage);
+    static void handle_error(const std::string &errorMessage);
 
     glm::vec2 screen_dimensions() const;
     int fps() const;
