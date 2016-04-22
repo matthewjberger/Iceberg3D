@@ -14,9 +14,32 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
     faces.push_back(skyboxParameters.back.c_str());
     faces.push_back(skyboxParameters.front.c_str());
 
+    std::string vertexShaderSource = 
+        "#version 330 core\n"
+        "layout (location = 0) in vec3 position;\n"
+        "out vec3 TexCoords;\n"
+        "uniform mat4 projection;\n"
+        "uniform mat4 view;\n"
+        "void main()\n"
+        "{\n"
+        "    vec4 finalPos = projection * view * vec4(position, 1.0f);\n"
+        "    gl_Position = finalPos.xyww;\n"
+        "    TexCoords = position;\n"
+        "}\n";
+
+    std::string fragmentShaderSource =
+        "#version 330 core\n"
+        "in vec3 TexCoords;\n"
+        "out vec4 color;\n"
+        "uniform samplerCube skybox;\n"
+        "void main()\n"
+        "{    \n"
+        "    color = texture(skybox, TexCoords);\n"
+        "}\n";
+
     skyboxProgram_.create_program();
-    skyboxProgram_.add_shader_from_file("Shaders/skyVert.glsl", GL_VERTEX_SHADER);
-    skyboxProgram_.add_shader_from_file("Shaders/skyFrag.glsl", GL_FRAGMENT_SHADER);
+    skyboxProgram_.add_shader_from_source(vertexShaderSource, GL_VERTEX_SHADER);
+    skyboxProgram_.add_shader_from_source(fragmentShaderSource, GL_FRAGMENT_SHADER);
     skyboxProgram_.link_program();
 
     cubemap_ = make_unique<Texture>(aiTextureType_DIFFUSE, GL_TEXTURE_CUBE_MAP);
