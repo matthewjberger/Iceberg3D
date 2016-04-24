@@ -1,8 +1,4 @@
-#include "Game.h"
-#include "ShaderProgram.h"
-#include "Camera.h"
-#include "Model.h"
-#include "Skybox.h"
+#include "Iceberg.h"
 
 class IntroState : public iceberg::GameState
 {

@@ -1,4 +1,3 @@
-#include "Game.h"
 #include "IntroState.h"
 
 int main()
@@ -27,4 +26,3 @@ int main()
 
     return 0;
 }
-
