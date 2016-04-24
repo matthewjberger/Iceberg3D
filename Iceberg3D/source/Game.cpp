@@ -12,7 +12,6 @@ Game::Game()
     fullscreen_ = true;
 
     caption_ = "Iceberg3D";
-    iconPath_ = "assets/icebergIcon.png";
 
     screenWidth_ = 1024;
     screenHeight_ = 768;
@@ -108,7 +107,32 @@ bool Game::initialize()
     return true;
 }
 
-void Game::build_caption() const
+void Game::set_icon(const std::string& path)
+{
+    int x, y, c;
+    GLFWimage image;
+    image.pixels = stbi_load(path.c_str(), &x, &y, &c, 0);
+    image.width = x;
+    image.height = y;
+    if (image.pixels != NULL)
+    {
+        glfwSetWindowIcon(window_, 1, &image);
+    }
+    else
+    {
+        std::string errorMessage = "Failed to load icon: " + path;
+        handle_error(errorMessage.c_str());
+    }
+}
+
+void Game::set_caption(const std::string& caption)
+{
+	if(window_ == nullptr) return;
+	caption_ = caption;
+    glfwSetWindowTitle(window_, caption_.c_str());
+}
+
+void Game::build_caption()
 {
     // Program Version
     std::string programVersion =  std::to_string(majorVersion_) + "."
@@ -120,23 +144,7 @@ void Game::build_caption() const
     std::string fullCaption = caption_ + " - Version: " + programVersion 
                                        + " - OpenGL Version: " + glVersion;
 
-    glfwSetWindowTitle(window_, fullCaption.c_str());
-
-    // Caption
-    int x, y, c;
-    GLFWimage image;
-    image.pixels = stbi_load(iconPath_.c_str(), &x, &y, &c, 0);
-    image.width = x;
-    image.height = y;
-    if (image.pixels != NULL)
-    {
-        glfwSetWindowIcon(window_, 1, &image);
-    }
-    else
-    {
-        std::string errorMessage = "Failed to load icon: " + iconPath_;
-        handle_error(errorMessage.c_str());
-    }
+    set_caption(fullCaption);
 }
 
 void Game::change_state(GameState* state) const

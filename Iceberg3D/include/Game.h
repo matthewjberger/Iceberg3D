@@ -19,7 +19,10 @@ namespace iceberg
         void update();
         void draw() const;
         void handle_events() const;
-
+        
+        void set_icon(const std::string& path);
+        void set_caption(const std::string& caption);
+        
         void toggle_fullscreen();
         static bool running();
         static void exit();
@@ -36,7 +39,7 @@ namespace iceberg
 
     private:
         static GLFWwindow* window_;
-        void build_caption() const;
+        void build_caption(); // default caption
         bool create_window();
 
         std::unique_ptr<StateMachine> stateMachine_;
@@ -44,7 +47,6 @@ namespace iceberg
 
         bool fullscreen_;
         std::string caption_;
-        std::string iconPath_;
 
         int majorVersion_, minorVersion_, patchVersion_;
         int glMajorVersion_, glMinorVersion_;

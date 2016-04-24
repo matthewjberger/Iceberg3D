@@ -1,15 +1,15 @@
-#include "IntroState.h"
+#include "ExampleState.h"
 #include "GlobalIncludes.h"
 
 using namespace iceberg;
 
-void IntroState::pause() {}
-void IntroState::resume() {}
-void IntroState::finalize() {}
-void IntroState::handle_events() {}
+void ExampleState::pause() {}
+void ExampleState::resume() {}
+void ExampleState::finalize() {}
+void ExampleState::handle_events() {}
 
 
-void IntroState::initialize()
+void ExampleState::initialize()
 {
     // Initialize resources
     model = std::make_unique<Model>("assets/deadpool/dead 123456.obj");
@@ -36,13 +36,13 @@ void IntroState::initialize()
     angle = 0.0f;
 }
 
-void IntroState::update()
+void ExampleState::update()
 {
     angle += game_->delta_time() * float(glm::pi<float>());
     camera->update(game_);
 }
 
-void IntroState::draw()
+void ExampleState::draw()
 {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);

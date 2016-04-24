@@ -1,11 +1,11 @@
 #include "Iceberg.h"
 
-class ICEBERGAPI IntroState : public iceberg::GameState
+class ExampleState : public iceberg::GameState
 {
 public:
 
-    IntroState(iceberg::Game* game) : GameState(game){}
-    ~IntroState(){}
+    ExampleState(iceberg::Game* game) : GameState(game){}
+    ~ExampleState(){}
 
     void initialize() override;
     void finalize() override;

@@ -18,7 +18,7 @@ option(BUILD_OPENGL3_DEMOS OFF)
 option(BUILD_UNIT_TESTS OFF)
 add_subdirectory(Iceberg3D/dependencies/bullet)
 
-add_subdirectory("Iceberg3D/dependencies/boxer")
+add_subdirectory(Iceberg3D/dependencies/boxer)
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
@@ -32,7 +32,7 @@ else()
     endif()
 endif()
 
-include_directories(Iceberg3D/source/
+include_directories( Iceberg3D/include/
                     Iceberg3D/dependencies/assimp/include/
 					Iceberg3D/dependencies/boxer/include/
                     Iceberg3D/dependencies/bullet/src/
@@ -42,33 +42,37 @@ include_directories(Iceberg3D/source/
                     Iceberg3D/dependencies/stb/)
 
 file(GLOB DEPENDENCY_SOURCES Iceberg3D/dependencies/glad/src/glad.c)
-file(GLOB PROJECT_FILES Iceberg3D/source/*.*)
-file(GLOB PROJECT_SHADERS Iceberg3D/resources/shaders/*.*)
+file(GLOB PROJECT_HEADERS Iceberg3D/include/*.*)
+file(GLOB PROJECT_SOURCES Iceberg3D/source/*.*)
 file(GLOB PROJECT_CONFIGS CMakeLists.txt
                           Readme.md
                          .gitattributes
                          .gitignore
                          .gitmodules)
-
-source_group("Source" FILES ${PROJECT_FILES})
-source_group("Shaders" FILES ${PROJECT_SHADERS})
+						 
+source_group("Headers" FILES ${PROJECT_HEADERS})
+source_group("Sources" FILES ${PROJECT_SOURCES})
 source_group("Dependencies" FILES ${DEPENDENCY_SOURCES})
 
 add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 
-add_executable(${PROJECT_NAME} ${PROJECT_FILES}
-                               ${PROJECT_SHADERS}
-                               ${PROJECT_CONFIGS}
-                               ${DEPENDENCY_SOURCES})
+add_library(${PROJECT_NAME} ${PROJECT_HEADERS}
+							${PROJECT_SOURCES}
+                            ${PROJECT_SHADERS}
+                            ${PROJECT_CONFIGS}
+                            ${DEPENDENCY_SOURCES})
 
 target_link_libraries(${PROJECT_NAME} assimp glfw Boxer
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
                       BulletDynamics BulletCollision LinearMath)
+					  
+if (BUILD_SHARED_LIBS)
+	target_compile_definitions( ${PROJECT_NAME} PRIVATE "ICEBERG_BUILD_DLL")
+	target_compile_definitions( ${PROJECT_NAME} INTERFACE "ICEBERG_DLL")
+endif()
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/resources $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+option (ICEBERG_BUILD_DEMOS "Build demo programs" OFF)
+if (ICEBERG_BUILD_DEMOS)
+	add_subdirectory(Demos/full_scene/)
+endif()

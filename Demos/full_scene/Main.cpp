@@ -1,10 +1,10 @@
-#include "IntroState.h"
+#include "ExampleState.h"
 
 int main()
 {
     // Create Game and States 
     std::unique_ptr<iceberg::Game> game = std::make_unique<iceberg::Game>();
-    std::unique_ptr<IntroState> intro = std::make_unique<IntroState>(game.get());
+    std::unique_ptr<ExampleState> Example = std::make_unique<ExampleState>(game.get());
 
     if (game->initialize() == false)
     {
@@ -13,7 +13,8 @@ int main()
         return 1;
     }
 
-    game->change_state(intro.get());
+    game->set_icon("assets/icon.png"); // Must be called after window initialization
+    game->change_state(Example.get());
 
     while (game->running())
     {
