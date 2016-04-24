@@ -18,3 +18,8 @@ Then to build, use [CMake](https://cmake.org/):
     cmake ..
 
 ######Note: When building with Visual Studio, the [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145) must be installed. 
+
+## Demos
+To build the demos, enable the cmake option:
+
+    ICEBERG_BUILD_DEMOS
