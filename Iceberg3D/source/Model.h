@@ -9,7 +9,7 @@
 
 namespace iceberg
 {
-    class Model
+    class ICEBERGAPI Model
     {
     public:
         Model(const std::string &path);

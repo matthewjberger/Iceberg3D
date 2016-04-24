@@ -2,10 +2,11 @@
 #define STATEMACHINE_H
 
 #include <vector>
+#include "Defines.h"
 
 namespace iceberg
 {
-    class ProgramState
+    class ICEBERGAPI ProgramState
     {
     public:
         virtual ~ProgramState() {};
@@ -21,7 +22,7 @@ namespace iceberg
         virtual void update() = 0;
     };
 
-    class StateMachine
+    class ICEBERGAPI StateMachine
     {
     public:
         StateMachine();

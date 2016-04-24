@@ -5,7 +5,7 @@
 
 namespace iceberg
 {
-    class Texture
+    class ICEBERGAPI Texture
     {
     public:
 

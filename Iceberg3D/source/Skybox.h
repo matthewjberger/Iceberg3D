@@ -10,7 +10,7 @@
 
 namespace iceberg
 {
-    struct SkyboxParameters
+    struct ICEBERGAPI SkyboxParameters
     {
         std::string left;
         std::string right;
@@ -20,7 +20,7 @@ namespace iceberg
         std::string back;
     };
 
-    class Skybox
+    class ICEBERGAPI Skybox
     {
     public:
         Skybox(const SkyboxParameters &skyboxParameters);

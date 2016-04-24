@@ -6,14 +6,14 @@
 
 namespace iceberg
 {
-    enum collisionTypes
+    enum ICEBERGAPI collisionTypes
     {
         COLLIDE_NOTHING = 0,
         COLLIDE_GROUND = 1,
         COLLIDE_OBJECT = 2
     };
 
-    class PhysicsManager
+    class ICEBERGAPI PhysicsManager
     {
     public:
         PhysicsManager();

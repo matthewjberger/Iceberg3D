@@ -5,7 +5,7 @@
 
 namespace iceberg
 {
-    class ShaderProgram
+    class ICEBERGAPI ShaderProgram
     {
     public:
         ShaderProgram();

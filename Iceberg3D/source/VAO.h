@@ -5,7 +5,7 @@
 
 namespace iceberg
 {
-    class VAO
+    class ICEBERGAPI VAO
     {
     public:
 

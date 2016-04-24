@@ -16,7 +16,7 @@ namespace iceberg
         glm::vec3 normal;
     };
 
-    class Mesh
+    class ICEBERGAPI Mesh
     {
     public:
         Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, const std::vector<Texture*>& textures);

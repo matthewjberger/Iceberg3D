@@ -5,7 +5,7 @@
 
 namespace iceberg
 {
-    class VBO
+    class ICEBERGAPI VBO
     {
     public:
 

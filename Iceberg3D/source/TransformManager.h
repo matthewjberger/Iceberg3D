@@ -5,7 +5,7 @@
 
 namespace iceberg
 {
-    class TransformManager
+    class ICEBERGAPI TransformManager
     {
     public:
         TransformManager();

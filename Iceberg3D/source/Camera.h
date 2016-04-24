@@ -5,7 +5,7 @@
 
 namespace iceberg
 {
-    class Camera
+    class ICEBERGAPI Camera
     {
     public:
 

@@ -6,9 +6,9 @@
 
 namespace iceberg
 {
-    class GameState;
+    class ICEBERGAPI GameState;
 
-    class Game
+    class ICEBERGAPI Game
     {
     public:
         Game();
@@ -57,7 +57,7 @@ namespace iceberg
         float deltaTime_;
     };
 
-    class GameState : public ProgramState
+    class ICEBERGAPI GameState : public ProgramState
     {
     public:
         virtual ~GameState() {};

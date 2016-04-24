@@ -1,6 +1,6 @@
 #include "Iceberg.h"
 
-class IntroState : public iceberg::GameState
+class ICEBERGAPI IntroState : public iceberg::GameState
 {
 public:
 
