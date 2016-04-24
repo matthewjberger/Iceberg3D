@@ -23,3 +23,11 @@ Then to build, use [CMake](https://cmake.org/):
 To build the demos, enable the cmake option:
 
     ICEBERG_BUILD_DEMOS
+    
+If using Visual Studio to build the demos, make sure that you set the working directory as follows:
+
+    Right Click on the chosen demo -> Properties -> Debugging -> Working Directory
+    
+and change to:
+    
+    $(TargetDir)
