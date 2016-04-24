@@ -1,8 +1,5 @@
-#ifndef GLOBALS_H
-#define GLOBALS_H
-
-// Array size macro
-#define SIZE(x) ((sizeof(x)/sizeof(*x)))
+#ifndef GLOBALINCLUDES_H
+#define GLOBALINCLUDES_H
 
 // GLAD and GLFW
 #include <glad/glad.h>
@@ -35,5 +32,7 @@
 #include <chrono>
 #include <memory>
 
-#endif
+// Library Definitions
+#include "Defines.h"
 
+#endif
