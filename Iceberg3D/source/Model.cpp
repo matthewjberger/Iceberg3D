@@ -1,18 +1,19 @@
 #include "Model.h"
-using namespace std;
 
-Model::Model(const string &path)
+using namespace iceberg;
+
+Model::Model(const std::string &path)
 {
     load_model(path.c_str());
 
-    transformManager_ = make_shared<TransformManager>();
+    transformManager_ = std::make_shared<TransformManager>();
 }
 
 Model::~Model()
 {
 }
 
-void Model::draw(const ShaderProgram* shaderProgram, const Camera* camera)
+void Model::draw(const ShaderProgram* shaderProgram)
 {
     for (GLuint i = 0; i < meshes_.size(); i++)
     {
@@ -20,14 +21,14 @@ void Model::draw(const ShaderProgram* shaderProgram, const Camera* camera)
     }
 }
 
-bool Model::load_model(const string &path)
+bool Model::load_model(const std::string &path)
 {
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenNormals);
 
     if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
-        string errorMessage = "Assimp - ";
+        std::string errorMessage = "Assimp - ";
         errorMessage += importer.GetErrorString();
         Game::handle_error(errorMessage.c_str());
         return false;
@@ -57,21 +58,21 @@ void Model::process_node(aiNode* node, const aiScene* scene)
 
 Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 {
-    vector<Vertex> vertices;
-    vector<GLuint> indices;
-    vector<Texture*> textures;
+    std::vector<Vertex> vertices;
+    std::vector<GLuint> indices;
+    std::vector<Texture*> textures;
 
     // Cycle through the vertices and store their data
     for (GLuint i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex tempVertex;
 
-        auto vertex = make_unique<const aiVector3D>(mesh->mVertices[i]);
+        auto vertex = std::make_unique<const aiVector3D>(mesh->mVertices[i]);
         tempVertex.position.x = vertex->x;
         tempVertex.position.y = vertex->y;
         tempVertex.position.z = vertex->z;
 
-        auto normal = make_unique<const aiVector3D>(mesh->mNormals[i]);
+        auto normal = std::make_unique<const aiVector3D>(mesh->mNormals[i]);
         tempVertex.normal.x = normal->x;
         tempVertex.normal.y = normal->y;
         tempVertex.normal.z = normal->z;
@@ -104,8 +105,8 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
     {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-        vector<Texture*> diffuseMaps = load_textures(material, aiTextureType_DIFFUSE);
-        vector<Texture*> specularMaps = load_textures(material, aiTextureType_SPECULAR);
+        std::vector<Texture*> diffuseMaps = load_textures(material, aiTextureType_DIFFUSE);
+        std::vector<Texture*> specularMaps = load_textures(material, aiTextureType_SPECULAR);
 
         textures.reserve(diffuseMaps.size() + specularMaps.size());
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -118,12 +119,12 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 std::vector<Texture*> Model::load_textures(aiMaterial* material, aiTextureType type)
 {
     // TODO: Improve texture cache lookup time with a hash table
-    vector<Texture*> textures;
+    std::vector<Texture*> textures;
     for (size_t i = 0; i < material->GetTextureCount(type); i++)
     {
         aiString filename;
         material->GetTexture(type, i, &filename);
-        string filepath = directory_ + "/" + filename.C_Str();
+        std::string filepath = directory_ + "/" + filename.C_Str();
  
         bool found = false;
         for(auto t : textureCache_)

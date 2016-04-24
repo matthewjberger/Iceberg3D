@@ -1,15 +1,16 @@
 #include "Mesh.h"
-using namespace std;
 
-Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, const vector<Texture*>& textures)
+using namespace iceberg;
+
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, const std::vector<Texture*>& textures)
 {
     vertices_ = vertices;
     indices_ = indices;
     textures_ = textures;
 
-    meshVAO_ = make_shared<VAO>();
-    meshVBO_ = make_shared<VBO>();
-    meshIBO_ = make_shared<VBO>();
+    meshVAO_ = std::make_shared<VAO>();
+    meshVBO_ = std::make_shared<VBO>();
+    meshIBO_ = std::make_shared<VBO>();
 
     setup_mesh();
     build_collision_shape();
@@ -24,16 +25,16 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
     int diffuseCount = 1;
     int specularCount = 1;
     int textureCount = 0;
-    string name;
+    std::string name;
     for (auto const& texture : textures_)
     {
         if (texture->type() == aiTextureType_DIFFUSE)
         {
-            name = "texture_diffuse" + to_string(diffuseCount++);
+            name = "texture_diffuse" + std::to_string(diffuseCount++);
         }
         else if (texture->type() == aiTextureType_SPECULAR)
         {
-            name = "texture_specular" + to_string(specularCount++);
+            name = "texture_specular" + std::to_string(specularCount++);
         }
         else
         {
@@ -90,7 +91,7 @@ void Mesh::setup_mesh()
 
 void Mesh::build_collision_shape()
 {
-    collisionMesh_ = make_shared<btTriangleMesh>();
+    collisionMesh_ = std::make_shared<btTriangleMesh>();
     btVector3 triArray[3];
     for(size_t i = 2; i < indices_.size(); i += 3)
     {
@@ -109,5 +110,5 @@ void Mesh::build_collision_shape()
 
         collisionMesh_->addTriangle(triArray[0], triArray[1], triArray[2]);
     }
-    collisionShape_ = make_shared<btBvhTriangleMeshShape>(collisionMesh_.get(), true);
+    collisionShape_ = std::make_shared<btBvhTriangleMeshShape>(collisionMesh_.get(), true);
 }

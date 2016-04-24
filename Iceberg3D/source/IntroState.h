@@ -4,11 +4,11 @@
 #include "Model.h"
 #include "Skybox.h"
 
-class IntroState : public GameState
+class IntroState : public iceberg::GameState
 {
 public:
 
-    IntroState(Game* game) : GameState(game){}
+    IntroState(iceberg::Game* game) : GameState(game){}
     ~IntroState(){}
 
     void initialize() override;
@@ -23,10 +23,10 @@ public:
 
 private:
 
-    std::unique_ptr<Model> model;
-    std::shared_ptr<ShaderProgram> modelProgram;
-    std::unique_ptr<Camera> camera;
-    std::unique_ptr<Skybox> skybox;
+    std::unique_ptr<iceberg::Model> model;
+    std::shared_ptr<iceberg::ShaderProgram> modelProgram;
+    std::unique_ptr<iceberg::Camera> camera;
+    std::unique_ptr<iceberg::Skybox> skybox;
 
     float angle;
 };

@@ -1,14 +1,12 @@
 #include "Game.h"
-
-using namespace std;
-using namespace glm;
-
 #include <stb_image.h>
+
+using namespace iceberg;
 
 GLFWwindow* Game::window_;
 
 Game::Game()
-    :stateMachine_(make_unique<StateMachine>())
+    :stateMachine_(std::make_unique<StateMachine>())
 {
     // Initialize game variables and settings
     fullscreen_ = true;
@@ -113,14 +111,14 @@ bool Game::initialize()
 void Game::build_caption() const
 {
     // Program Version
-    string programVersion =  to_string(majorVersion_) + "."
-                           + to_string(minorVersion_) + "."
-                           + to_string(patchVersion_);
+    std::string programVersion =  std::to_string(majorVersion_) + "."
+                                + std::to_string(minorVersion_) + "."
+                                + std::to_string(patchVersion_);
 
     // OpenGL Version
-    string glVersion = (const char*)glGetString(GL_VERSION);
-    string fullCaption = caption_ + " - Version: " + programVersion 
-                                  + " - OpenGL Version: " + glVersion;
+    std::string glVersion = (const char*)glGetString(GL_VERSION);
+    std::string fullCaption = caption_ + " - Version: " + programVersion 
+                                       + " - OpenGL Version: " + glVersion;
 
     glfwSetWindowTitle(window_, fullCaption.c_str());
 
@@ -136,7 +134,7 @@ void Game::build_caption() const
     }
     else
     {
-        string errorMessage = "Failed to load icon: " + iconPath_;
+        std::string errorMessage = "Failed to load icon: " + iconPath_;
         handle_error(errorMessage.c_str());
     }
 }

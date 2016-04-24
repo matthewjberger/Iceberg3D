@@ -4,7 +4,7 @@
 int main()
 {
     // Create Game and States 
-    std::unique_ptr<Game> game = std::make_unique<Game>();
+    std::unique_ptr<iceberg::Game> game = std::make_unique<iceberg::Game>();
     std::unique_ptr<IntroState> intro = std::make_unique<IntroState>(game.get());
 
     if (game->initialize() == false)

@@ -7,29 +7,31 @@
 #include "TransformManager.h"
 #include "Camera.h"
 
-class Model
+namespace iceberg
 {
-public:
-    Model(const std::string &path);
-    ~Model();
+    class Model
+    {
+    public:
+        Model(const std::string &path);
+        ~Model();
 
-    void draw(const ShaderProgram* shaderProgram, const Camera* camera);
+        void draw(const ShaderProgram* shaderProgram);
 
-    TransformManager* transform_manager() const;
+        TransformManager* transform_manager() const;
 
-private:
+    private:
 
-    std::string directory_;
-    std::vector<Mesh> meshes_;
-    std::shared_ptr<TransformManager> transformManager_;
+        std::string directory_;
+        std::vector<Mesh> meshes_;
+        std::shared_ptr<TransformManager> transformManager_;
 
-    std::vector<Texture*> textureCache_;
+        std::vector<Texture*> textureCache_;
 
-    bool load_model(const std::string &path);
-    void process_node(aiNode* node, const aiScene* scene);
-    Mesh process_mesh(aiMesh* mesh, const aiScene* scene);
-    std::vector<Texture*> load_textures(aiMaterial* material, aiTextureType type);
-    int load_texture(const std::string &path) const;
-};
-
+        bool load_model(const std::string &path);
+        void process_node(aiNode* node, const aiScene* scene);
+        Mesh process_mesh(aiMesh* mesh, const aiScene* scene);
+        std::vector<Texture*> load_textures(aiMaterial* material, aiTextureType type);
+        int load_texture(const std::string &path) const;
+    };
+}
 #endif

@@ -3,33 +3,36 @@
 
 #include "GlobalIncludes.h"
 
-class Texture
+namespace iceberg
 {
-public:
+    class Texture
+    {
+    public:
 
-    Texture(aiTextureType type = aiTextureType_DIFFUSE, GLenum bindTarget = GL_TEXTURE_2D);
-    ~Texture();
+        Texture(aiTextureType type = aiTextureType_DIFFUSE, GLenum bindTarget = GL_TEXTURE_2D);
+        ~Texture();
 
-    bool load(const std::string& path, GLenum target = GL_TEXTURE_2D);
-    void bind(int textureUnit = 0) const;
-    void unbind(int textureUnit = 0) const;
+        bool load(const std::string& path, GLenum target = GL_TEXTURE_2D);
+        void bind(int textureUnit = 0) const;
+        void unbind(int textureUnit = 0) const;
 
-    void set_wrap() const;
-    GLuint id() const;
+        void set_wrap() const;
+        GLuint id() const;
 
-    std::string path() const;
-    aiTextureType type() const;
+        std::string path() const;
+        aiTextureType type() const;
 
-private:
+    private:
 
-    void free() const;
+        void free() const;
 
-    int width_, height_, channels_;
-    GLuint textureID_;
+        int width_, height_, channels_;
+        GLuint textureID_;
 
-    std::string path_;
-    aiTextureType type_;
+        std::string path_;
+        aiTextureType type_;
 
-    GLenum bindTarget_;
-};
+        GLenum bindTarget_;
+    };
+}
 #endif

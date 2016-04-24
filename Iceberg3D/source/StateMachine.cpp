@@ -1,5 +1,7 @@
 #include "StateMachine.h"
 
+using namespace iceberg;
+
 StateMachine::StateMachine(){}
 
 StateMachine::~StateMachine()
@@ -75,4 +77,3 @@ void StateMachine::handle_events()
 {
     programStates_.back()->handle_events();
 }
-

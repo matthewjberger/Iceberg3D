@@ -1,5 +1,7 @@
 #include "VBO.h"
 
+using namespace iceberg;
+
 VBO::VBO()
 {
     buffer_ = 0;

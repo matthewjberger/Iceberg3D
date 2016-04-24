@@ -1,5 +1,7 @@
 #include "TransformManager.h"
 
+using namespace iceberg;
+
 TransformManager::TransformManager()
 {
     modelMatrix_ = glm::mat4(1.0f);
@@ -49,4 +51,3 @@ void TransformManager::assign_model(glm::mat4 matrix)
 {
     modelMatrix_ = matrix;
 }
-

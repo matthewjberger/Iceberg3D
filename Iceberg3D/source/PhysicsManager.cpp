@@ -1,7 +1,7 @@
 #include "PhysicsManager.h"
 #include "Game.h"
 
-using namespace std;
+using namespace iceberg;
 
 PhysicsManager::PhysicsManager()
 {
@@ -63,7 +63,7 @@ glm::mat4 PhysicsManager::GetModelMatrixAtIndex(int index) const
 {
     if (index < 0 || index >= GetNumObjects())
     {
-        cout << "ERROR! PhysicsManager::GetModelMatrixAtIndex tried to access: " << index << " which is not between 0 and " << GetNumObjects() << "." << endl;
+        std::cout << "ERROR! PhysicsManager::GetModelMatrixAtIndex tried to access: " << index << " which is not between 0 and " << GetNumObjects() << "." << std::endl;
         return glm::mat4(1.0f);
     }
 
@@ -85,7 +85,7 @@ void PhysicsManager::ApplyForceAtIndex(btVector3* force, int index) const
 {
     if (index < 0 || index >= GetNumObjects())
     {
-        cout << "ERROR! PhysicsManager::ApplyForceAtIndex tried to access: " << index << " which is not between 0 and " << GetNumObjects() << "." << endl;
+        std::cout << "ERROR! PhysicsManager::ApplyForceAtIndex tried to access: " << index << " which is not between 0 and " << GetNumObjects() << "." << std::endl;
         return;
     }
 
@@ -93,4 +93,3 @@ void PhysicsManager::ApplyForceAtIndex(btVector3* force, int index) const
     object->applyCentralImpulse(*force);
     object->clearForces();
 }
-

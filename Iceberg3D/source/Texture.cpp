@@ -1,7 +1,8 @@
 #include "GlobalIncludes.h"
 #include "Texture.h"
 #include "Game.h"
-using namespace std;
+
+using namespace iceberg;
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -47,7 +48,7 @@ void Texture::unbind(int textureUnit) const
     glBindTexture(bindTarget_, 0);
 }
 
-bool Texture::load(const string& path, GLenum target)
+bool Texture::load(const std::string& path, GLenum target)
 {
     if(bindTarget_ == GL_TEXTURE_CUBE_MAP)
     {
@@ -63,7 +64,7 @@ bool Texture::load(const string& path, GLenum target)
     unsigned char* image = stbi_load(path.c_str(), &width_, &height_, &channels_, 0);
     if (!image)
     {
-        string errorMessage = "Couldn't load image " + path;
+        std::string errorMessage = "Couldn't load image " + path;
         Game::handle_error(errorMessage);
         return false;
     }
@@ -94,7 +95,7 @@ bool Texture::load(const string& path, GLenum target)
     return true;
 }
 
-string Texture::path() const
+std::string Texture::path() const
 {
     return path_;
 }

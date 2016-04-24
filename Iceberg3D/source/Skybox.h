@@ -8,31 +8,32 @@
 #include "Texture.h"
 #include "Camera.h"
 
-struct SkyboxParameters
+namespace iceberg
 {
-    std::string left;
-    std::string right;
-    std::string top;
-    std::string bottom;
-    std::string front;
-    std::string back;
-};
+    struct SkyboxParameters
+    {
+        std::string left;
+        std::string right;
+        std::string top;
+        std::string bottom;
+        std::string front;
+        std::string back;
+    };
 
-class Skybox
-{
-public:
-    Skybox(const SkyboxParameters &skyboxParameters);
-    ~Skybox();
+    class Skybox
+    {
+    public:
+        Skybox(const SkyboxParameters &skyboxParameters);
+        ~Skybox();
 
-    void draw(const Camera* camera) const;
+        void draw(const Camera* camera) const;
 
-private:
-    VAO skyboxVAO_;
-    VBO skyboxVBO_;
+    private:
+        VAO skyboxVAO_;
+        VBO skyboxVBO_;
 
-    ShaderProgram skyboxProgram_;
-    std::unique_ptr<Texture> cubemap_;
-};
-
+        ShaderProgram skyboxProgram_;
+        std::unique_ptr<Texture> cubemap_;
+    };
+}
 #endif
-

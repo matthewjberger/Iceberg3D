@@ -1,12 +1,11 @@
 #include "Skybox.h"
 #include <stb_image.h>
 
-using namespace std;
-using namespace glm;
+using namespace iceberg;
 
 Skybox::Skybox(const SkyboxParameters &skyboxParameters)
 {
-    vector<const GLchar*> faces;
+    std::vector<const GLchar*> faces;
     faces.push_back(skyboxParameters.right.c_str());
     faces.push_back(skyboxParameters.left.c_str());
     faces.push_back(skyboxParameters.top.c_str());
@@ -42,7 +41,7 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
     skyboxProgram_.add_shader_from_source(fragmentShaderSource, GL_FRAGMENT_SHADER);
     skyboxProgram_.link_program();
 
-    cubemap_ = make_unique<Texture>(aiTextureType_DIFFUSE, GL_TEXTURE_CUBE_MAP);
+    cubemap_ = std::make_unique<Texture>(aiTextureType_DIFFUSE, GL_TEXTURE_CUBE_MAP);
 
     for (GLuint i = 0; i < faces.size(); i++)
     {
@@ -51,50 +50,51 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
 
     cubemap_->set_wrap();
 
+    // TODO: Use an IBO here
     GLfloat skyboxVertices[] =
     {
         // Positions
-        -1.0f, 1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
         -1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
 
-        -1.0f, -1.0f, 1.0f,
+        -1.0f, -1.0f,  1.0f,
         -1.0f, -1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, 1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f, 1.0f,
+        -1.0f,  1.0f, 1.0f,
+         1.0f,  1.0f, 1.0f,
+         1.0f,  1.0f, 1.0f,
+         1.0f, -1.0f, 1.0f,
         -1.0f, -1.0f, 1.0f,
 
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-
-        -1.0f, -1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, 1.0f,
-
         -1.0f, 1.0f, -1.0f,
-        1.0f, 1.0f, -1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
+         1.0f, 1.0f, -1.0f,
+         1.0f, 1.0f,  1.0f,
+         1.0f, 1.0f,  1.0f,
+        -1.0f, 1.0f,  1.0f,
         -1.0f, 1.0f, -1.0f,
 
         -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f
     };
 
     skyboxVAO_.create();

@@ -1,15 +1,14 @@
 #include "Camera.h"
 #include "Game.h"
 
-using namespace std;
-using namespace glm;
-
-Camera::Camera(Game* game, vec3 position, glm::vec3 focusPoint, float speed)
+using namespace iceberg;
+   
+Camera::Camera(Game* game, glm::vec3 position, glm::vec3 focusPoint, float speed)
 {
     // Initialize variables
-    direction_ = vec3(0, 0, 0);
-    right_ = vec3(0, 0, 0);
-    up_ = vec3(0, 0, 0);
+    direction_ = glm::vec3(0, 0, 0);
+    right_ = glm::vec3(0, 0, 0);
+    up_ = glm::vec3(0, 0, 0);
 
     speed_ = speed;
     position_ = position;
@@ -18,7 +17,7 @@ Camera::Camera(Game* game, vec3 position, glm::vec3 focusPoint, float speed)
     pitchSensitivity_ = 0.005f;
     yawSensitivity_ = 0.005f;
 
-    horizontalAngle_ = pi<float>();
+    horizontalAngle_ = glm::pi<float>();
     verticalAngle_ =  0.0f;
 
     nearClippingPlane_ = 0.1f;
@@ -50,16 +49,16 @@ void Camera::calculate_vectors(Game* game)
     else if (verticalAngle_ < -1.55f)
         verticalAngle_ = -1.55f;
 
-    direction_ = vec3(
+    direction_ = glm::vec3(
         cos(verticalAngle_) * sin(horizontalAngle_),
         sin(verticalAngle_),
         cos(verticalAngle_) * cos(horizontalAngle_)
     );
 
-    right_ = vec3(
-        sin(horizontalAngle_ - pi<float>() / 2),
+    right_ = glm::vec3(
+        sin(horizontalAngle_ - glm::pi<float>() / 2),
         0,
-        cos(horizontalAngle_ - pi<float>() / 2)
+        cos(horizontalAngle_ - glm::pi<float>() / 2)
     );
 
     up_ = cross(right_, direction_);
@@ -111,7 +110,7 @@ void Camera::enable_input(bool enabled)
 
 void Camera::LookAt(Game *game, glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up)
 {
-    projectionMatrix_ = perspective(fieldOfView_, game->aspect_ratio(), nearClippingPlane_, farClippingPlane_);
+    projectionMatrix_ = glm::perspective(fieldOfView_, game->aspect_ratio(), nearClippingPlane_, farClippingPlane_);
     position_ = position;
     viewMatrix_ = glm::lookAt(position_, focusPoint, up_);
 }

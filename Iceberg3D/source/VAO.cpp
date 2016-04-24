@@ -1,5 +1,7 @@
 #include "VAO.h"
 
+using namespace iceberg;
+
 VAO::VAO()
 {
     vertexArray = 0;
