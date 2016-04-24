@@ -3,7 +3,6 @@
 class ExampleState : public iceberg::GameState
 {
 public:
-
     ExampleState(iceberg::Game* game) : GameState(game){}
     ~ExampleState(){}
 
@@ -18,7 +17,6 @@ public:
     void update() override;
 
 private:
-
     std::unique_ptr<iceberg::Model> model;
     std::shared_ptr<iceberg::ShaderProgram> modelProgram;
     std::unique_ptr<iceberg::Camera> camera;
@@ -26,4 +24,3 @@ private:
 
     float angle;
 };
-
