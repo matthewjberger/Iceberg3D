@@ -127,8 +127,8 @@ void Game::set_icon(const std::string& path)
 
 void Game::set_caption(const std::string& caption)
 {
-	if(window_ == nullptr) return;
-	caption_ = caption;
+    if(window_ == nullptr) return;
+    caption_ = caption;
     glfwSetWindowTitle(window_, caption_.c_str());
 }
 

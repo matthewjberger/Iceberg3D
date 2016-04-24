@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(Iceberg3D_Demo_Full_Scene)
+project(Iceberg3D_Demo_Basic_Triangle)
 
 # Group files
 file(GLOB PROJECT_HEADERS *.h)
