@@ -72,6 +72,11 @@ if (BUILD_SHARED_LIBS)
 	target_compile_definitions( ${PROJECT_NAME} INTERFACE "ICEBERG_DLL")
 endif()
 
+option (ICEBERG_BUILD_SANDBOX "Build testing sandbox" OFF)
+if (ICEBERG_BUILD_SANDBOX)
+	add_subdirectory(Sandbox/)
+endif()
+
 option (ICEBERG_BUILD_DEMOS "Build demo programs" OFF)
 if (ICEBERG_BUILD_DEMOS)
 	add_subdirectory(Demos/full_scene/)

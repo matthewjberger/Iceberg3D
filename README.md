@@ -31,3 +31,9 @@ If using Visual Studio to build the demos, make sure that you set the working di
 and change to:
     
     $(TargetDir)
+
+## Sandbox
+
+Additionally, there is a bare bones sandbox application that can be used for testing features. To build the sandbox, enable the cmake option:
+
+    ICEBERG_BUILD_SANDBOX
