@@ -48,6 +48,19 @@ void Texture::unbind(int textureUnit) const
     glBindTexture(bindTarget_, 0);
 }
 
+void Texture::create_from_data(const unsigned char* data, GLenum pixelFormat, GLenum target) const
+{
+    bind();
+    glTexImage2D(target, 0, pixelFormat, width_, height_, 0, pixelFormat, GL_UNSIGNED_BYTE, data);
+    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_R, GL_REPEAT);
+    glTexParameteri(bindTarget_, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(bindTarget_, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    unbind();
+}
+
 bool Texture::load(const std::string& path, GLenum target)
 {
     if(bindTarget_ == GL_TEXTURE_CUBE_MAP)
@@ -78,18 +91,9 @@ bool Texture::load(const std::string& path, GLenum target)
         case 4: pixelFormat = GL_RGBA;      break;
     }
 
-    bind();
-    glTexImage2D(target, 0, pixelFormat, width_, height_, 0, pixelFormat, GL_UNSIGNED_BYTE, image);
-    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_R, GL_REPEAT);
-    glTexParameteri(bindTarget_, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(bindTarget_, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    unbind();
+    create_from_data(image, pixelFormat, target);
 
     stbi_image_free(image);
-
     stbi_set_flip_vertically_on_load(false);
 
     return true;
