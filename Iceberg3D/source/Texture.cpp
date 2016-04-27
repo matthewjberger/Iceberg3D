@@ -48,8 +48,11 @@ void Texture::unbind(int textureUnit) const
     glBindTexture(bindTarget_, 0);
 }
 
-void Texture::create_from_data(const unsigned char* data, GLenum pixelFormat, GLenum target) const
+void Texture::create_from_data(int width, int height, const unsigned char* data, GLenum pixelFormat, GLenum target)
 {
+    width_ = width;
+    height_ = height;
+
     bind();
     glTexImage2D(target, 0, pixelFormat, width_, height_, 0, pixelFormat, GL_UNSIGNED_BYTE, data);
     glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -74,7 +77,8 @@ bool Texture::load(const std::string& path, GLenum target)
 
     path_ = path;
 
-    unsigned char* image = stbi_load(path.c_str(), &width_, &height_, &channels_, 0);
+    int width, height;
+    unsigned char* image = stbi_load(path.c_str(), &width, &height, &channels_, 0);
     if (!image)
     {
         std::string errorMessage = "Couldn't load image " + path;
@@ -91,7 +95,7 @@ bool Texture::load(const std::string& path, GLenum target)
         case 4: pixelFormat = GL_RGBA;      break;
     }
 
-    create_from_data(image, pixelFormat, target);
+    create_from_data(width, height, image, pixelFormat, target);
 
     stbi_image_free(image);
     stbi_set_flip_vertically_on_load(false);

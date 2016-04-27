@@ -13,7 +13,7 @@ namespace iceberg
         ~Texture();
 
         bool load(const std::string& path, GLenum target = GL_TEXTURE_2D);
-        void create_from_data(const unsigned char* data, GLenum pixelFormat, GLenum target = GL_TEXTURE_2D) const;
+        void create_from_data(int width, int height, const unsigned char* data, GLenum pixelFormat, GLenum target = GL_TEXTURE_2D);
         void bind(int textureUnit = 0) const;
         void unbind(int textureUnit = 0) const;
 
