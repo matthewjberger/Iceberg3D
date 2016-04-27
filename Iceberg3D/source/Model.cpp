@@ -135,7 +135,6 @@ std::vector<Texture*> Model::load_textures(aiMaterial* material, aiTextureType t
                 found = true;
                 break;
             }
-
         }
 
         if(!found)

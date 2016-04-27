@@ -31,8 +31,12 @@
 #include <vector>
 #include <chrono>
 #include <memory>
+#include <map>
 
 // Library Definitions
 #include "Defines.h"
+
+// Utility helper class
+#include "Utility.h"
 
 #endif
