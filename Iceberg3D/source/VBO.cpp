@@ -6,6 +6,7 @@ VBO::VBO()
 {
     buffer_ = 0;
     type_ = GL_ARRAY_BUFFER;
+    uploaded_ = false;
 }
 
 VBO::~VBO()
@@ -47,5 +48,12 @@ void VBO::upload_data(GLenum drawingHint)
 {
     glBufferData(type_, data_.size(), data_.data(), drawingHint);
     data_.clear();
+    uploaded_ = true;
 }
 
+bool VBO::update_buffer(GLintptr offset, GLsizeiptr size, const GLvoid* data) const
+{
+    if (!uploaded_) return false;
+    glBufferSubData(type_, offset, size, data);
+    return true;
+}

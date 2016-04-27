@@ -18,12 +18,14 @@ namespace iceberg
         void unbind() const;
         void add_data(void* newData, GLuint dataSize);
         void upload_data(GLenum drawingHint = GL_STATIC_DRAW);
+        bool update_buffer(GLintptr offset, GLsizeiptr size, const GLvoid* data) const;
 
     private:
 
         GLuint buffer_;
         GLuint type_;
         std::vector<GLbyte> data_;
+        bool uploaded_;
     };
 }
 #endif
