@@ -44,16 +44,16 @@ void TextManager::load_font(const std::string& path, int scale)
     for(size_t codepoint = 32; codepoint <= 126; codepoint++)
     {
         // Create the glyph texture
-        GlyphInfo glyphInfo;
-        unsigned char *bitmap = stbtt_GetCodepointBitmap(&fontInfo, 0, stbtt_ScaleForPixelHeight(&fontInfo, scale), codepoint, &glyphInfo.size.x, &glyphInfo.size.y, 0, 0);
-        glyphInfo.texture.create_from_data(glyphInfo.size.x, glyphInfo.size.y, bitmap, GL_RED);
+        GlyphInfo *glyphInfo = new GlyphInfo;
+        unsigned char *bitmap = stbtt_GetCodepointBitmap(&fontInfo, 0, stbtt_ScaleForPixelHeight(&fontInfo, scale), codepoint, &glyphInfo->size.x, &glyphInfo->size.y, 0, 0);
+        glyphInfo->texture.create_from_data(glyphInfo->size.x, glyphInfo->size.y, bitmap, GL_RED);
 
         // Get the glyph metrics
-        stbtt_GetCodepointHMetrics(&fontInfo, codepoint, &glyphInfo.advance, &glyphInfo.bearing.x);
-        glyphInfo.bearing.y = 0; // TODO: Figure out how to load this metric
+        stbtt_GetCodepointHMetrics(&fontInfo, codepoint, &glyphInfo->advance, &glyphInfo->bearing.x);
+        glyphInfo->bearing.y = 0; // TODO: Figure out how to load this metric
 
         // Add the glyph to the font
-        font.insert(std::pair<char, GlyphInfo>(char(codepoint), glyphInfo));
+        font.insert(std::pair<char, GlyphInfo*>(char(codepoint), glyphInfo));
     }
 
     // Add the font to the font cache by name

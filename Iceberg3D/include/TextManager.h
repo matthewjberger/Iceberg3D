@@ -14,7 +14,7 @@ namespace iceberg
         int advance;
     };
 
-    typedef std::map<GLchar, GlyphInfo> Font;
+    typedef std::map<GLchar, GlyphInfo*> Font;
     typedef std::map<std::string, Font> FontCache;
 
     class ICEBERGAPI TextManager
