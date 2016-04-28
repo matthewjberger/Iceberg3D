@@ -1,4 +1,4 @@
-# Iceberg3D ![Screenshot](http://imgur.com/BKjpnp1.png)
+# Iceberg3D ![Screenshot](http://imgur.com/BKjpnp1.png) [![Semver](http://img.shields.io/SemVer/0.1.0.png)](http://semver.org/spec/v0.1.0.html) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/matthewjberger/Iceberg3D/issues) [![HitCount](https://hitt.herokuapp.com/matthewjberger/Iceberg3D.svg)](https://github.com/matthewjberger/iceberg3D) 
 
 Iceberg3D is an OpenGL based 3D Game Engine.
 
