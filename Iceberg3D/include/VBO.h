@@ -16,7 +16,7 @@ namespace iceberg
         void unbind() const;
         void add_data(void* newData, GLuint dataSize);
         void upload_data(GLenum drawingHint = GL_STATIC_DRAW);
-        bool update_buffer(GLintptr offset, GLsizeiptr size, const GLvoid* data) const;
+        bool update_buffer(const GLvoid* data, GLsizeiptr size, GLintptr offset) const;
 
     private:
 

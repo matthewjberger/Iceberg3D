@@ -6,6 +6,7 @@
 #include "ShaderProgram.h"
 #include "VBO.h"
 #include "VAO.h"
+#include "Game.h"
 
 namespace iceberg
 {
@@ -15,6 +16,7 @@ namespace iceberg
         glm::ivec2 size;
         glm::ivec2 bearing;
         int advance;
+        int scale;
     };
 
     typedef std::map<GLchar, GlyphInfo*> Font;
@@ -23,21 +25,24 @@ namespace iceberg
     class ICEBERGAPI TextManager
     {
     public:
-        TextManager();
+        TextManager(Game* game);
         ~TextManager();
 
         void load_font(const std::string& path, int scale);
 
-        FontCache fontCache_;
+        // Uses the default orthographic, 2D text shader
+        void RenderText(const std::string& text, int xPos, int yPos, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
 
     private:
+
+        FontCache fontCache_;
         std::unique_ptr<ShaderProgram> shaderProgram_;
         std::string currentFont_;
         bool fontLoaded_;
 
-        std::unique_ptr<iceberg::VAO> textVAO;
-        std::unique_ptr<iceberg::VBO> textVBO;
-        std::unique_ptr<iceberg::VBO> textIBO;
+        std::unique_ptr<iceberg::VAO> textVAO_;
+        std::unique_ptr<iceberg::VBO> textVBO_;
+        std::unique_ptr<iceberg::VBO> textIBO_;
 
     };
 }

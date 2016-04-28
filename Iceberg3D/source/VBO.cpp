@@ -53,7 +53,7 @@ void VBO::upload_data(GLenum drawingHint)
     uploaded_ = true;
 }
 
-bool VBO::update_buffer(GLintptr offset, GLsizeiptr size, const GLvoid* data) const
+bool VBO::update_buffer(const GLvoid* data, GLsizeiptr size, GLintptr offset) const
 {
     if (!uploaded_) return false;
     glBufferSubData(type_, offset, size, data);
