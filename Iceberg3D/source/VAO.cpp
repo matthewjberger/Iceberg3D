@@ -5,6 +5,7 @@ using namespace iceberg;
 VAO::VAO()
 {
     vertexArray = 0;
+    create();
 }
 
 VAO::~VAO()

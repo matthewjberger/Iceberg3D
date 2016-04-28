@@ -12,9 +12,8 @@ namespace iceberg
         VAO();
         ~VAO();
 
-        void create();
-        void free() const;
         void bind() const;
+
         static void unbind();
         static void enable_attribute(GLint location = 0);
         static void disable_attribute(GLint location = 0);
@@ -23,6 +22,8 @@ namespace iceberg
 
     private:
 
+        void create();
+        void free() const;
         GLuint vertexArray;
     };
 }

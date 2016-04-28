@@ -58,10 +58,6 @@ void Mesh::draw(const ShaderProgram* shaderProgram) const
 
 void Mesh::setup_mesh()
 {
-    meshVAO_->create();
-    meshVBO_->create();
-    meshIBO_->create();
-
     meshVAO_->bind();
 
     // Add vertices

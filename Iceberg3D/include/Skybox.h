@@ -29,10 +29,9 @@ namespace iceberg
         void draw(const Camera* camera) const;
 
     private:
-        VAO skyboxVAO_;
-        VBO skyboxVBO_;
-
-        ShaderProgram skyboxProgram_;
+        std::unique_ptr<VAO> skyboxVAO_;
+        std::unique_ptr<VBO> skyboxVBO_;
+        std::unique_ptr<ShaderProgram> skyboxProgram_;
         std::unique_ptr<Texture> cubemap_;
     };
 }

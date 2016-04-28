@@ -9,11 +9,9 @@ namespace iceberg
     {
     public:
 
-        VBO();
+        VBO(GLint size = 0);
         ~VBO();
 
-        void create(GLint size = 0);
-        void free();
         void bind(GLuint bufferType = GL_ARRAY_BUFFER);
         void unbind() const;
         void add_data(void* newData, GLuint dataSize);
@@ -22,6 +20,8 @@ namespace iceberg
 
     private:
 
+        void free();
+        void create(GLint size);
         GLuint buffer_;
         GLuint type_;
         std::vector<GLbyte> data_;

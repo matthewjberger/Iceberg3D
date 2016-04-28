@@ -8,6 +8,41 @@ using namespace iceberg;
 
 TextManager::TextManager()
 {
+    fontLoaded_ = false;
+    currentFont_ = "";
+
+    const std::string vertexShader = 
+        "#version 330 core\n"
+        "layout (location = 0) in vec3 v_position;\n"
+        "layout (location = 1) in vec2 v_texCoord;\n"
+        "out vec2 f_texCoord;\n"
+        "uniform mat4 mvpMatrix;\n"
+        "void main()\n"
+        "{\n"
+        "   gl_Position = mvpMatrix * vec4(v_position, 1.0f); \n"
+        "   f_texCoord = vec2(v_texCoord.x, 1.0 - v_texCoord.y); // necessary to flip texture\n"
+        "}\n";
+
+    const std::string fragmentShader = 
+        "#version 330 core\n"
+        "in vec2 f_texCoord;\n"
+        "out vec4 fragColor;\n"
+        "uniform sampler2D glyphTexture;\n"
+        "uniform vec3 color;\n"
+        "void main()\n"
+        "{\n"
+        "    fragColor = vec4(color, texture(glyphTexture, f_texCoord).r); // use only the r channel\n"
+        "}\n";
+
+    shaderProgram_ = std::make_unique<ShaderProgram>();
+    shaderProgram_->create_program();
+    shaderProgram_->add_shader_from_source(vertexShader, GL_VERTEX_SHADER);
+    shaderProgram_->add_shader_from_source(fragmentShader, GL_FRAGMENT_SHADER);
+    shaderProgram_->link_program();
+
+    textVAO = std::make_unique<VAO>();
+    textVBO = std::make_unique<VBO>();
+    textVBO = std::make_unique<VBO>();
 }
 
 TextManager::~TextManager()
@@ -16,6 +51,8 @@ TextManager::~TextManager()
 
 void TextManager::load_font(const std::string& path, int scale)
 {
+    // TODO: Scale by dpi instead of by pixels using font metrics
+
     // Retrieve the font name
     std::string fontName = path.substr(path.find_last_of('/') + 1);
 
@@ -28,7 +65,11 @@ void TextManager::load_font(const std::string& path, int scale)
     }
 
     // Check if the font was already loaded
-    if (fontCache_.find(fontName) != fontCache_.end()) return; // The font was found in the font cache
+    if (fontCache_.find(fontName) != fontCache_.end())
+    {
+        currentFont_ = fontName;
+        return; // The font was found in the font cache
+    }
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -60,4 +101,6 @@ void TextManager::load_font(const std::string& path, int scale)
     fontCache_.insert(std::pair<std::string,Font>(fontName, font));
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+    currentFont_ = fontName;
 }

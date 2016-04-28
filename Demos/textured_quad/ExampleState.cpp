@@ -48,10 +48,6 @@ void ExampleState::initialize()
     quadVBO = std::make_unique<VBO>();
     quadIBO = std::make_unique<VBO>();
 
-    quadVAO->create();
-    quadVBO->create();
-    quadIBO->create();
-
     quadVAO->bind();
 
         // VBO

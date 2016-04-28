@@ -36,10 +36,11 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
         "    color = texture(skybox, TexCoords);\n"
         "}\n";
 
-    skyboxProgram_.create_program();
-    skyboxProgram_.add_shader_from_source(vertexShaderSource, GL_VERTEX_SHADER);
-    skyboxProgram_.add_shader_from_source(fragmentShaderSource, GL_FRAGMENT_SHADER);
-    skyboxProgram_.link_program();
+    skyboxProgram_ = std::make_unique<ShaderProgram>();
+    skyboxProgram_->create_program();
+    skyboxProgram_->add_shader_from_source(vertexShaderSource, GL_VERTEX_SHADER);
+    skyboxProgram_->add_shader_from_source(fragmentShaderSource, GL_FRAGMENT_SHADER);
+    skyboxProgram_->link_program();
 
     cubemap_ = std::make_unique<Texture>(aiTextureType_DIFFUSE, GL_TEXTURE_CUBE_MAP);
 
@@ -97,18 +98,18 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
          1.0f, -1.0f,  1.0f
     };
 
-    skyboxVAO_.create();
-    skyboxVBO_.create();
+    skyboxVAO_ = std::make_unique<VAO>();
+    skyboxVBO_ = std::make_unique<VBO>();
 
-    skyboxVAO_.bind();
+    skyboxVAO_->bind();
 
-    skyboxVBO_.bind();
-    skyboxVBO_.add_data(&skyboxVertices, sizeof(skyboxVertices));
-    skyboxVBO_.upload_data();
+    skyboxVBO_->bind();
+    skyboxVBO_->add_data(&skyboxVertices, sizeof(skyboxVertices));
+    skyboxVBO_->upload_data();
 
-    skyboxVAO_.enable_attribute(0);
-    skyboxVAO_.configure_attribute(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-    skyboxVAO_.unbind();
+    skyboxVAO_->enable_attribute(0);
+    skyboxVAO_->configure_attribute(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+    skyboxVAO_->unbind();
 }
 
 Skybox::~Skybox()
@@ -119,20 +120,21 @@ void Skybox::draw(const Camera* camera) const
 {
     glDepthFunc(GL_LEQUAL);
 
-    skyboxProgram_.use();
+    skyboxProgram_->use();
 
     glm::mat4 view = glm::mat4(glm::mat3(camera->view_matrix()));
-    skyboxProgram_.set_uniform("projection", camera->projection_matrix());
-    skyboxProgram_.set_uniform("view", view);
+    skyboxProgram_->set_uniform("projection", camera->projection_matrix());
+    skyboxProgram_->set_uniform("view", view);
 
-    skyboxVAO_.bind();
+    skyboxVAO_->bind();
 
     cubemap_->bind();
-    skyboxProgram_.set_uniform("skybox", 0);
+    skyboxProgram_->set_uniform("skybox", 0);
 
+    // TODO: Switch to indexed drawing 
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
-    skyboxVAO_.unbind();
+    skyboxVAO_->unbind();
 
     glDepthFunc(GL_LESS);
 }

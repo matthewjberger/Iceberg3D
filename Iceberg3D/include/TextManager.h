@@ -3,6 +3,9 @@
 
 #include "GlobalIncludes.h"
 #include "Texture.h"
+#include "ShaderProgram.h"
+#include "VBO.h"
+#include "VAO.h"
 
 namespace iceberg
 {
@@ -28,7 +31,13 @@ namespace iceberg
         FontCache fontCache_;
 
     private:
+        std::unique_ptr<ShaderProgram> shaderProgram_;
+        std::string currentFont_;
+        bool fontLoaded_;
 
+        std::unique_ptr<iceberg::VAO> textVAO;
+        std::unique_ptr<iceberg::VBO> textVBO;
+        std::unique_ptr<iceberg::VBO> textIBO;
 
     };
 }

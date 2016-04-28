@@ -28,9 +28,6 @@ void ExampleState::initialize()
     triVAO = std::make_unique<VAO>();
     triVBO = std::make_unique<VBO>();
 
-    triVAO->create();
-    triVBO->create();
-
     triVAO->bind();
         triVBO->bind();
         triVBO->add_data(&triangleVertices, sizeof(glm::vec3) * 6);

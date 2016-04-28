@@ -2,11 +2,13 @@
 
 using namespace iceberg;
 
-VBO::VBO()
+VBO::VBO(GLint size)
 {
     buffer_ = 0;
     type_ = GL_ARRAY_BUFFER;
     uploaded_ = false;
+
+    create(size);
 }
 
 VBO::~VBO()
