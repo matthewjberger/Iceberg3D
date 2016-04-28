@@ -16,11 +16,11 @@ TextManager::TextManager()
         "layout (location = 0) in vec3 v_position;\n"
         "layout (location = 1) in vec2 v_texCoord;\n"
         "out vec2 f_texCoord;\n"
-        "uniform mat4 mvpMatrix;\n"
+        "uniform mat4 projection;\n"
         "void main()\n"
         "{\n"
-        "   gl_Position = mvpMatrix * vec4(v_position, 1.0f); \n"
-        "   f_texCoord = vec2(v_texCoord.x, 1.0 - v_texCoord.y); // necessary to flip texture\n"
+        "   gl_Position = projection * vec4(v_position, 1.0f); \n"
+        "   f_texCoord = vec2(1.0f - v_texCoord.x, 1.0f - v_texCoord.y); // necessary to flip texture\n"
         "}\n";
 
     const std::string fragmentShader = 
