@@ -25,3 +25,6 @@
 [submodule "Iceberg3D/dependencies/boxer"]
 	path = Iceberg3D/dependencies/boxer
 	url = https://github.com/aaronmjacobs/Boxer
+[submodule "Iceberg3D/dependencies/freetype2"]
+	path = Iceberg3D/dependencies/freetype2
+	url = http://git.sv.nongnu.org/r/freetype/freetype2.git
