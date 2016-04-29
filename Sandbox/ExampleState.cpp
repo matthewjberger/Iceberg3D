@@ -11,6 +11,8 @@ void ExampleState::handle_events() {}
 void ExampleState::initialize()
 {
 	/* Initialize state items */
+    textManager = new TextManager(game_);
+    textManager->load_font("c:/windows/fonts/arialbd.ttf", 48);
 }
 
 void ExampleState::update()
@@ -21,4 +23,5 @@ void ExampleState::update()
 void ExampleState::draw()
 {
 	/* Render state items */
+    textManager->RenderText("Matthew Berger", 30, 120);
 }
