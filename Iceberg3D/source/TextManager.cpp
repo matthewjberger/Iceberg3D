@@ -73,7 +73,7 @@ void TextManager::create_shaders()
         "void main()\n"
         "{\n"
         "   gl_Position = projection * vec4(v_Data.xy, 0.0f, 1.0f); \n"
-        "   f_texCoord = vec2(v_Data.z, 1.0f - v_Data.w); // necessary to flip texture\n"
+        "   f_texCoord = vec2(v_Data.z, v_Data.w);\n"
         "}\n";
 
     const std::string fragmentShader =
@@ -159,8 +159,6 @@ void TextManager::load_font(const std::string& path, int size)
 
         glyphInfo->bearing.x = face->glyph->bitmap.width;
         glyphInfo->bearing.y = face->glyph->bitmap.rows;
-        glyphInfo->size.x = face->glyph->bitmap_left;
-        glyphInfo->size.y = face->glyph->bitmap_top;
         glyphInfo->advance = face->glyph->advance.x;
 
         int width = glyphInfo->bearing.x;
@@ -202,24 +200,24 @@ void TextManager::RenderText(const std::string& text, int xPos, int yPos, int sc
         auto glyph = fontCache_[currentFont_][*letter];
 
         GLfloat x = xPos + glyph->bearing.x * scale;
-        GLfloat y = yPos - (glyph->size.y - glyph->bearing.y) * scale;
-
-        GLfloat width = glyph->size.x * scale;
-        GLfloat height = glyph->size.y * scale;
+        GLfloat y = yPos - (glyph->texture.dimensions().y - glyph->bearing.y) * scale;
+ 
+        GLfloat width = glyph->texture.dimensions().x * scale;
+        GLfloat height = glyph->texture.dimensions().y * scale;
 
         glm::vec2 quadVertices[] =
         {
             // Top Left
-            glm::vec2(xPos, yPos + height),
+            glm::vec2(x, y),
 
             // Top Right
-            glm::vec2(xPos + width, yPos + height),
+            glm::vec2(x + width, y),
 
             // Bottom Left
-            glm::vec2(xPos, yPos),
+            glm::vec2(x, y + height),
 
             // Bottom Right
-            glm::vec2(xPos + width, yPos)
+            glm::vec2(x + width, y + height)
         };
 
         textVBO_->bind();

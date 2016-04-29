@@ -113,6 +113,11 @@ aiTextureType Texture::type() const
     return type_;
 }
 
+glm::vec2 Texture::dimensions() const
+{
+    return glm::vec2(width_, height_);
+}
+
 void Texture::set_wrap() const
 {
     bind();

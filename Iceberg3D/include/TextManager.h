@@ -13,7 +13,6 @@ namespace iceberg
     struct GlyphInfo
     {
         Texture texture;
-        glm::ivec2 size;
         glm::ivec2 bearing;
         int advance;
     };
