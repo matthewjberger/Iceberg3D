@@ -38,6 +38,7 @@ include_directories( Iceberg3D/include/
                     Iceberg3D/dependencies/assimp/include/
 					Iceberg3D/dependencies/boxer/include/
                     Iceberg3D/dependencies/bullet/src/
+					Iceberg3D/dependencies/freetype2/src
                     Iceberg3D/dependencies/glad/include/
                     Iceberg3D/dependencies/glfw/include/
                     Iceberg3D/dependencies/glm/
