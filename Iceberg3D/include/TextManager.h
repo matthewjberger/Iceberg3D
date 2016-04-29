@@ -4,7 +4,7 @@
 #include "GlobalIncludes.h"
 #include "Texture.h"
 #include "ShaderProgram.h"
-#include "VBO.h"
+#include "Buffer.h"
 #include "VAO.h"
 #include "Game.h"
 
@@ -40,9 +40,9 @@ namespace iceberg
         std::string currentFont_;
         bool fontLoaded_;
 
-        std::unique_ptr<iceberg::VAO> textVAO_;
-        std::unique_ptr<iceberg::VBO> textVBO_;
-        std::unique_ptr<iceberg::VBO> textIBO_;
+        std::unique_ptr<VAO> textVAO_;
+        std::unique_ptr<Buffer> textVBO_;
+        std::unique_ptr<Buffer> textIBO_;
 
     };
 }

@@ -6,6 +6,7 @@
 typedef unsigned char BYTE;
 
 using namespace iceberg;
+using namespace utility;
 
 TextManager::TextManager(Game* game)
 {
@@ -44,8 +45,8 @@ TextManager::TextManager(Game* game)
 
     textVAO_ = std::make_unique<VAO>();
     // 4 corners of the glyph's quad; 4 floats per vertex (x,y,u,v)
-    textVBO_ = std::make_unique<VBO>(NUM_CORNERS * sizeof(glm::vec4));
-    textIBO_ = std::make_unique<VBO>(6 * sizeof(GLuint));
+    textVBO_ = std::make_unique<Buffer>(NUM_CORNERS * sizeof(glm::vec4));
+    textIBO_ = std::make_unique<Buffer>(6 * sizeof(GLuint));
 
     // Specify texture coordinates
     glm::vec2 quadUVCoords[] =
@@ -121,7 +122,7 @@ void TextManager::load_font(const std::string& path, int scale)
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-    auto bytes = Utility::ReadAllBytes(path.c_str());
+    auto bytes = ReadAllBytes(path.c_str());
     unsigned char* data = bytes.data(); // needs one level of indirection to work properly
 
     stbtt_fontinfo fontInfo;

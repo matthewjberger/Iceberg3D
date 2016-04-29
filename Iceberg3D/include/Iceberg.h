@@ -21,7 +21,7 @@
 #include "Texture.h"
 #include "TransformManager.h"
 #include "VAO.h"
-#include "VBO.h"
+#include "Buffer.h"
 #include "TextManager.h"
 
 #endif

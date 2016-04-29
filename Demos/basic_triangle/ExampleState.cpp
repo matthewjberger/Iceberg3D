@@ -26,7 +26,7 @@ void ExampleState::initialize()
 
     // Create and fill the Vertex Buffer, and configure the VAO
     triVAO = std::make_unique<VAO>();
-    triVBO = std::make_unique<VBO>();
+    triVBO = std::make_unique<Buffer>();
 
     triVAO->bind();
         triVBO->bind();

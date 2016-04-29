@@ -18,8 +18,8 @@ public:
 
 private:
     std::unique_ptr<iceberg::VAO> quadVAO;
-    std::unique_ptr<iceberg::VBO> quadVBO;
-    std::unique_ptr<iceberg::VBO> quadIBO;
+    std::unique_ptr<iceberg::Buffer> quadVBO;
+    std::unique_ptr<iceberg::Buffer> quadIBO;
     std::unique_ptr<iceberg::ShaderProgram> quadProgram;
     std::unique_ptr<iceberg::Texture> quadTexture;
 };

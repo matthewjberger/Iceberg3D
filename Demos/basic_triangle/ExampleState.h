@@ -18,6 +18,6 @@ public:
 
 private:
     std::unique_ptr<iceberg::VAO> triVAO;
-    std::unique_ptr<iceberg::VBO> triVBO;
+    std::unique_ptr<iceberg::Buffer> triVBO;
     std::unique_ptr<iceberg::ShaderProgram> triProgram;
 };

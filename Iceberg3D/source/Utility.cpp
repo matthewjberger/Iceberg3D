@@ -4,8 +4,9 @@
 #include <fstream>
 
 using namespace iceberg;
+using namespace utility;
 
-std::vector<BYTE> Utility::ReadAllBytes(const std::string& filename)
+std::vector<BYTE> utility::ReadAllBytes(const std::string& filename)
 {
     using namespace std;
     ifstream file(filename.c_str(), ios::binary | ios::ate);

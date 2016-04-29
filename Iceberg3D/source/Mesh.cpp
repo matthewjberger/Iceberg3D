@@ -9,8 +9,8 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, const std:
     textures_ = textures;
 
     meshVAO_ = std::make_shared<VAO>();
-    meshVBO_ = std::make_shared<VBO>();
-    meshIBO_ = std::make_shared<VBO>();
+    meshVBO_ = std::make_shared<Buffer>();
+    meshIBO_ = std::make_shared<Buffer>();
 
     setup_mesh();
     build_collision_shape();

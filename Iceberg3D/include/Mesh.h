@@ -3,7 +3,7 @@
 
 #include "GlobalIncludes.h"
 #include "VAO.h"
-#include "VBO.h"
+#include "Buffer.h"
 #include "Texture.h"
 #include "ShaderProgram.h"
 
@@ -30,8 +30,8 @@ namespace iceberg
         void build_collision_shape();
 
         std::shared_ptr<VAO> meshVAO_;
-        std::shared_ptr<VBO> meshVBO_;
-        std::shared_ptr<VBO> meshIBO_;
+        std::shared_ptr<Buffer> meshVBO_;
+        std::shared_ptr<Buffer> meshIBO_;
 
         std::vector<Vertex> vertices_;
         std::vector<GLuint> indices_;

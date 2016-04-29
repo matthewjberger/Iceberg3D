@@ -99,7 +99,7 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
     };
 
     skyboxVAO_ = std::make_unique<VAO>();
-    skyboxVBO_ = std::make_unique<VBO>();
+    skyboxVBO_ = std::make_unique<Buffer>();
 
     skyboxVAO_->bind();
 

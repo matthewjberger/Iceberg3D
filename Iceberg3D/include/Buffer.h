@@ -5,12 +5,12 @@
 
 namespace iceberg
 {
-    class ICEBERGAPI VBO
+    class ICEBERGAPI Buffer
     {
     public:
 
-        VBO(GLint size = 0);
-        ~VBO();
+        Buffer(GLint size = 0);
+        ~Buffer();
 
         void bind(GLuint bufferType = GL_ARRAY_BUFFER);
         void unbind() const;
