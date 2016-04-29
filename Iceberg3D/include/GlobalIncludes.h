@@ -23,6 +23,10 @@
 // Bullet
 #include <btBulletDynamicsCommon.h>
 
+// Freetype 2
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 // STL
 #include <iostream>
 #include <sstream>
