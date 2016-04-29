@@ -25,8 +25,8 @@ void ExampleState::initialize()
     };
 
     // Create and fill the Vertex Buffer, and configure the VAO
-    triVAO = std::make_unique<VAO>();
-    triVBO = std::make_unique<Buffer>();
+    triVAO = std::make_shared<VAO>();
+    triVBO = std::make_shared<Buffer>();
 
     triVAO->bind();
         triVBO->bind();
@@ -42,7 +42,7 @@ void ExampleState::initialize()
     triVAO->unbind();
 
     // Create the shader program
-    triProgram = std::make_unique<ShaderProgram>();
+    triProgram = std::make_shared<ShaderProgram>();
     triProgram->create_program();
     triProgram->add_shader_from_file("shaders/triVert.glsl", GL_VERTEX_SHADER);
     triProgram->add_shader_from_file("shaders/triFrag.glsl", GL_FRAGMENT_SHADER);

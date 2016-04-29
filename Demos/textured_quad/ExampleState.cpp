@@ -44,9 +44,9 @@ void ExampleState::initialize()
     };
 
     // Create and fill buffers and configure the VAO
-    quadVAO = std::make_unique<VAO>();
-    quadVBO = std::make_unique<VBO>();
-    quadIBO = std::make_unique<VBO>();
+    quadVAO = std::make_shared<VAO>();
+    quadVBO = std::make_shared<Buffer>();
+    quadIBO = std::make_shared<Buffer>();
 
     quadVAO->bind();
 
@@ -74,14 +74,14 @@ void ExampleState::initialize()
     quadVAO->unbind();
 
     // Create the shader program
-    quadProgram = std::make_unique<ShaderProgram>();
+    quadProgram = std::make_shared<ShaderProgram>();
     quadProgram->create_program();
     quadProgram->add_shader_from_file("shaders/quadVert.glsl", GL_VERTEX_SHADER);
     quadProgram->add_shader_from_file("shaders/quadFrag.glsl", GL_FRAGMENT_SHADER);
     quadProgram->link_program();
 
     // Load the texture
-    quadTexture = std::make_unique<Texture>();
+    quadTexture = std::make_shared<Texture>();
     quadTexture->load("assets/iceberg.png");
 }
 

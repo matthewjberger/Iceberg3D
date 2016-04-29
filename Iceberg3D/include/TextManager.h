@@ -36,13 +36,13 @@ namespace iceberg
     private:
 
         FontCache fontCache_;
-        std::unique_ptr<ShaderProgram> shaderProgram_;
+        std::shared_ptr<ShaderProgram> shaderProgram_;
         std::string currentFont_;
         bool fontLoaded_;
 
-        std::unique_ptr<VAO> textVAO_;
-        std::unique_ptr<Buffer> textVBO_;
-        std::unique_ptr<Buffer> textIBO_;
+        std::shared_ptr<VAO> textVAO_;
+        std::shared_ptr<Buffer> textVBO_;
+        std::shared_ptr<Buffer> textIBO_;
 
     };
 }

@@ -67,12 +67,12 @@ Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
     {
         Vertex tempVertex;
 
-        auto vertex = std::make_unique<const aiVector3D>(mesh->mVertices[i]);
+        auto vertex = std::make_shared<const aiVector3D>(mesh->mVertices[i]);
         tempVertex.position.x = vertex->x;
         tempVertex.position.y = vertex->y;
         tempVertex.position.z = vertex->z;
 
-        auto normal = std::make_unique<const aiVector3D>(mesh->mNormals[i]);
+        auto normal = std::make_shared<const aiVector3D>(mesh->mNormals[i]);
         tempVertex.normal.x = normal->x;
         tempVertex.normal.y = normal->y;
         tempVertex.normal.z = normal->z;

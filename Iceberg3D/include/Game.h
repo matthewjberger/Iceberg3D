@@ -42,7 +42,7 @@ namespace iceberg
         void build_caption(); // default caption
         bool create_window();
 
-        std::unique_ptr<StateMachine> stateMachine_;
+        std::shared_ptr<StateMachine> stateMachine_;
         std::chrono::time_point<std::chrono::high_resolution_clock> previousTime_, currentTime_;
 
         bool fullscreen_;

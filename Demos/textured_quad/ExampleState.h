@@ -17,10 +17,10 @@ public:
     void update() override;
 
 private:
-    std::unique_ptr<iceberg::VAO> quadVAO;
-    std::unique_ptr<iceberg::Buffer> quadVBO;
-    std::unique_ptr<iceberg::Buffer> quadIBO;
-    std::unique_ptr<iceberg::ShaderProgram> quadProgram;
-    std::unique_ptr<iceberg::Texture> quadTexture;
+    std::shared_ptr<iceberg::VAO> quadVAO;
+    std::shared_ptr<iceberg::Buffer> quadVBO;
+    std::shared_ptr<iceberg::Buffer> quadIBO;
+    std::shared_ptr<iceberg::ShaderProgram> quadProgram;
+    std::shared_ptr<iceberg::Texture> quadTexture;
 };
 

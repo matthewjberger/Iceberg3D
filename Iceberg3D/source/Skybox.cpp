@@ -36,13 +36,13 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
         "    color = texture(skybox, TexCoords);\n"
         "}\n";
 
-    skyboxProgram_ = std::make_unique<ShaderProgram>();
+    skyboxProgram_ = std::make_shared<ShaderProgram>();
     skyboxProgram_->create_program();
     skyboxProgram_->add_shader_from_source(vertexShaderSource, GL_VERTEX_SHADER);
     skyboxProgram_->add_shader_from_source(fragmentShaderSource, GL_FRAGMENT_SHADER);
     skyboxProgram_->link_program();
 
-    cubemap_ = std::make_unique<Texture>(aiTextureType_DIFFUSE, GL_TEXTURE_CUBE_MAP);
+    cubemap_ = std::make_shared<Texture>(aiTextureType_DIFFUSE, GL_TEXTURE_CUBE_MAP);
 
     for (GLuint i = 0; i < faces.size(); i++)
     {
@@ -98,8 +98,8 @@ Skybox::Skybox(const SkyboxParameters &skyboxParameters)
          1.0f, -1.0f,  1.0f
     };
 
-    skyboxVAO_ = std::make_unique<VAO>();
-    skyboxVBO_ = std::make_unique<Buffer>();
+    skyboxVAO_ = std::make_shared<VAO>();
+    skyboxVBO_ = std::make_shared<Buffer>();
 
     skyboxVAO_->bind();
 

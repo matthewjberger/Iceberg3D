@@ -30,7 +30,7 @@ void ShaderProgram::create_program()
 
 bool ShaderProgram::add_shader_from_file(const std::string& path, GLuint shaderType) const
 {
-    std::unique_ptr<Shader> newShader = std::make_unique<Shader>();
+    std::shared_ptr<Shader> newShader = std::make_shared<Shader>();
     newShader->load(path, shaderType);
     add_shader(newShader.get());
 
@@ -39,7 +39,7 @@ bool ShaderProgram::add_shader_from_file(const std::string& path, GLuint shaderT
 
 bool ShaderProgram::add_shader_from_source(const std::string& shaderSource, GLuint shaderType) const
 {
-    std::unique_ptr<Shader> newShader = std::make_unique<Shader>();
+    std::shared_ptr<Shader> newShader = std::make_shared<Shader>();
     newShader->create_from_string(shaderSource, shaderType);
     add_shader(newShader.get());
 

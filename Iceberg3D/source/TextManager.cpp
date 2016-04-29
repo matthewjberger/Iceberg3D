@@ -37,16 +37,16 @@ TextManager::TextManager(Game* game)
         "    fragColor = vec4(color, texture(glyphTexture, f_texCoord).r); // use only the r channel\n"
         "}\n";
 
-    shaderProgram_ = std::make_unique<ShaderProgram>();
+    shaderProgram_ = std::make_shared<ShaderProgram>();
     shaderProgram_->create_program();
     shaderProgram_->add_shader_from_source(vertexShader, GL_VERTEX_SHADER);
     shaderProgram_->add_shader_from_source(fragmentShader, GL_FRAGMENT_SHADER);
     shaderProgram_->link_program();
 
-    textVAO_ = std::make_unique<VAO>();
+    textVAO_ = std::make_shared<VAO>();
     // 4 corners of the glyph's quad; 4 floats per vertex (x,y,u,v)
-    textVBO_ = std::make_unique<Buffer>(NUM_CORNERS * sizeof(glm::vec4));
-    textIBO_ = std::make_unique<Buffer>(6 * sizeof(GLuint));
+    textVBO_ = std::make_shared<Buffer>(NUM_CORNERS * sizeof(glm::vec4));
+    textIBO_ = std::make_shared<Buffer>(6 * sizeof(GLuint));
 
     // Specify texture coordinates
     glm::vec2 quadUVCoords[] =

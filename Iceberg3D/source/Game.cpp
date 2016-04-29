@@ -6,7 +6,7 @@ using namespace iceberg;
 GLFWwindow* Game::window_;
 
 Game::Game()
-    :stateMachine_(std::make_unique<StateMachine>())
+    :stateMachine_(std::make_shared<StateMachine>())
 {
     // Initialize game variables and settings
     fullscreen_ = true;

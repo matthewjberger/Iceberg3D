@@ -17,10 +17,10 @@ public:
     void update() override;
 
 private:
-    std::unique_ptr<iceberg::Model> model;
+    std::shared_ptr<iceberg::Model> model;
     std::shared_ptr<iceberg::ShaderProgram> modelProgram;
-    std::unique_ptr<iceberg::Camera> camera;
-    std::unique_ptr<iceberg::Skybox> skybox;
+    std::shared_ptr<iceberg::Camera> camera;
+    std::shared_ptr<iceberg::Skybox> skybox;
 
     float angle;
 };

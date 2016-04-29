@@ -17,7 +17,7 @@ public:
     void update() override;
 
 private:
-    std::unique_ptr<iceberg::VAO> triVAO;
-    std::unique_ptr<iceberg::Buffer> triVBO;
-    std::unique_ptr<iceberg::ShaderProgram> triProgram;
+    std::shared_ptr<iceberg::VAO> triVAO;
+    std::shared_ptr<iceberg::Buffer> triVBO;
+    std::shared_ptr<iceberg::ShaderProgram> triProgram;
 };

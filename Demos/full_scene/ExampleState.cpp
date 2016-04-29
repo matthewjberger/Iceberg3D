@@ -11,7 +11,7 @@ void ExampleState::handle_events() {}
 void ExampleState::initialize()
 {
     // Initialize resources
-    model = std::make_unique<Model>("assets/deadpool/dead 123456.obj");
+    model = std::make_shared<Model>("assets/deadpool/dead 123456.obj");
 
     modelProgram = std::make_shared<ShaderProgram>();
     modelProgram->create_program();
@@ -19,7 +19,7 @@ void ExampleState::initialize()
     modelProgram->add_shader_from_file("shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
     modelProgram->link_program();
 
-    camera = std::make_unique<Camera>(game_, glm::vec3(10.0, 12.0, 30.0), glm::vec3(0), 100.0);
+    camera = std::make_shared<Camera>(game_, glm::vec3(10.0, 12.0, 30.0), glm::vec3(0), 100.0);
     camera->enable_input();
 
     SkyboxParameters snowySkybox;
@@ -30,7 +30,7 @@ void ExampleState::initialize()
     snowySkybox.front = "Assets/ame_powder/powderpeak_ft.tga";
     snowySkybox.back = "Assets/ame_powder/powderpeak_bk.tga";
 
-    skybox = std::make_unique<Skybox>(snowySkybox);
+    skybox = std::make_shared<Skybox>(snowySkybox);
 
     angle = 0.0f;
 }
