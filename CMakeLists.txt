@@ -20,6 +20,8 @@ add_subdirectory(Iceberg3D/dependencies/bullet)
 
 add_subdirectory(Iceberg3D/dependencies/boxer)
 
+add_subdirectory(Iceberg3D/dependencies/freetype2)
+
 if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     # Hide the console in visual studio projects in debug and release
@@ -63,7 +65,7 @@ add_library(${PROJECT_NAME} ${PROJECT_HEADERS}
                             ${PROJECT_CONFIGS}
                             ${DEPENDENCY_SOURCES})
 
-target_link_libraries(${PROJECT_NAME} assimp glfw Boxer
+target_link_libraries(${PROJECT_NAME} assimp glfw Boxer freetype
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
                       BulletDynamics BulletCollision LinearMath)
 					  
