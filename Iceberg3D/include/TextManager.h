@@ -40,7 +40,7 @@ namespace iceberg
         void use_font(const std::string& fontName);
 
         // Uses the default orthographic, 2D text shader
-        void RenderText(const std::string& text, int xPos, int yPos, int scale = 1.0f, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
+        void render_text(const std::string& text, int xPos, int yPos, int scale = 1.0f, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
 
     private:
 

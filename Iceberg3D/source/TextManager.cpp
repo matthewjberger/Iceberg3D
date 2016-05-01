@@ -182,7 +182,7 @@ void TextManager::load_font(const std::string& path, int size)
     FT_Done_FreeType(freeTypeInstance);
 }
 
-void TextManager::RenderText(const std::string& text, int xPos, int yPos, int scale, glm::vec3 color)
+void TextManager::render_text(const std::string& text, int xPos, int yPos, int scale, glm::vec3 color)
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
