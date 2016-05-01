@@ -4,6 +4,7 @@
 // 2.) Allow text to be rendered vertically 
 // 3.) Make a Font class and store more font metrics like ascent and descent for better formatting
 // 4.) Allow for block text with proper wrapping, or recognition of newline characters in strings
+// 5.) Add the option to set the origin (0,0) to the top left corner to be more like 2D rendering libraries
 
 #ifndef TEXT_MANAGER_H
 #define TEXT_MANAGER_H
