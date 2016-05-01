@@ -18,7 +18,4 @@ public:
 
 private:
 	/* Add state items here */
-    iceberg::TextManager* textManager;
-	
 };
-

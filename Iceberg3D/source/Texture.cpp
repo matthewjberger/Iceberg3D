@@ -50,6 +50,9 @@ void Texture::unbind(int textureUnit) const
 
 void Texture::create_from_data(int width, int height, const unsigned char* data, GLenum pixelFormat, GLenum target)
 {
+    // TODO: Log an error here, without exiting
+    if (width < 0 || height < 0) return;
+
     width_ = width;
     height_ = height;
 

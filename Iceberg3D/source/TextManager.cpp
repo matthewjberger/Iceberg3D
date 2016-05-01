@@ -157,12 +157,12 @@ void TextManager::load_font(const std::string& path, int size)
 
         GlyphInfo *glyphInfo = new GlyphInfo();
 
-        glyphInfo->bearing.x = face->glyph->bitmap.width;
-        glyphInfo->bearing.y = face->glyph->bitmap.rows;
+        glyphInfo->bearing.x = face->glyph->bitmap_left;
+        glyphInfo->bearing.y = face->glyph->bitmap_top;
         glyphInfo->advance = face->glyph->advance.x;
 
-        int width = glyphInfo->bearing.x;
-        int height = glyphInfo->bearing.y;
+        int width = face->glyph->bitmap.width;
+        int height = face->glyph->bitmap.rows;
 
         glyphInfo->texture.create_from_data(width, height, face->glyph->bitmap.buffer, GL_RED);
 
