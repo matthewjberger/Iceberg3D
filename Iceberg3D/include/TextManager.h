@@ -1,3 +1,10 @@
+// TODO:
+// Here are some improvements that can be made:
+// 1.) Allow text to be rendered with a custom shader provided as a parameter
+// 2.) Allow text to be rendered vertically 
+// 3.) Make a Font class and store more font metrics like ascent and descent for better formatting
+// 4.) Allow for block text with proper wrapping, or recognition of newline characters in strings
+
 #ifndef TEXT_MANAGER_H
 #define TEXT_MANAGER_H
 
