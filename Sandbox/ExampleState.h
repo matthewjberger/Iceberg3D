@@ -18,6 +18,4 @@ public:
 
 private:
 	/* Add state items here */
-	
 };
-
