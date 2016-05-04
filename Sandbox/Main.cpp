@@ -3,8 +3,8 @@
 int main()
 {
     // Create Game and example program state
-    std::unique_ptr<iceberg::Game> game = std::make_unique<iceberg::Game>();
-    std::unique_ptr<ExampleState> Example = std::make_unique<ExampleState>(game.get());
+    std::shared_ptr<iceberg::Game> game = std::make_shared<iceberg::Game>();
+    std::shared_ptr<ExampleState> Example = std::make_shared<ExampleState>(game.get());
 
     if (game->initialize() == false)
     {

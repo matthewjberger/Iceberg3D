@@ -40,7 +40,4 @@
 // Library Definitions
 #include "Defines.h"
 
-// Utility helper class
-#include "Utility.h"
-
 #endif
