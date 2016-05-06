@@ -54,10 +54,10 @@ void ExampleState::draw()
         for (int j = 0; j < 4; j++)
         {
             // TODO: Instanced Rendering
-            model->transform_manager()->translate(glm::mat4(1.0f), glm::vec3(8.0f * i, 8.0f * j, 0.0f));
-            model->transform_manager()->rotate(angle, glm::vec3(0.0f, 1.0f, 0.0f));
-            model->transform_manager()->scale(glm::vec3(0.02f, 0.02f, 0.02f));
-            glm::mat4 mvp = camera->make_mvp(model->transform_manager()->model_matrix());
+            model->transform()->translate(glm::mat4(1.0f), glm::vec3(8.0f * i, 8.0f * j, 0.0f));
+            model->transform()->rotate(angle, glm::vec3(0.0f, 1.0f, 0.0f));
+            model->transform()->scale(glm::vec3(0.02f, 0.02f, 0.02f));
+            glm::mat4 mvp = camera->make_mvp(model->transform()->model_matrix());
             modelProgram->set_uniform("mvpMatrix", &mvp);
             model->draw(modelProgram.get());
         }

@@ -148,7 +148,7 @@ std::vector<Texture*> Model::load_textures(aiMaterial* material, aiTextureType t
     return textures;
 }
 
-TransformManager* Model::transform_manager() const
+TransformManager* Model::transform() const
 {
     return transformManager_.get();
 }
