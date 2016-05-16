@@ -22,7 +22,6 @@ Game::Game(Backend backend)
 
 Game::~Game()
 {
-    glfwTerminate();
 }
 
 WindowManager* Game::window_manager() const
