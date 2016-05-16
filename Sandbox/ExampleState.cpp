@@ -6,7 +6,6 @@ using namespace iceberg;
 void ExampleState::pause() {}
 void ExampleState::resume() {}
 void ExampleState::finalize() {}
-void ExampleState::handle_events() {}
 
 void ExampleState::initialize()
 {

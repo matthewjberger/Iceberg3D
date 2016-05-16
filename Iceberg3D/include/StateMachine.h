@@ -17,7 +17,6 @@ namespace iceberg
         virtual void pause() = 0;
         virtual void resume() = 0;
 
-        virtual void handle_events() = 0;
         virtual void draw() = 0;
         virtual void update() = 0;
     };
@@ -30,7 +29,6 @@ namespace iceberg
 
         void update();
         void draw();
-        void handle_events();
 
         void change_state(ProgramState* state);
         void push_state(ProgramState* state);

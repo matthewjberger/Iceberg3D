@@ -53,7 +53,7 @@ TextManager::TextManager(Game* game) : game_(game)
     textVAO_->unbind();
 
     shaderProgram_->use();
-        glm::mat4 projection = glm::ortho(0.0f, game->screen_dimensions().y, 0.0f, game->screen_dimensions().x);
+        glm::mat4 projection = glm::ortho(0.0f, float(game->window_manager()->current_window()->height()), 0.0f, float(game->window_manager()->current_window()->width()));
         shaderProgram_->set_uniform("projection", projection);
     shaderProgram_->disuse();
 }

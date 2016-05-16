@@ -1,8 +1,12 @@
 #include "GLWindowManager.h"
 
 using namespace icebergGL;
-GLWindowManager::GLWindowManager() : iceberg::WindowManager(){}
-GLWindowManager::~GLWindowManager() {}
+GLWindowManager::GLWindowManager() : iceberg::WindowManager()
+{
+    // TODO: Add error checking, exceptions etc.
+    contextLoaded_ = false;
+    this->initialize();
+}
 
 bool GLWindowManager::detect_version()
 {
@@ -18,11 +22,13 @@ bool GLWindowManager::detect_version()
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
 
-        window = glfwCreateWindow(10, 10, "", nullptr, nullptr);
+        window = glfwCreateWindow(1, 1, "", nullptr, nullptr);
         if (window != nullptr)
         {
             glMajorVersion_ = major;
             glMinorVersion_ = minor;
+
+            glfwDestroyWindow(window);
 
             return true;
         }
@@ -63,18 +69,21 @@ bool GLWindowManager::initialize()
             printf("Could not detect OpenGL version!");
             return false;
         }
-
-        gladLoadGL();
     }
 
     return true;
+}
+
+GLWindowManager::~GLWindowManager()
+{
+    glfwTerminate();
 }
 
 std::shared_ptr<iceberg::Window> GLWindowManager::create_window(std::string caption, int width, int height, bool fullscreen)
 {
     std::shared_ptr<iceberg::Window> window = nullptr;
 
-    if(!hasFullscreenWindow)
+    if(!hasFullscreenWindow_)
     {
         GLWindowParams params;
         params.id = next_id();
@@ -85,26 +94,73 @@ std::shared_ptr<iceberg::Window> GLWindowManager::create_window(std::string capt
         params.height = height;
         params.fullscreen = fullscreen;
 
-        window = std::make_shared<icebergGL::GLWindow>(params);
+        window = std::make_shared<GLWindow>(params);
 
         if(window != nullptr)
         {
-            add_window(window.get());
+            add_window(window);
+            if(!contextLoaded_)
+            {
+                gladLoadGL();
+            }
         }
     }
+
+    hasFullscreenWindow_ = fullscreen;
 
     return window;
 }
 
 void GLWindowManager::update()
 {
-    std::map<int, iceberg::Window*>::iterator iterator;
+    glfwPollEvents();
+
+    std::map<int, std::shared_ptr<iceberg::Window>>::iterator iterator;
+
+    for (auto it = windows_.begin(); it != windows_.end(); )
+    {
+        it->second->update();
+
+        if(it->second->should_close())
+        {
+            windows_.erase(it++);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+}
+
+void GLWindowManager::refresh()
+{
+    std::map<int, std::shared_ptr<iceberg::Window>>::iterator iterator;
 
     for (iterator = windows_.begin(); iterator != windows_.end(); ++iterator)
     {
         if (iterator->second != nullptr)
         {
-            iterator->second->update();
+            iterator->second->refresh();
         }
     }
+}
+
+bool GLWindowManager::has_active_windows()
+{
+    return (windows_.size() > 0);
+}
+
+int GLWindowManager::api_major_version()
+{
+    return glMajorVersion_;
+}
+
+int GLWindowManager::api_minor_version()
+{
+    return glMinorVersion_;
+}
+
+std::string GLWindowManager::api_version_string()
+{
+    return std::to_string(api_major_version()) + "." + std::to_string(api_minor_version());
 }

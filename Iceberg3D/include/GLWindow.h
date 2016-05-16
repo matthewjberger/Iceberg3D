@@ -25,8 +25,11 @@ namespace icebergGL
         void show() override;
         void close() override;
         void update() override;
+        void refresh() override;
         void set_caption(std::string caption) override;
         void set_icon(std::string path) override;
+        float aspect_ratio() override;
+        bool should_close() override;
 
         GLFWwindow* handle() const;
 

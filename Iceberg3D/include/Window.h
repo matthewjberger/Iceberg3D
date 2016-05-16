@@ -16,8 +16,9 @@ namespace iceberg
         int id() const;
 
         std::string caption() const;
-        virtual void set_caption(std::string caption);
-        virtual void set_icon(std::string iconPath);
+        virtual void set_caption(std::string caption) = 0;
+        virtual void set_icon(std::string iconPath) = 0;
+        virtual float aspect_ratio() = 0;
 
         int width() const;
         int height() const;
@@ -27,6 +28,8 @@ namespace iceberg
         virtual void show() = 0;
         virtual void close() = 0;
         virtual void update() = 0;
+        virtual void refresh() = 0;
+        virtual bool should_close() = 0;
 
     protected:
         int id_;

@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "Game.h"
+#include <GLWindow.h>
 
 using namespace iceberg;
    
@@ -23,13 +24,13 @@ Camera::Camera(Game* game, glm::vec3 position, glm::vec3 focusPoint, float speed
     nearClippingPlane_ = 0.1f;
     farClippingPlane_ = 10000.0f;
  
-    mouseX_ = game->screen_dimensions().x / 2;
-    mouseY_ = game->screen_dimensions().y / 2;
+    mouseX_ = game->window_manager()->current_window()->width() / 2;
+    mouseY_ = game->window_manager()->current_window()->height() / 2;
 
     inputEnabled_ = false;
 
-    glfwSetInputMode(game->window(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-    glfwSetCursorPos(game->window(), game->screen_dimensions().x / 2, game->screen_dimensions().y / 2);
+    glfwSetInputMode(dynamic_cast<icebergGL::GLWindow*>(game->window_manager()->current_window())->handle(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+    glfwSetCursorPos(dynamic_cast<icebergGL::GLWindow*>(game->window_manager()->current_window())->handle(), game->window_manager()->current_window()->width() / 2, game->window_manager()->current_window()->height() / 2);
 
     calculate_vectors(game);
     LookAt(game, position_, focusPoint, up_);
@@ -37,11 +38,13 @@ Camera::Camera(Game* game, glm::vec3 position, glm::vec3 focusPoint, float speed
 
 void Camera::calculate_vectors(Game* game)
 {
-    glfwGetCursorPos(game->window(), &mouseX_, &mouseY_);
-    glfwSetCursorPos(game->window(), game->screen_dimensions().x/2, game->screen_dimensions().y/2);
+    glfwGetCursorPos(dynamic_cast<icebergGL::GLWindow*>(game->window_manager()->current_window())->handle(), &mouseX_, &mouseY_);
+    glfwSetCursorPos(dynamic_cast<icebergGL::GLWindow*>(game->window_manager()->current_window())->handle(), game->window_manager()->current_window()->width() / 2, game->window_manager()->current_window()->height() / 2);
 
-    horizontalAngle_ += yawSensitivity_ * float((game->screen_dimensions().x / 2) - mouseX_);
-    verticalAngle_ += pitchSensitivity_ * float((game->screen_dimensions().y / 2) - mouseY_);
+    float width = game->window_manager()->current_window()->width();
+    float height = game->window_manager()->current_window()->height();
+    horizontalAngle_ += yawSensitivity_ * float(width - mouseX_);
+    verticalAngle_ += pitchSensitivity_ * float(height - mouseY_);
 
     // 1.55f radians is 89 degrees, which is a reasonable vertical constraint
     if (verticalAngle_ > 1.55f)
@@ -71,25 +74,26 @@ void Camera::update(Game *game)
     calculate_vectors(game);
 
     // Move forward
-    if (glfwGetKey(game->window(), GLFW_KEY_W))
+    GLFWwindow* window = dynamic_cast<icebergGL::GLWindow*>(game->window_manager()->current_window())->handle();
+    if (glfwGetKey(window, GLFW_KEY_W))
     {
         position_ += direction_ * speed_ * game->delta_time();
     }
 
     // Move backward
-    if (glfwGetKey(game->window(), GLFW_KEY_S))
+    if (glfwGetKey(window, GLFW_KEY_S))
     {
         position_ -= direction_ * speed_ * game->delta_time();
     }
 
     // Strafe left
-    if (glfwGetKey(game->window(), GLFW_KEY_D))
+    if (glfwGetKey(window, GLFW_KEY_D))
     {
         position_ += right_ * speed_ * game->delta_time();
     }
 
     // Strafe right
-    if (glfwGetKey(game->window(), GLFW_KEY_A))
+    if (glfwGetKey(window, GLFW_KEY_A))
     {
         position_ -= right_ * speed_ * game->delta_time();
     }
@@ -110,7 +114,7 @@ void Camera::enable_input(bool enabled)
 
 void Camera::LookAt(Game *game, glm::vec3 position, glm::vec3 focusPoint, glm::vec3 up)
 {
-    projectionMatrix_ = glm::perspective(fieldOfView_, game->aspect_ratio(), nearClippingPlane_, farClippingPlane_);
+    projectionMatrix_ = glm::perspective(fieldOfView_, game->window_manager()->current_window()->aspect_ratio(), nearClippingPlane_, farClippingPlane_);
     position_ = position;
     viewMatrix_ = glm::lookAt(position_, focusPoint, up_);
 }

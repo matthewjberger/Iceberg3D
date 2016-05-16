@@ -3,60 +3,40 @@
 
 #include "GlobalIncludes.h"
 #include "StateMachine.h"
+#include "WindowManager.h"
 
 namespace iceberg
 {
+    enum ICEBERGAPI Backend
+    {
+        OPENGL
+    };
+
     class ICEBERGAPI GameState;
 
     class ICEBERGAPI Game
     {
     public:
-        Game();
+        Game(Backend backend);
         ~Game();
 
-        bool initialize();
+        void run();
+        float delta_time() const;
+        void change_state(GameState* state) const;
 
-        void update();
-        void draw() const;
-        void handle_events() const;
-        
-        void set_icon(const std::string& path);
-        void set_caption(const std::string& caption);
-        
-        void toggle_fullscreen();
-        static bool running();
-        static void exit();
+        WindowManager* window_manager() const;
         static void handle_error(const std::string &errorMessage);
 
-        glm::vec2 screen_dimensions() const;
-        int fps() const;
-        float aspect_ratio() const;
-
-        float delta_time() const;
-
-        void change_state(GameState* state) const;
-        static GLFWwindow* window();
-
     private:
-        static GLFWwindow* window_;
-        void build_caption(); // default caption
-        bool create_window();
-
+        std::shared_ptr<WindowManager> windowManager_;
         std::shared_ptr<StateMachine> stateMachine_;
         std::chrono::time_point<std::chrono::high_resolution_clock> previousTime_, currentTime_;
 
-        bool fullscreen_;
-        std::string caption_;
-
-        int majorVersion_, minorVersion_, patchVersion_;
-        int glMajorVersion_, glMinorVersion_;
-
-        int screenWidth_;
-        int screenHeight_;
-
-        int fps_;
-
         float deltaTime_;
+
+        void update();
+        void draw() const;
+ 
     };
 
     class ICEBERGAPI GameState : public ProgramState

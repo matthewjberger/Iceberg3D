@@ -1,4 +1,6 @@
 #include "GLWindow.h"
+
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 using namespace icebergGL;
@@ -6,7 +8,7 @@ using namespace icebergGL;
 icebergGL::GLWindow::GLWindow(GLWindowParams params) :
     iceberg::Window(params.id, params.caption, params.width, params.height, params.fullscreen)
 {
-    if(!fullscreen)
+    if(!params.fullscreen)
     {
         window_ = glfwCreateWindow(params.width, params.height, params.caption.c_str(), nullptr, nullptr);
     }
@@ -16,7 +18,11 @@ icebergGL::GLWindow::GLWindow(GLWindowParams params) :
         window_ = glfwCreateWindow(params.width, params.height, params.caption.c_str(), glfwGetPrimaryMonitor(), nullptr);
     }
 
-    if (window_ == nullptr)
+    if (window_ != nullptr)
+    {
+        glfwMakeContextCurrent(window_);
+    }
+    else
     {
         printf("Could not create a glfw window!");
     }
@@ -31,10 +37,21 @@ void GLWindow::show()
 
 void GLWindow::close()
 {
-    glfwSetWindowShouldClose(window_, true);
+    glfwDestroyWindow(window_);
 }
 
 void GLWindow::update()
+{
+    if(glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
+        glfwSetWindowShouldClose(window_, true);
+    }
+
+    glClearColor(0.392f, 0.584f, 0.93f, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void GLWindow::refresh()
 {
     glfwSwapBuffers(window_);
 }
@@ -68,4 +85,18 @@ void GLWindow::set_icon(std::string path)
     {
         printf("Failed to load icon: %s", path.c_str());
     }
+}
+
+float GLWindow::aspect_ratio()
+{
+    // Prevent division by 0
+    float width = float(width_);
+    float height = float(height_);
+    glfwSetWindowAspectRatio(window_, width, height);
+    return(height == 0) ? (width) : (width / height);
+}
+
+bool GLWindow::should_close()
+{
+    return glfwWindowShouldClose(window_);
 }
