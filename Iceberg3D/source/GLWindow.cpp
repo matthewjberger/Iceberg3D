@@ -1,28 +1,71 @@
 #include "GLWindow.h"
+#include <stb_image.h>
 
-icebergGL::GLWindow::GLWindow(int id, std::string caption, int width, int height, bool fullscreen) :
-    iceberg::Window(id, caption, width, height, fullscreen)
+using namespace icebergGL;
+
+icebergGL::GLWindow::GLWindow(GLWindowParams params) :
+    iceberg::Window(params.id, params.caption, params.width, params.height, params.fullscreen)
 {
-    int result = 1;
-
     if(!fullscreen)
     {
-
+        window_ = glfwCreateWindow(params.width, params.height, params.caption.c_str(), nullptr, nullptr);
     }
     else
     {
         
+        window_ = glfwCreateWindow(params.width, params.height, params.caption.c_str(), glfwGetPrimaryMonitor(), nullptr);
+    }
+
+    if (window_ == nullptr)
+    {
+        printf("Could not create a glfw window!");
     }
 }
 
-icebergGL::GLWindow::~GLWindow(){}
+GLWindow::~GLWindow(){}
 
-void icebergGL::GLWindow::Show()
+void GLWindow::show()
 {
-    // Nothing to do...
+    glfwShowWindow(window_);
 }
 
-void icebergGL::GLWindow::Close()
+void GLWindow::close()
 {
-    
+    glfwSetWindowShouldClose(window_, true);
+}
+
+void GLWindow::update()
+{
+    glfwSwapBuffers(window_);
+}
+
+GLFWwindow* GLWindow::handle() const
+{
+    return window_;
+}
+
+void GLWindow::set_caption(std::string caption)
+{
+    if (window_ == nullptr) return;
+    caption_ = caption;
+    glfwSetWindowTitle(window_, caption_.c_str());
+}
+
+void GLWindow::set_icon(std::string path)
+{
+    if (window_ == nullptr) return;
+
+    int x, y, c;
+    GLFWimage image;
+    image.pixels = stbi_load(path.c_str(), &x, &y, &c, 0);
+    image.width = x;
+    image.height = y;
+    if (image.pixels != NULL)
+    {
+        glfwSetWindowIcon(window_, 1, &image);
+    }
+    else
+    {
+        printf("Failed to load icon: %s", path.c_str());
+    }
 }

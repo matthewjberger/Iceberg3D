@@ -17,16 +17,18 @@ namespace iceberg
 
         std::string caption() const;
         virtual void set_caption(std::string caption);
+        virtual void set_icon(std::string iconPath);
 
         int width() const;
         int height() const;
 
         void set_dimensions(int width, int height);
 
-        virtual void Show() = 0;
-        virtual void Close() = 0;
+        virtual void show() = 0;
+        virtual void close() = 0;
+        virtual void update() = 0;
 
-    private:
+    protected:
         int id_;
         std::string caption_;
         int width_;
