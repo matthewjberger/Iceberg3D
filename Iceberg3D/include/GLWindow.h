@@ -6,11 +6,11 @@
 
 namespace icebergGL
 {
-    class ICEBERGAPI Window : public iceberg::Window
+    class ICEBERGAPI GLWindow : public iceberg::Window
     {
     public:
-        Window(int id, std::string caption, int width, int height, bool fullscreen = false);
-        virtual ~Window();
+        GLWindow(int id, std::string caption, int width, int height, bool fullscreen = false);
+        virtual ~GLWindow();
 
         void Show() override;
         void Close() override;

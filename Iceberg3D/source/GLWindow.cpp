@@ -1,6 +1,6 @@
 #include "GLWindow.h"
 
-icebergGL::Window::Window(int id, std::string caption, int width, int height, bool fullscreen) :
+icebergGL::GLWindow::GLWindow(int id, std::string caption, int width, int height, bool fullscreen) :
     iceberg::Window(id, caption, width, height, fullscreen)
 {
     int result = 1;
@@ -15,14 +15,14 @@ icebergGL::Window::Window(int id, std::string caption, int width, int height, bo
     }
 }
 
-icebergGL::Window::~Window(){}
+icebergGL::GLWindow::~GLWindow(){}
 
-void icebergGL::Window::Show()
+void icebergGL::GLWindow::Show()
 {
     // Nothing to do...
 }
 
-void icebergGL::Window::Close()
+void icebergGL::GLWindow::Close()
 {
     
 }
