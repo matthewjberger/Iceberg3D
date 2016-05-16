@@ -3,7 +3,6 @@
 typedef unsigned char BYTE;
 
 using namespace iceberg;
-using namespace utility;
 
 TextManager::TextManager(Game* game) : game_(game)
 {

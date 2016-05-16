@@ -1,15 +1,8 @@
-#ifndef GLOBALINCLUDES_H
-#define GLOBALINCLUDES_H
+#ifndef GLOBAL_INCLUDES_H
+#define GLOBAL_INCLUDES_H
 
-// GLAD and GLFW
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-// GLM
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+// TODO: Remove this after decoupling OpenGL rendering from logic
+#include "GLHeaders.h"
 
 // Assimp
 #include <assimp/Importer.hpp>
@@ -39,8 +32,5 @@
 
 // Library Definitions
 #include "Defines.h"
-
-// Utility helper class
-#include "Utility.h"
 
 #endif
