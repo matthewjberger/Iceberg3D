@@ -40,5 +40,8 @@ int WindowManager::next_id()
 
 Window* WindowManager::current_window()
 {
-    return windows_[currentWindowID_].get();
+    auto it = windows_.find(currentWindowID_);
+    if (it == windows_.end()) return nullptr;
+    auto window = it->second;
+    return window.get();
 }

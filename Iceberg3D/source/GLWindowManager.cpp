@@ -1,4 +1,5 @@
 #include "GLWindowManager.h"
+#include <vector>
 
 using namespace icebergGL;
 GLWindowManager::GLWindowManager() : iceberg::WindowManager()
@@ -114,33 +115,30 @@ void GLWindowManager::update()
 {
     glfwPollEvents();
 
-    std::map<int, std::shared_ptr<iceberg::Window>>::iterator iterator;
+    std::vector<int> windows_to_close;
 
-    for (auto it = windows_.begin(); it != windows_.end(); )
+    for (auto it = windows_.begin(); it != windows_.end(); ++it)
     {
         it->second->update();
 
+        // Find windows marked for closing
         if(it->second->should_close())
         {
-            windows_.erase(it++);
+            windows_to_close.push_back(it->second->id());
         }
-        else
-        {
-            ++it;
-        }
+    }
+
+    for(int id : windows_to_close)
+    {
+        close_window(id);
     }
 }
 
 void GLWindowManager::refresh()
 {
-    std::map<int, std::shared_ptr<iceberg::Window>>::iterator iterator;
-
-    for (iterator = windows_.begin(); iterator != windows_.end(); ++iterator)
+    for (auto it = windows_.begin(); it != windows_.end(); ++it)
     {
-        if (iterator->second != nullptr)
-        {
-            iterator->second->refresh();
-        }
+        it->second->refresh();
     }
 }
 
