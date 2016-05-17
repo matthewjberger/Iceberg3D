@@ -116,14 +116,15 @@ Skybox::~Skybox()
 {
 }
 
-void Skybox::draw(const Camera* camera) const
+void Skybox::draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) const
 {
+    glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
     skyboxProgram_->use();
 
-    glm::mat4 view = glm::mat4(glm::mat3(camera->view_matrix()));
-    skyboxProgram_->set_uniform("projection", camera->projection_matrix());
+    glm::mat4 view = glm::mat4(glm::mat3(viewMatrix));
+    skyboxProgram_->set_uniform("projection", projectionMatrix);
     skyboxProgram_->set_uniform("view", view);
 
     skyboxVAO_->bind();

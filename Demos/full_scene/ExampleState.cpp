@@ -6,7 +6,6 @@ using namespace iceberg;
 void ExampleState::pause() {}
 void ExampleState::resume() {}
 void ExampleState::finalize() {}
-void ExampleState::handle_events() {}
 
 void ExampleState::initialize()
 {
@@ -33,7 +32,7 @@ void ExampleState::initialize()
     skybox = std::make_shared<Skybox>(snowySkybox);
 
     textManager = std::make_shared<TextManager>(game_);
-    textManager->load_font("fonts/inconsolata.ttf", 30);
+    textManager->load_font("fonts/inconsolata.ttf", 24);
 
     angle = 0.0f;
 }
@@ -64,7 +63,7 @@ void ExampleState::draw()
     }
     glDisable(GL_CULL_FACE);
 
-    skybox->draw(camera.get());
+    skybox->draw(camera->projection_matrix(), camera->view_matrix());
 
-    textManager->render_text("Welcome to the Iceberg3D Game Engine!", 120, 10, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    textManager->render_text("Welcome to the Iceberg3D Game Engine!", 30, 30, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 }

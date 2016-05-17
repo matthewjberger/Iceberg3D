@@ -26,7 +26,7 @@ namespace iceberg
         Skybox(const SkyboxParameters &skyboxParameters);
         ~Skybox();
 
-        void draw(const Camera* camera) const;
+        void draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) const;
 
     private:
         std::shared_ptr<VAO> skyboxVAO_;
