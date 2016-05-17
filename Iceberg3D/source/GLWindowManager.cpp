@@ -15,7 +15,6 @@ bool GLWindowManager::detect_version()
     GLFWwindow* window = nullptr;
 
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     auto TryVersion = [&window, this](int major, int minor)
     {
