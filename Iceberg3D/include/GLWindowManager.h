@@ -2,7 +2,6 @@
 #define GL_WINDOW_MANAGER_H
 
 #include "WindowManager.h"
-#include "GLWindow.h"
 
 namespace icebergGL
 {

@@ -2,6 +2,7 @@
 #define WINDOW_MANAGER_H
 
 #include "Window.h"
+#include "InputManager.h"
 #include <map>
 #include <memory>
 
@@ -26,11 +27,12 @@ namespace iceberg
         virtual std::string api_version_string() = 0;
 
         Window* current_window();
+        Window* get_window(int id);
         void close_window(int id);
         void close_window(Window* window);
         int window_count() const;
         void select_window(int id);
-        Window* get_window(int id);
+        InputManager* input_manager() const;
 
     protected:
         void add_window(const std::shared_ptr<Window>& window);
@@ -38,6 +40,7 @@ namespace iceberg
         bool hasFullscreenWindow_;
         int currentWindowID_;
         std::map<int, std::shared_ptr<Window>> windows_;
+        std::shared_ptr<InputManager> inputManager_;
     };
 }
 

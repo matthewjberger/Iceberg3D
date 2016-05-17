@@ -4,6 +4,7 @@
 #include "GlobalIncludes.h"
 #include "StateMachine.h"
 #include "WindowManager.h"
+#include "InputManager.h"
 
 namespace iceberg
 {

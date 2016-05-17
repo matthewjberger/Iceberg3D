@@ -29,27 +29,22 @@ Camera::Camera(Game* game, glm::vec3 position, glm::vec3 focusPoint, float speed
 
     inputEnabled_ = false;
 
-    // HACK: This casting will be removed when the input abstraction is created
-    auto glWindow = static_cast<icebergGL::GLWindow*>(game->window_manager()->current_window());
-    if (!glWindow) return;
-    auto window = glWindow->handle();
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-    glfwSetCursorPos(window, game->window_manager()->current_window()->width() / 2, game->window_manager()->current_window()->height() / 2);
+    InputManager* inputManager = game->window_manager()->input_manager();
+    inputManager->hide_cursor();
+    inputManager->set_cursor_pos(game->window_manager()->current_window()->width()/2, game->window_manager()->current_window()->height()/2);
 
-    calculate_vectors(game);
+    calculate_vectors(game, inputManager);
     LookAt(game, position_, focusPoint, up_);
 }
 
 void Camera::calculate_vectors(Game* game)
 {
-    auto glWindow = static_cast<icebergGL::GLWindow*>(game->window_manager()->current_window());
-    auto window = glWindow->handle();
- 
-    glfwGetCursorPos(window, &mouseX_, &mouseY_);
-    glfwSetCursorPos(window, game->window_manager()->current_window()->width() / 2, game->window_manager()->current_window()->height() / 2);
+    InputManager* inputManager = game->window_manager()->input_manager();
+    inputManager->get_cursor_pos(&mouseX_, &mouseY_);
+    inputManager->set_cursor_pos(game->window_manager()->current_window()->width()/2, game->window_manager()->current_window()->height()/2);
 
-    float width = glWindow->width() / 2;
-    float height = glWindow->height() / 2;
+    float width = game->window_manager()->current_window()->width() / 2;
+    float height = game->window_manager()->current_window()->height() / 2;
 
     horizontalAngle_ += yawSensitivity_ * float(width - mouseX_);
     verticalAngle_ += pitchSensitivity_ * float(height - mouseY_);
@@ -79,33 +74,30 @@ void Camera::update(Game *game)
 {
     if (!inputEnabled_) return;
 
-    // HACK: This casting will be removed when the input abstraction is created
-    auto glWindow = static_cast<icebergGL::GLWindow*>(game->window_manager()->current_window());
-    if (!glWindow) return;
-    auto window = glWindow->handle();
+    InputManager* inputManager = game->window_manager()->input_manager();
 
-    calculate_vectors(game);
+    calculate_vectors(game, inputManager);
 
     // Move forward
-    if (glfwGetKey(window, GLFW_KEY_W))
+    if (inputManager->key_pressed('w'))
     {
         position_ += direction_ * speed_ * game->delta_time();
     }
 
     // Move backward
-    if (glfwGetKey(window, GLFW_KEY_S))
+    if (inputManager->key_pressed('s'))
     {
         position_ -= direction_ * speed_ * game->delta_time();
     }
 
     // Strafe left
-    if (glfwGetKey(window, GLFW_KEY_D))
+    if (inputManager->key_pressed('a'))
     {
         position_ += right_ * speed_ * game->delta_time();
     }
 
     // Strafe right
-    if (glfwGetKey(window, GLFW_KEY_A))
+    if (inputManager->key_pressed('d'))
     {
         position_ -= right_ * speed_ * game->delta_time();
     }

@@ -57,3 +57,8 @@ Window* WindowManager::get_window(int id)
     auto window = it->second;
     return window.get();
 }
+
+InputManager* WindowManager::input_manager() const
+{
+    return inputManager_.get();
+}

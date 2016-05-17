@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include "Game.h"
+#include "InputManager.h"
 
 namespace iceberg
 {
@@ -22,7 +23,7 @@ namespace iceberg
 
     private:
 
-        void calculate_vectors(Game* game);
+        void calculate_vectors(Game* game, InputManager* inputManager);
 
         bool inputEnabled_;
 
