@@ -118,6 +118,7 @@ Skybox::~Skybox()
 
 void Skybox::draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix) const
 {
+    glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
     skyboxProgram_->use();

@@ -41,8 +41,8 @@ void Camera::calculate_vectors(Game* game)
     glfwGetCursorPos(dynamic_cast<icebergGL::GLWindow*>(game->window_manager()->current_window())->handle(), &mouseX_, &mouseY_);
     glfwSetCursorPos(dynamic_cast<icebergGL::GLWindow*>(game->window_manager()->current_window())->handle(), game->window_manager()->current_window()->width() / 2, game->window_manager()->current_window()->height() / 2);
 
-    float width = game->window_manager()->current_window()->width();
-    float height = game->window_manager()->current_window()->height();
+    float width = game->window_manager()->current_window()->width() / 2;
+    float height = game->window_manager()->current_window()->height() / 2;
     horizontalAngle_ += yawSensitivity_ * float(width - mouseX_);
     verticalAngle_ += pitchSensitivity_ * float(height - mouseY_);
 

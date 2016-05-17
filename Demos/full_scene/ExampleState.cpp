@@ -19,6 +19,7 @@ void ExampleState::initialize()
     modelProgram->link_program();
 
     camera = std::make_shared<Camera>(game_, glm::vec3(12.0, 14.0, 30.0), glm::vec3(0), 100.0);
+    camera->enable_input();
 
     SkyboxParameters snowySkybox;
     snowySkybox.right = "assets/ame_powder/powderpeak_rt.tga";
@@ -31,7 +32,7 @@ void ExampleState::initialize()
     skybox = std::make_shared<Skybox>(snowySkybox);
 
     textManager = std::make_shared<TextManager>(game_);
-    textManager->load_font("fonts/inconsolata.ttf", 14);
+    textManager->load_font("fonts/inconsolata.ttf", 24);
 
     angle = 0.0f;
 }
@@ -62,7 +63,7 @@ void ExampleState::draw()
     }
     glDisable(GL_CULL_FACE);
 
-    skybox->draw(camera->view_matrix(), camera->projection_matrix());
+    skybox->draw(camera->projection_matrix(), camera->view_matrix());
 
-    textManager->render_text("Welcome to the Iceberg3D Game Engine!", 40, 10, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    textManager->render_text("Welcome to the Iceberg3D Game Engine!", 30, 30, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 }
