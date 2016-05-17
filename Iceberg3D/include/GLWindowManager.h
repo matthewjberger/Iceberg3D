@@ -16,11 +16,12 @@ namespace icebergGL
         void update() override;
         void refresh() override;
         bool has_active_windows() override;
-        std::shared_ptr<iceberg::Window> create_window(std::string caption, int width, int height, bool fullscreen) override;
+        iceberg::Window* create_window(std::string caption, int width, int height, bool fullscreen) override;
 
         int api_major_version() override;
         int api_minor_version() override;
         std::string api_version_string() override;
+        void select_window(iceberg::Window* window) override;
 
     private:
         bool detect_version();

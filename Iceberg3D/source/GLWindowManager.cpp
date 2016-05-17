@@ -79,10 +79,8 @@ GLWindowManager::~GLWindowManager()
     glfwTerminate();
 }
 
-std::shared_ptr<iceberg::Window> GLWindowManager::create_window(std::string caption, int width, int height, bool fullscreen)
+iceberg::Window* GLWindowManager::create_window(std::string caption, int width, int height, bool fullscreen)
 {
-    std::shared_ptr<iceberg::Window> window = nullptr;
-
     if(!hasFullscreenWindow_)
     {
         GLWindowParams params;
@@ -94,21 +92,18 @@ std::shared_ptr<iceberg::Window> GLWindowManager::create_window(std::string capt
         params.height = height;
         params.fullscreen = fullscreen;
 
-        window = std::make_shared<GLWindow>(params);
+        add_window(std::static_pointer_cast<iceberg::Window>(std::shared_ptr<GLWindow>(new GLWindow(params))));
 
-        if(window != nullptr)
+        if (!contextLoaded_)
         {
-            add_window(window);
-            if(!contextLoaded_)
-            {
-                gladLoadGL();
-            }
+            gladLoadGL();
+            contextLoaded_ = true;
         }
+
+        hasFullscreenWindow_ = fullscreen;
     }
 
-    hasFullscreenWindow_ = fullscreen;
-
-    return window;
+    return current_window();
 }
 
 void GLWindowManager::update()
@@ -160,4 +155,9 @@ int GLWindowManager::api_minor_version()
 std::string GLWindowManager::api_version_string()
 {
     return std::to_string(api_major_version()) + "." + std::to_string(api_minor_version());
+}
+void GLWindowManager::select_window(iceberg::Window* window)
+{
+    auto glWindow = static_cast<GLWindow*>(window);
+    glfwMakeContextCurrent(glWindow->handle());
 }

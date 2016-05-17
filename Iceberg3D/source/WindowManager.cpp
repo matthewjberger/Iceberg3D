@@ -20,7 +20,9 @@ int WindowManager::window_count() const
 
 void WindowManager::close_window(int id)
 {
-    windows_.erase(windows_.find(id));
+    auto it = windows_.find(id);
+    if (it == windows_.end()) return;
+    windows_.erase(it);
 }
 
 void WindowManager::close_window(Window* window)
@@ -30,7 +32,7 @@ void WindowManager::close_window(Window* window)
 
 void WindowManager::add_window(const std::shared_ptr<Window>& window)
 {
-    windows_[window->id()] = window;
+    windows_.emplace(window->id(), window);
 }
 
 int WindowManager::next_id()
@@ -40,7 +42,17 @@ int WindowManager::next_id()
 
 Window* WindowManager::current_window()
 {
-    auto it = windows_.find(currentWindowID_);
+    return get_window(currentWindowID_);
+}
+
+void WindowManager::select_window(int id)
+{
+    select_window(get_window(id));
+}
+
+Window* WindowManager::get_window(int id)
+{
+    auto it = windows_.find(id);
     if (it == windows_.end()) return nullptr;
     auto window = it->second;
     return window.get();

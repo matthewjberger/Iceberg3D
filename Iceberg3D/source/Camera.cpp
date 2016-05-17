@@ -30,8 +30,8 @@ Camera::Camera(Game* game, glm::vec3 position, glm::vec3 focusPoint, float speed
     inputEnabled_ = false;
 
     // HACK: This casting will be removed when the input abstraction is created
-    auto glWindow = dynamic_cast<icebergGL::GLWindow*>(game->window_manager()->current_window());
-    if (glWindow == nullptr) return;
+    auto glWindow = static_cast<icebergGL::GLWindow*>(game->window_manager()->current_window());
+    if (!glWindow) return;
     auto window = glWindow->handle();
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     glfwSetCursorPos(window, game->window_manager()->current_window()->width() / 2, game->window_manager()->current_window()->height() / 2);
@@ -42,7 +42,7 @@ Camera::Camera(Game* game, glm::vec3 position, glm::vec3 focusPoint, float speed
 
 void Camera::calculate_vectors(Game* game)
 {
-    auto glWindow = dynamic_cast<icebergGL::GLWindow*>(game->window_manager()->current_window());
+    auto glWindow = static_cast<icebergGL::GLWindow*>(game->window_manager()->current_window());
     auto window = glWindow->handle();
  
     glfwGetCursorPos(window, &mouseX_, &mouseY_);
@@ -80,8 +80,8 @@ void Camera::update(Game *game)
     if (!inputEnabled_) return;
 
     // HACK: This casting will be removed when the input abstraction is created
-    auto glWindow = dynamic_cast<icebergGL::GLWindow*>(game->window_manager()->current_window());
-    if (glWindow == nullptr) return;
+    auto glWindow = static_cast<icebergGL::GLWindow*>(game->window_manager()->current_window());
+    if (!glWindow) return;
     auto window = glWindow->handle();
 
     calculate_vectors(game);

@@ -28,7 +28,10 @@ icebergGL::GLWindow::GLWindow(GLWindowParams params) :
     }
 }
 
-GLWindow::~GLWindow(){}
+GLWindow::~GLWindow()
+{
+    close();
+}
 
 void GLWindow::show()
 {
@@ -63,15 +66,12 @@ GLFWwindow* GLWindow::handle() const
 
 void GLWindow::set_caption(std::string caption)
 {
-    if (window_ == nullptr) return;
     caption_ = caption;
     glfwSetWindowTitle(window_, caption_.c_str());
 }
 
 void GLWindow::set_icon(std::string path)
 {
-    if (window_ == nullptr) return;
-
     int x, y, c;
     GLFWimage image;
     image.pixels = stbi_load(path.c_str(), &x, &y, &c, 0);
