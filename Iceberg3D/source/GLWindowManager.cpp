@@ -97,7 +97,7 @@ iceberg::Window* GLWindowManager::create_window(std::string caption, int width, 
         params.height = height;
         params.fullscreen = fullscreen;
 
-        add_window(std::static_pointer_cast<iceberg::Window>(std::shared_ptr<GLWindow>(new GLWindow(params))));
+        add_window(std::make_shared<GLWindow>(params));
 
         if (!contextLoaded_)
         {
