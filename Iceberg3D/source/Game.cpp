@@ -46,14 +46,16 @@ void Game::update()
 
     windowManager_->update();
 
-    if(windowManager_->input_manager()->key_pressed(ICEBERG_KEY_ESCAPE))
+    if (windowManager_->has_active_windows() && windowManager_->input_manager()->key_pressed(ICEBERG_KEY_ESCAPE))
     {
         windowManager_->close_current_window();
-        if (!windowManager_->has_active_windows())
-        {
-            running_ = false;
-            return;
-        }
+
+    }
+
+    if (!windowManager_->has_active_windows())
+    {
+        running_ = false;
+        return;
     }
 
     stateMachine_->update();
@@ -81,7 +83,7 @@ void Game::run()
 
 float Game::delta_time() const
 {
-   return deltaTime_;
+    return deltaTime_;
 }
 
 void Game::handle_error(const std::string &errorMessage)
