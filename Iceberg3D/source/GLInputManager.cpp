@@ -39,18 +39,12 @@ GLFWwindow* GLInputManager::current_window_handle() const
 
 bool GLInputManager::key_pressed(int keySymbol)
 {
-    char upper = toupper(keySymbol);
     auto it = keyMap_.find(keySymbol);
-    
+
     // Ignore invalid keypresses
     if (it == keyMap_.end()) return false;
 
-    bool pressed = glfwGetKey(current_window_handle(), it->second);
-    if (pressed)
-    {
-        return true;
-    }
-    return false;
+    return glfwGetKey(current_window_handle(), it->second);
 }
 
 void GLInputManager::load_keymap()

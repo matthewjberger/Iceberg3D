@@ -38,6 +38,8 @@ void Game::change_state(GameState* state) const
 
 void Game::update()
 {
+    if (!running_) return;
+
     currentTime_ = std::chrono::high_resolution_clock::now();
     deltaTime_ = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime_ - previousTime_).count();
     previousTime_ = std::chrono::high_resolution_clock::now();
