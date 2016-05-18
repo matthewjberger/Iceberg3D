@@ -61,7 +61,6 @@ void Game::draw() const
 {
     if (!running_) return;
 
-    // Update the window
     stateMachine_->draw();
     windowManager_->refresh();
 }
