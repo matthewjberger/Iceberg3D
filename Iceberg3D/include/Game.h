@@ -4,6 +4,7 @@
 #include "GlobalIncludes.h"
 #include "StateMachine.h"
 #include "WindowManager.h"
+#include "InputManager.h"
 
 namespace iceberg
 {
@@ -33,6 +34,7 @@ namespace iceberg
         std::chrono::time_point<std::chrono::high_resolution_clock> previousTime_, currentTime_;
 
         float deltaTime_;
+        bool running_;
 
         void update();
         void draw() const;

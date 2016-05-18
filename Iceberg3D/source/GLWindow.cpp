@@ -45,11 +45,7 @@ void GLWindow::close()
 
 void GLWindow::update()
 {
-    if(glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(window_, true);
-    }
-
+    // Clear the screen
     glClearColor(0.392f, 0.584f, 0.93f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -99,4 +95,9 @@ float GLWindow::aspect_ratio()
 bool GLWindow::should_close()
 {
     return glfwWindowShouldClose(window_);
+}
+
+void GLWindow::mark_for_closing()
+{
+    glfwSetWindowShouldClose(window_, true);
 }

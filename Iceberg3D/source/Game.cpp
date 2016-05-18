@@ -18,6 +18,8 @@ Game::Game(Backend backend)
 
     // Begin the timer for delta time calculation
     previousTime_ = std::chrono::high_resolution_clock::now();
+
+    running_ = false;
 }
 
 Game::~Game()
@@ -41,11 +43,24 @@ void Game::update()
     previousTime_ = std::chrono::high_resolution_clock::now();
 
     windowManager_->update();
+
+    if(windowManager_->input_manager()->key_pressed(ICEBERG_KEY_ESCAPE))
+    {
+        windowManager_->close_current_window();
+        if (!windowManager_->has_active_windows())
+        {
+            running_ = false;
+            return;
+        }
+    }
+
     stateMachine_->update();
 }
 
 void Game::draw() const
 {
+    if (!running_) return;
+
     // Update the window
     stateMachine_->draw();
     windowManager_->refresh();
@@ -53,8 +68,10 @@ void Game::draw() const
 
 void Game::run()
 {
-    // TODO: Might be better to do this with an event
-    while(windowManager_->has_active_windows())
+    if (!windowManager_->has_active_windows()) return;
+
+    running_ = true;
+    while (running_)
     {
         update();
         draw();

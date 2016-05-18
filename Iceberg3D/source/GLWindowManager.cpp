@@ -1,4 +1,6 @@
 #include "GLWindowManager.h"
+#include "GLWindow.h"
+#include "GLInputManager.h"
 #include <vector>
 
 using namespace icebergGL;
@@ -7,6 +9,9 @@ GLWindowManager::GLWindowManager() : iceberg::WindowManager()
     // TODO: Add error checking, exceptions etc.
     contextLoaded_ = false;
     this->initialize();
+
+    // This window manager initializes its own input manager component
+    inputManager_ = std::make_shared<GLInputManager>(this);
 }
 
 bool GLWindowManager::detect_version()

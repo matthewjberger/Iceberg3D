@@ -30,6 +30,7 @@ namespace icebergGL
         void set_icon(std::string path) override;
         float aspect_ratio() override;
         bool should_close() override;
+        void mark_for_closing() override;
 
         GLFWwindow* handle() const;
 

@@ -57,3 +57,16 @@ Window* WindowManager::get_window(int id)
     auto window = it->second;
     return window.get();
 }
+
+InputManager* WindowManager::input_manager() const
+{
+    return inputManager_.get();
+}
+
+void WindowManager::close_current_window()
+{
+    if(has_active_windows())
+    {
+        close_window(currentWindowID_);
+    }
+}
