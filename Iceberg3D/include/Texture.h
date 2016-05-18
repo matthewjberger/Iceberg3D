@@ -23,6 +23,8 @@ namespace iceberg
         std::string path() const;
         aiTextureType type() const;
 
+        glm::vec2 dimensions() const;
+
     private:
 
         void free() const;

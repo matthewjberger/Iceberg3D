@@ -4,7 +4,6 @@
 
 using namespace iceberg;
 
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 Texture::Texture(aiTextureType type, GLenum bindTarget)
@@ -50,14 +49,17 @@ void Texture::unbind(int textureUnit) const
 
 void Texture::create_from_data(int width, int height, const unsigned char* data, GLenum pixelFormat, GLenum target)
 {
+    // TODO: Log an error here, without exiting
+    if (width < 0 || height < 0) return;
+
     width_ = width;
     height_ = height;
 
     bind();
     glTexImage2D(target, 0, pixelFormat, width_, height_, 0, pixelFormat, GL_UNSIGNED_BYTE, data);
-    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_R, GL_REPEAT);
+    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(bindTarget_, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     glTexParameteri(bindTarget_, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(bindTarget_, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glGenerateMipmap(GL_TEXTURE_2D);
@@ -111,6 +113,11 @@ std::string Texture::path() const
 aiTextureType Texture::type() const
 {
     return type_;
+}
+
+glm::vec2 Texture::dimensions() const
+{
+    return glm::vec2(width_, height_);
 }
 
 void Texture::set_wrap() const

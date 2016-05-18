@@ -17,7 +17,7 @@ namespace iceberg
 
         void draw(const ShaderProgram* shaderProgram);
 
-        TransformManager* transform_manager() const;
+        TransformManager* transform() const;
 
     private:
 
@@ -31,7 +31,6 @@ namespace iceberg
         void process_node(aiNode* node, const aiScene* scene);
         Mesh process_mesh(aiMesh* mesh, const aiScene* scene);
         std::vector<Texture*> load_textures(aiMaterial* material, aiTextureType type);
-        int load_texture(const std::string &path) const;
     };
 }
 #endif

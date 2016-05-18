@@ -22,5 +22,6 @@
 #include "TransformManager.h"
 #include "VAO.h"
 #include "Buffer.h"
+#include "TextManager.h"
 
 #endif

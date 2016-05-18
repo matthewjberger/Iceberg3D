@@ -13,7 +13,6 @@ public:
     void resume() override;
 
     void draw() override;
-    void handle_events() override;
     void update() override;
 
 private:
@@ -21,6 +20,7 @@ private:
     std::shared_ptr<iceberg::ShaderProgram> modelProgram;
     std::shared_ptr<iceberg::Camera> camera;
     std::shared_ptr<iceberg::Skybox> skybox;
+    std::shared_ptr<iceberg::TextManager> textManager;
 
     float angle;
 };

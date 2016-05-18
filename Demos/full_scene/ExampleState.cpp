@@ -6,7 +6,6 @@ using namespace iceberg;
 void ExampleState::pause() {}
 void ExampleState::resume() {}
 void ExampleState::finalize() {}
-void ExampleState::handle_events() {}
 
 void ExampleState::initialize()
 {
@@ -19,18 +18,21 @@ void ExampleState::initialize()
     modelProgram->add_shader_from_file("shaders/modelFrag.glsl", GL_FRAGMENT_SHADER);
     modelProgram->link_program();
 
-    camera = std::make_shared<Camera>(game_, glm::vec3(10.0, 12.0, 30.0), glm::vec3(0), 100.0);
+    camera = std::make_shared<Camera>(game_, glm::vec3(12.0, 14.0, 30.0), glm::vec3(0), 100.0);
     camera->enable_input();
 
     SkyboxParameters snowySkybox;
-    snowySkybox.right = "Assets/ame_powder/powderpeak_rt.tga";
-    snowySkybox.left = "Assets/ame_powder/powderpeak_lf.tga";
-    snowySkybox.top = "Assets/ame_powder/powderpeak_up.tga";
-    snowySkybox.bottom = "Assets/ame_powder/powderpeak_dn.tga";
-    snowySkybox.front = "Assets/ame_powder/powderpeak_ft.tga";
-    snowySkybox.back = "Assets/ame_powder/powderpeak_bk.tga";
+    snowySkybox.right = "assets/ame_powder/powderpeak_rt.tga";
+    snowySkybox.left = "assets/ame_powder/powderpeak_lf.tga";
+    snowySkybox.top = "assets/ame_powder/powderpeak_up.tga";
+    snowySkybox.bottom = "assets/ame_powder/powderpeak_dn.tga";
+    snowySkybox.front = "assets/ame_powder/powderpeak_ft.tga";
+    snowySkybox.back = "assets/ame_powder/powderpeak_bk.tga";
 
     skybox = std::make_shared<Skybox>(snowySkybox);
+
+    textManager = std::make_shared<TextManager>(game_);
+    textManager->load_font("fonts/inconsolata.ttf", 24);
 
     angle = 0.0f;
 }
@@ -51,15 +53,17 @@ void ExampleState::draw()
         for (int j = 0; j < 4; j++)
         {
             // TODO: Instanced Rendering
-            model->transform_manager()->translate(glm::mat4(1.0f), glm::vec3(8.0f * i, 8.0f * j, 0.0f));
-            model->transform_manager()->rotate(angle, glm::vec3(0.0f, 1.0f, 0.0f));
-            model->transform_manager()->scale(glm::vec3(0.02f, 0.02f, 0.02f));
-            glm::mat4 mvp = camera->make_mvp(model->transform_manager()->model_matrix());
+            model->transform()->translate(glm::mat4(1.0f), glm::vec3(8.0f * i, 8.0f * j, 0.0f));
+            model->transform()->rotate(angle, glm::vec3(0.0f, 1.0f, 0.0f));
+            model->transform()->scale(glm::vec3(0.02f, 0.02f, 0.02f));
+            glm::mat4 mvp = camera->make_mvp(model->transform()->model_matrix());
             modelProgram->set_uniform("mvpMatrix", &mvp);
             model->draw(modelProgram.get());
         }
     }
     glDisable(GL_CULL_FACE);
 
-    skybox->draw(camera.get());
+    skybox->draw(camera->projection_matrix(), camera->view_matrix());
+
+    textManager->render_text("Welcome to the Iceberg3D Game Engine!", 30, 30, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 }

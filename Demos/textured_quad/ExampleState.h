@@ -13,7 +13,6 @@ public:
     void resume() override;
 
     void draw() override;
-    void handle_events() override;
     void update() override;
 
 private:

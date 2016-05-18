@@ -72,8 +72,3 @@ void StateMachine::draw()
 {
     programStates_.back()->draw();
 }
-
-void StateMachine::handle_events()
-{
-    programStates_.back()->handle_events();
-}
