@@ -29,7 +29,13 @@ namespace iceberg
         virtual void close() = 0;
         virtual void update() = 0;
         virtual void refresh() = 0;
-        virtual bool should_close() = 0;
+
+        // Whether the window was marked for closing
+        virtual bool should_close() = 0; 
+
+        // Instead of terminating windows immediately,
+        // mark them to be closed and handle those however in the implementation
+        virtual void mark_for_closing() = 0;
 
     protected:
         int id_;

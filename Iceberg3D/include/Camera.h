@@ -23,7 +23,7 @@ namespace iceberg
 
     private:
 
-        void calculate_vectors(Game* game, InputManager* inputManager);
+        void calculate_vectors(Game* game);
 
         bool inputEnabled_;
 

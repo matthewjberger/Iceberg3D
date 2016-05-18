@@ -33,7 +33,7 @@ Camera::Camera(Game* game, glm::vec3 position, glm::vec3 focusPoint, float speed
     inputManager->hide_cursor();
     inputManager->set_cursor_pos(game->window_manager()->current_window()->width()/2, game->window_manager()->current_window()->height()/2);
 
-    calculate_vectors(game, inputManager);
+    calculate_vectors(game);
     LookAt(game, position_, focusPoint, up_);
 }
 
@@ -76,30 +76,30 @@ void Camera::update(Game *game)
 
     InputManager* inputManager = game->window_manager()->input_manager();
 
-    calculate_vectors(game, inputManager);
+    calculate_vectors(game);
 
     // Move forward
-    if (inputManager->key_pressed('w'))
+    if (inputManager->key_pressed(ICEBERG_KEY_W))
     {
         position_ += direction_ * speed_ * game->delta_time();
     }
 
     // Move backward
-    if (inputManager->key_pressed('s'))
+    if (inputManager->key_pressed(ICEBERG_KEY_S))
     {
         position_ -= direction_ * speed_ * game->delta_time();
     }
 
     // Strafe left
-    if (inputManager->key_pressed('a'))
+    if (inputManager->key_pressed(ICEBERG_KEY_A))
     {
-        position_ += right_ * speed_ * game->delta_time();
+        position_ -= right_ * speed_ * game->delta_time();
     }
 
     // Strafe right
-    if (inputManager->key_pressed('d'))
+    if (inputManager->key_pressed(ICEBERG_KEY_D))
     {
-        position_ -= right_ * speed_ * game->delta_time();
+        position_ += right_ * speed_ * game->delta_time();
     }
 
     LookAt(game, position_, position_ + direction_, up_);

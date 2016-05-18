@@ -30,6 +30,7 @@ namespace iceberg
         Window* get_window(int id);
         void close_window(int id);
         void close_window(Window* window);
+        void close_current_window();
         int window_count() const;
         void select_window(int id);
         InputManager* input_manager() const;
