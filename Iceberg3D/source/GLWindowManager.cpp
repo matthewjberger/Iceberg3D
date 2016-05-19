@@ -20,8 +20,6 @@ bool GLWindowManager::detect_version()
 
     GLFWwindow* window = nullptr;
 
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
     auto TryVersion = [&window, this](int major, int minor)
     {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
@@ -66,8 +64,6 @@ bool GLWindowManager::initialize()
     {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glMajorVersion_);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glMinorVersion_);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
         if(!detect_version())
         {

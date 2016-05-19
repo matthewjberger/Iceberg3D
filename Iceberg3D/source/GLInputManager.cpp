@@ -9,7 +9,6 @@ GLInputManager::GLInputManager(icebergGL::GLWindowManager* parent)
     load_keymap();
 }
 
-
 void GLInputManager::get_cursor_pos(double* x, double* y)
 {
     glfwGetCursorPos(current_window_handle(), x, y);

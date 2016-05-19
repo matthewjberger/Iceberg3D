@@ -10,7 +10,7 @@ void ExampleState::finalize() {}
 void ExampleState::initialize()
 {
     // Initialize resources
-    model = std::make_shared<Model>("assets/deadpool/dead 123456.obj");
+    model = std::make_shared<Model>("assets/deadpool/deadpool.obj");
 
     modelProgram = std::make_shared<ShaderProgram>();
     modelProgram->create_program();

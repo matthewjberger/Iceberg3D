@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.0)
 project(Iceberg3D)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
+
 option(GLFW_BUILD_DOCS OFF)
 option(GLFW_BUILD_EXAMPLES OFF)
 option(GLFW_BUILD_TESTS OFF)
@@ -28,7 +31,7 @@ if(MSVC)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O -w -std=c++14")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O -w")
     if(NOT WIN32)
         set(GLAD_LIBRARIES dl)
     endif()
@@ -52,7 +55,7 @@ file(GLOB PROJECT_CONFIGS CMakeLists.txt
                          .gitattributes
                          .gitignore
                          .gitmodules)
-						 
+
 source_group("Headers" FILES ${PROJECT_HEADERS})
 source_group("Sources" FILES ${PROJECT_SOURCES})
 source_group("Dependencies" FILES ${DEPENDENCY_SOURCES})
@@ -69,7 +72,7 @@ add_library(${PROJECT_NAME} ${PROJECT_HEADERS}
 target_link_libraries(${PROJECT_NAME} assimp glfw Boxer freetype
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
                       BulletDynamics BulletCollision LinearMath)
-					  
+
 if (BUILD_SHARED_LIBS)
 	target_compile_definitions( ${PROJECT_NAME} PRIVATE "ICEBERG_BUILD_DLL")
 	target_compile_definitions( ${PROJECT_NAME} INTERFACE "ICEBERG_DLL")
