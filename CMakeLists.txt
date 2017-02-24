@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.0)
 project(Iceberg3D)
 
+set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/Iceberg3D/cmake")
+include(cotire)
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
@@ -72,6 +75,8 @@ add_library(${PROJECT_NAME} ${PROJECT_HEADERS}
 target_link_libraries(${PROJECT_NAME} assimp glfw Boxer freetype
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES}
                       BulletDynamics BulletCollision LinearMath)
+
+cotire(${PROJECT_NAME})
 
 if (BUILD_SHARED_LIBS)
 	target_compile_definitions( ${PROJECT_NAME} PRIVATE "ICEBERG_BUILD_DLL")
