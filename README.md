@@ -18,7 +18,7 @@ Then to build, use [CMake](https://cmake.org/):
     cd Build
     cmake ..
 
-######Note: When building with Visual Studio, the [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145) must be installed. 
+###### Note: When building with Visual Studio, the [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145) must be installed. 
 
 ## Demos
 To build the demos, enable the cmake option:
