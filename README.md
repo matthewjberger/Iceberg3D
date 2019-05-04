@@ -3,6 +3,7 @@
 Iceberg3D is an OpenGL based 3D Game Engine.
 
 ![Screenshot](http://imgur.com/fGLzSfE.jpg)
+![Demo GIF](gifs/Demo.gif)
 
 ## Downloading and Building
 
