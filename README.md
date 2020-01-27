@@ -1,4 +1,4 @@
-# Iceberg3D ![Screenshot](http://imgur.com/BKjpnp1.png) [![Semver](http://img.shields.io/SemVer/0.1.0.png)](http://semver.org/spec/v0.1.0.html) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/matthewjberger/Iceberg3D/issues)[![Join the chat at https://gitter.im/matthewjberger/Iceberg3D](https://badges.gitter.im/matthewjberger/Iceberg3D.svg)](https://gitter.im/matthewjberger/Iceberg3D?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Iceberg3D ![Screenshot](http://imgur.com/BKjpnp1.png)[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/matthewjberger/Iceberg3D/issues)[![Join the chat at https://gitter.im/matthewjberger/Iceberg3D](https://badges.gitter.im/matthewjberger/Iceberg3D.svg)](https://gitter.im/matthewjberger/Iceberg3D?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Iceberg3D is an OpenGL based 3D Game Engine.
 
